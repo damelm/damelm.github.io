@@ -4,9 +4,9 @@
    ============================================================ */
 
 const MARQUEE = [
-  'Python', 'TypeScript', 'NestJS', 'Docker', 'Google Apps Script', 'PostgreSQL',
+  'Python', 'Django', 'TypeScript', 'NestJS', 'Docker', 'Google Apps Script', 'PostgreSQL',
   'Redis', 'NetBird', 'WireGuard', 'Linux', 'MikroTik', 'Aruba', 'Nginx',
-  'Claude', 'PyQt6', 'Git', 'Sysmon', 'S3 / MinIO'
+  'Claude', 'PyQt6', 'Arduino', 'Git', 'Sysmon', 'S3 / MinIO'
 ];
 
 const DATA = {
@@ -14,7 +14,7 @@ const DATA = {
     { target: 15, suffix: '+', label: { es: 'Años de experiencia', en: 'Years of experience' } },
     { target: 6,  suffix: '',  label: { es: 'Países conectados', en: 'Countries connected' } },
     { target: 250, suffix: '+', label: { es: 'Equipos gestionados', en: 'Devices managed' } },
-    { target: 5,  suffix: '',  label: { es: 'Herramientas en producción', en: 'Tools in production' } }
+    { target: 6,  suffix: '',  label: { es: 'Herramientas en producción', en: 'Tools in production' } }
   ],
   services: [
     { icon: 'lucide:wrench',       title: { es: 'Herramientas a medida', en: 'Custom tools' },            desc: { es: 'Apps internas que automatizan lo que hoy te come horas: tickets, reportes, evaluaciones, inventario.', en: 'Internal apps that automate what eats your hours today: tickets, reports, evaluations, inventory.' } },
