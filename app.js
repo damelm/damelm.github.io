@@ -82,7 +82,7 @@
 
     return `
     <nav class="nav">
-      <div class="nav__brand"><span class="nav__dot"></span>Damian Peña</div>
+      <div class="nav__brand"><img class="nav__logo" src="assets/favicon.svg?v=20260624b" alt="" width="26" height="26">Damian Peña</div>
       <div class="nav__actions">
         <div class="seg" role="group" aria-label="Idioma / Language">
           <button class="seg__btn ${lang === 'es' ? 'is-active' : ''}" data-lang="es" aria-pressed="${lang === 'es'}">ES</button>

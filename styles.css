@@ -83,7 +83,7 @@ iconify-icon { display: inline-flex; }
   border-bottom: 1px solid var(--line);
 }
 .nav__brand { font-family: var(--display); font-weight: 700; font-size: 1rem; letter-spacing: -0.01em; display: flex; align-items: center; gap: 0.55rem; }
-.nav__dot { width: 9px; height: 9px; border-radius: 50%; background: linear-gradient(135deg,var(--g2),var(--g3)); box-shadow: 0 0 12px var(--g2); }
+.nav__logo { width: 26px; height: 26px; border-radius: 7px; display: block; box-shadow: 0 0 12px color-mix(in srgb,var(--g2) 40%,transparent); }
 .nav__actions { display: flex; align-items: center; gap: 0.5rem; }
 .seg { display: flex; border: 1px solid var(--line2); border-radius: 999px; overflow: hidden; }
 .seg__btn { border: none; background: transparent; color: var(--muted); font-family: var(--mono); font-size: 0.68rem; font-weight: 600; padding: 0.4rem 0.65rem; cursor: pointer; transition: all .2s; }
