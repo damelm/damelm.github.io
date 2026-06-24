@@ -217,6 +217,17 @@ iconify-icon { display: inline-flex; }
 .reveal { opacity: 0; transform: translateY(20px); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
 .reveal.is-visible { opacity: 1; transform: none; }
 
+/* ---------- scroll polish + micro-interacciones (taller) ---------- */
+.scroll-progress { position: fixed; top: 0; left: 0; height: 2px; width: 0; z-index: 300; background: linear-gradient(90deg, var(--hb), var(--g2)); transition: width .12s linear; pointer-events: none; }
+.nav { transition: background .3s ease, box-shadow .3s ease, border-color .3s ease; }
+.nav.is-scrolled { background: color-mix(in srgb,var(--bg) 86%, transparent); box-shadow: 0 10px 30px rgba(0,0,0,.16); border-bottom-color: var(--line2); }
+.btn__arrow { display: inline-block; transition: transform .25s ease; }
+.svc__icon { transition: transform .3s ease, color .3s ease, border-color .3s ease; }
+@media (hover: hover) {
+  .btn:hover .btn__arrow { transform: translateX(4px); }
+  .svc:hover .svc__icon { transform: translateY(-3px) scale(1.06); border-color: var(--accent); }
+}
+
 /* ---------- cert lightbox ---------- */
 .cert--img { cursor: zoom-in; }
 .cert-lb { position: fixed; inset: 0; z-index: 500; background: rgba(0,0,0,.85); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; padding: 1.5rem; opacity: 0; pointer-events: none; transition: opacity .2s; }

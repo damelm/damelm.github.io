@@ -100,7 +100,7 @@
         <h1 class="hero__title">${esc(c.heroA)} <span class="hero__em">${esc(c.heroEm)}</span></h1>
         <p class="hero__sub">${esc(c.heroSub)}</p>
         <div class="cta-row">
-          <a class="btn btn--primary btn--lg" href="mailto:fx.damianpea@gmail.com">${esc(c.heroCta1)} →</a>
+          <a class="btn btn--primary btn--lg" href="mailto:fx.damianpea@gmail.com">${esc(c.heroCta1)} <span class="btn__arrow">→</span></a>
           <a class="btn btn--ghost btn--lg" href="#casos">${esc(c.heroCta2)}</a>
         </div>
         <div class="stats reveal" data-stats>${stats}</div>
@@ -277,6 +277,32 @@
     });
   }
 
+  /* ---------------- scroll: barra de progreso + nav consciente ---------------- */
+  let scrollBar = null, scrollTicking = false;
+  function updateScrollState() {
+    const y = window.scrollY || window.pageYOffset || 0;
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    if (scrollBar) scrollBar.style.width = (h > 0 ? (y / h) * 100 : 0) + '%';
+    const nav = $app.querySelector('.nav');
+    if (nav) nav.classList.toggle('is-scrolled', y > 40);
+  }
+  function onScroll() {
+    if (scrollTicking) return;
+    scrollTicking = true;
+    requestAnimationFrame(() => { updateScrollState(); scrollTicking = false; });
+  }
+  function initScroll() {
+    if (!scrollBar) {
+      scrollBar = document.createElement('div');
+      scrollBar.className = 'scroll-progress';
+      scrollBar.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(scrollBar);
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+    }
+    updateScrollState();
+  }
+
   /* ---------------- render ---------------- */
   function render(immediate) {
     document.documentElement.lang = state.lang;
@@ -285,9 +311,11 @@
     initReveals(immediate);
     initSpotlight();
     initLightbox();
+    updateScrollState();
   }
 
   /* ---------------- init ---------------- */
   applyTheme(state.theme);
   render(false);
+  initScroll();
 })();
