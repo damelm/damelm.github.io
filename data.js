@@ -3,10 +3,19 @@
    Portado del artifact original (dc-runtime) a JS vanilla.
    ============================================================ */
 
-const MARQUEE = [
-  'Python', 'Django', 'TypeScript', 'NestJS', 'Docker', 'Google Apps Script', 'PostgreSQL',
-  'Redis', 'NetBird', 'WireGuard', 'Linux', 'MikroTik', 'Aruba', 'Nginx',
-  'Claude', 'PyQt6', 'Arduino', 'Git', 'Sysmon', 'S3 / MinIO'
+const STACK = [
+  { name: 'Python',     icon: 'simple-icons:python' },
+  { name: 'Django',     icon: 'simple-icons:django' },
+  { name: 'JavaScript', icon: 'simple-icons:javascript' },
+  { name: 'TypeScript', icon: 'simple-icons:typescript' },
+  { name: 'Docker',     icon: 'simple-icons:docker' },
+  { name: 'Linux',      icon: 'simple-icons:linux' },
+  { name: 'PostgreSQL', icon: 'simple-icons:postgresql' },
+  { name: 'Redis',      icon: 'simple-icons:redis' },
+  { name: 'Nginx',      icon: 'simple-icons:nginx' },
+  { name: 'Cloudflare', icon: 'simple-icons:cloudflare' },
+  { name: 'Git',        icon: 'simple-icons:git' },
+  { name: 'Arduino',    icon: 'simple-icons:arduino' }
 ];
 
 const DATA = {

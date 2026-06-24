@@ -69,7 +69,9 @@
       `<div class="job reveal"><div class="job__period">${esc(L(j.period, lang))}${j.current ? `<span class="job__now">${esc(c.now)}</span>` : ''}</div><div class="job__body"><h3 class="job__title">${esc(L(j.title, lang))}</h3><div class="job__company">${esc(L(j.company, lang))}</div><p class="job__desc">${esc(L(j.desc, lang))}</p></div></div>`
     ).join('');
 
-    const chips = MARQUEE.concat(MARQUEE).map((m) => `<span class="chip">${esc(m)}</span>`).join('');
+    const tech = STACK.map((t) =>
+      `<div class="tech reveal"><iconify-icon class="tech__icon" icon="${t.icon}" aria-hidden="true"></iconify-icon><span class="tech__name">${esc(t.name)}</span></div>`
+    ).join('');
 
     const certs = DATA.certs.map((ct) => {
       const verifyLabel = ct.url ? `<span>${esc(c.certVerify)}</span>` : ct.image ? `<span>Ver certificado →</span>` : '';
@@ -168,10 +170,10 @@
         <div>${jobs}</div>
       </section>
 
-      <!-- MARQUEE -->
-      <section class="section" style="padding:3.5rem 0">
+      <!-- STACK -->
+      <section class="section" style="padding:4rem 0">
         <div class="marquee-label reveal">${esc(c.techLabel)}</div>
-        <div class="marquee"><div class="marquee__track">${chips}</div></div>
+        <div class="grid grid--tech">${tech}</div>
       </section>
 
       <!-- CERTS -->
@@ -187,10 +189,10 @@
           <div class="contact-card__in">
             <h2 class="contact__head">${esc(c.contactHead)}</h2>
             <p class="contact__sub">${esc(c.contactSub)}</p>
-            <div class="contact__cta"><a class="btn btn--primary btn--lg" href="mailto:fx.damianpea@gmail.com">${esc(c.contactBtn)} →</a></div>
+            <div class="contact__cta"><a class="btn btn--primary btn--lg" href="mailto:fx.damianpea@gmail.com">${esc(c.contactBtn)} <span class="btn__arrow">→</span></a></div>
             <div class="contact__meta">
               <a class="meta-link" href="mailto:fx.damianpea@gmail.com"><iconify-icon icon="lucide:mail" aria-hidden="true"></iconify-icon>fx.damianpea@gmail.com</a>
-              <a class="meta-link" href="tel:+595992879800"><iconify-icon icon="lucide:phone" aria-hidden="true"></iconify-icon>+595 992 879 800</a>
+              <a class="meta-link" href="https://wa.me/595992879800" target="_blank" rel="noopener"><iconify-icon icon="simple-icons:whatsapp" aria-hidden="true"></iconify-icon>+595 992 879 800</a>
               <span><iconify-icon icon="lucide:map-pin" aria-hidden="true"></iconify-icon>${esc(c.location)}</span>
             </div>
           </div>
