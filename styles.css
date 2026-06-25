@@ -174,8 +174,8 @@ iconify-icon { display: inline-flex; }
 
 /* ---------- about ---------- */
 .about__grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: clamp(2rem,5vw,4rem); align-items: start; }
-.about__p1 { font-size: 1.1rem; color: var(--text); margin-bottom: 1.3rem; line-height: 1.65; max-width: 68ch; }
-.about__p2 { font-size: 1.1rem; color: var(--muted); line-height: 1.65; max-width: 68ch; }
+.about__p1 { font-size: 1.1rem; color: var(--text); margin-bottom: 1.3rem; line-height: 1.65; max-width: 56ch; }
+.about__p2 { font-size: 1.1rem; color: var(--muted); line-height: 1.65; max-width: 56ch; }
 
 /* ---------- experience ---------- */
 .job { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; padding: 1.5rem 0; border-top: 1px solid var(--line); }
@@ -184,7 +184,7 @@ iconify-icon { display: inline-flex; }
 .job__body { flex: 1 1 280px; }
 .job__title { font-family: var(--display); font-weight: 600; font-size: 1.2rem; line-height: 1.2; }
 .job__company { color: var(--accent); font-size: 0.9rem; margin-bottom: 0.5rem; }
-.job__desc { color: var(--muted); font-size: 0.95rem; line-height: 1.55; max-width: 68ch; }
+.job__desc { color: var(--muted); font-size: 0.95rem; line-height: 1.55; max-width: 50ch; }
 
 /* ---------- stack grid ---------- */
 .marquee-label { text-align: center; font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 2rem; }
