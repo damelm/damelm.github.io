@@ -138,7 +138,7 @@
         <p class="hero__sub">${esc(c.heroSub)}</p>
         <div class="cta-row">
           <a class="btn btn--primary btn--lg" href="mailto:fx.damianpea@gmail.com">${esc(c.heroCta1)} <span class="btn__arrow">→</span></a>
-          <a class="btn btn--ghost btn--lg" href="#casos">${esc(c.heroCta2)}</a>
+          <button class="btn btn--ghost btn--lg btn--ai" id="heroAskBtn" type="button"><span class="ai-dot"></span>${esc(c.heroCtaAI)}</button>
         </div>
         <div class="stats reveal" data-stats>${stats}</div>
       </section>
@@ -244,6 +244,8 @@
     $app.querySelectorAll('.seg__btn').forEach((b) => b.addEventListener('click', () => setLang(b.dataset.lang)));
     const tb = document.getElementById('themeBtn');
     if (tb) tb.addEventListener('click', toggleTheme);
+    const ask = document.getElementById('heroAskBtn');
+    if (ask) ask.addEventListener('click', () => { const f = document.getElementById('chatFab'); if (f) f.click(); });
   }
 
   function countUp(container, animate) {

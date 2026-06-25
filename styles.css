@@ -101,6 +101,8 @@ iconify-icon { display: inline-flex; }
 .btn--ghost { color: var(--text); background: var(--card); border: 1px solid var(--line2); }
 .btn--ghost:hover { border-color: var(--accent); }
 .btn--lg { padding: 0.95rem 1.8rem; font-size: 1rem; }
+.btn--ai .ai-dot { width: 8px; height: 8px; border-radius: 50%; background: #28c840; box-shadow: 0 0 6px rgba(40,200,64,.6); flex: none; animation: blink 1.7s infinite; }
+.btn--ai:hover { border-color: var(--accent); }
 .btn--sm { padding: 0.45rem 1.1rem; font-size: 0.82rem; color: #fff; background: linear-gradient(90deg,var(--g1),var(--g2)); box-shadow: 0 5px 16px color-mix(in srgb,var(--g2) 24%,transparent); }
 
 /* ---------- hero ---------- */
