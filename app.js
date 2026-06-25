@@ -284,7 +284,7 @@
   function updateScrollState() {
     const y = window.scrollY || window.pageYOffset || 0;
     const h = document.documentElement.scrollHeight - window.innerHeight;
-    if (scrollBar) scrollBar.style.width = (h > 0 ? (y / h) * 100 : 0) + '%';
+    if (scrollBar) scrollBar.style.transform = 'scaleX(' + (h > 0 ? (y / h) : 0) + ')';
     const nav = $app.querySelector('.nav');
     if (nav) nav.classList.toggle('is-scrolled', y > 40);
   }

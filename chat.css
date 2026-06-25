@@ -12,6 +12,7 @@
   transition: transform .2s, box-shadow .2s;
 }
 .chat-fab:hover { transform: translateY(-2px); }
+.chat-fab:active, .chat-send:active, .chat-chip:active { transform: scale(0.97); }
 .chat-fab iconify-icon { font-size: 18px; }
 @media (max-width: 520px) { .chat-fab__label { display: none; } .chat-fab { padding: .85rem; } }
 
