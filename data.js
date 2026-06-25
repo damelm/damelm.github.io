@@ -83,7 +83,7 @@ const COPY = {
     expLabel: 'Trayectoria', expTitle: 'Más de 15 años en tecnología',
     techLabel: 'Trabajo con',
     certLabel: 'Formación', certTitle: 'Formación certificada', certIntro: 'Certificaciones verificables de Anthropic, Cisco y Edutin Academy — en IA, ciberseguridad y redes.', certVerify: 'Verificar →',
-    contactHead: 'Pongamos tu tecnología a trabajar para vos.', contactSub: 'Contame qué necesitás y vemos cómo resolverlo. Te respondo rápido y sin compromiso.', contactBtn: 'Escribime', contactDownload: 'CV en PDF', location: 'Hecho en Argentina, operando desde Asunción, sin fronteras.',
+    contactHead: 'Pongamos tu tecnología a trabajar para vos.', contactSub: 'Contame qué necesitás y vemos cómo resolverlo. Te respondo rápido y sin compromiso.', contactBtn: 'Hablemos', contactDownload: 'CV en PDF', location: 'Hecho en Argentina, operando desde Asunción, sin fronteras.',
     footerNote: 'Hecho a mano, potenciado con IA',
     now: 'NOW'
   },
@@ -104,7 +104,7 @@ const COPY = {
     expLabel: 'Experience', expTitle: '15+ years in technology',
     techLabel: 'I work with',
     certLabel: 'Education', certTitle: 'Certified training', certIntro: 'Verifiable certifications from Anthropic, Cisco and Edutin Academy — in AI, cybersecurity and networking.', certVerify: 'Verify →',
-    contactHead: "Let's put your tech to work for you.", contactSub: "Tell me what you need and we'll figure it out. I reply fast, no strings attached.", contactBtn: 'Get in touch', contactDownload: 'CV as PDF', location: 'Made in Argentina, operating from Asunción, no borders.',
+    contactHead: "Let's put your tech to work for you.", contactSub: "Tell me what you need and we'll figure it out. I reply fast, no strings attached.", contactBtn: "Let's talk", contactDownload: 'CV as PDF', location: 'Made in Argentina, operating from Asunción, no borders.',
     footerNote: 'Handcrafted, AI-powered',
     now: 'NOW'
   }
