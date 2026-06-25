@@ -3,7 +3,7 @@
   <circle cx="1080" cy="120" r="360" fill="#16234a" opacity="0.5"/>
   <circle cx="120" cy="600" r="300" fill="#16234a" opacity="0.38"/>
 
-  <g transform="translate(80,70) scale(1.1)">
+  <g transform="translate(80,64) scale(1.05)">
     <rect width="100" height="100" rx="22" fill="#14213d" stroke="#6f8fe0" stroke-width="3"/>
     <rect x="28" y="28" width="44" height="44" rx="9" fill="none" stroke="#6f8fe0" stroke-width="5"/>
     <line x1="42" y1="20" x2="42" y2="28" stroke="#6f8fe0" stroke-width="5" stroke-linecap="round"/>
@@ -16,13 +16,15 @@
     <line x1="72" y1="58" x2="80" y2="58" stroke="#6f8fe0" stroke-width="5" stroke-linecap="round"/>
     <text x="50" y="63" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-weight="700" font-size="32" fill="#dce8ff">D</text>
   </g>
-  <text x="210" y="135" font-family="'Consolas','Courier New',monospace" font-size="26" letter-spacing="6" fill="#6f8fe0">DAMIAN PEÑA</text>
-  <text x="212" y="172" font-family="'Segoe UI', Arial, sans-serif" font-size="24" fill="#aab3c9">IT · Infraestructura · IA</text>
+  <text x="205" y="128" font-family="'Consolas','Courier New',monospace" font-size="26" letter-spacing="6" fill="#6f8fe0">DAMIAN PEÑA</text>
+  <text x="207" y="165" font-family="'Segoe UI', Arial, sans-serif" font-size="24" fill="#aab3c9">Software · Infraestructura · IA</text>
 
-  <text x="80" y="330" font-family="'Segoe UI', Arial, sans-serif" font-weight="700" font-size="82" fill="#f3f6ff">Mi CV tiene un</text>
-  <text x="80" y="428" font-family="'Segoe UI', Arial, sans-serif" font-weight="700" font-size="82" fill="#7aa2ff">asistente de IA</text>
+  <text x="80" y="318" font-family="'Segoe UI', Arial, sans-serif" font-weight="700" font-size="76" fill="#f3f6ff">Tecnología que trabaja</text>
+  <text x="80" y="406" font-family="'Segoe UI', Arial, sans-serif" font-weight="700" font-size="76" fill="#7aa2ff">para tu empresa</text>
 
-  <text x="80" y="500" font-family="'Segoe UI', Arial, sans-serif" font-size="33" fill="#aab3c9">No te paso un PDF. Preguntale lo que quieras sobre mí.</text>
+  <text x="80" y="478" font-family="'Segoe UI', Arial, sans-serif" font-size="31" fill="#aab3c9">Software, automatización e infraestructura con IA.</text>
 
-  <text x="80" y="575" font-family="'Consolas','Courier New',monospace" font-size="32" fill="#dce8ff">damelm.github.io</text>
+  <circle cx="92" cy="556" r="8" fill="#28c840"/>
+  <text x="112" y="566" font-family="'Segoe UI', Arial, sans-serif" font-size="28" fill="#cfd6e8">Con asistente de IA</text>
+  <text x="1120" y="566" text-anchor="end" font-family="'Consolas','Courier New',monospace" font-size="30" fill="#dce8ff">damelm.github.io</text>
 </svg>
