@@ -112,14 +112,25 @@
       <!-- HERO -->
       <section class="hero">
         <div class="hero__deco" aria-hidden="true">
-          <svg viewBox="0 0 240 240" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <rect x="78" y="78" width="84" height="84" rx="16"/>
-            <line x1="100" y1="60" x2="100" y2="78"/><line x1="120" y1="60" x2="120" y2="78"/><line x1="140" y1="60" x2="140" y2="78"/>
-            <line x1="100" y1="162" x2="100" y2="180"/><line x1="120" y1="162" x2="120" y2="180"/><line x1="140" y1="162" x2="140" y2="180"/>
-            <line x1="60" y1="100" x2="78" y2="100"/><line x1="60" y1="120" x2="78" y2="120"/><line x1="60" y1="140" x2="78" y2="140"/>
-            <line x1="162" y1="100" x2="180" y2="100"/><line x1="162" y1="120" x2="180" y2="120"/><line x1="162" y1="140" x2="180" y2="140"/>
-            <path d="M60 100 H28 V44"/><path d="M180 140 H212 V196"/>
-            <circle cx="28" cy="44" r="4" fill="currentColor"/><circle cx="212" cy="196" r="4" fill="currentColor"/>
+          <svg viewBox="0 0 360 360" fill="none" stroke="currentColor" stroke-linecap="round">
+            <g stroke-width="2" opacity="0.5">
+              <path d="M150 96 V44 H64"/><path d="M210 96 V54 H300"/>
+              <path d="M96 150 H34"/><path d="M264 210 H326 V300"/>
+              <path d="M150 264 V322 H66"/><path d="M210 264 V312"/>
+            </g>
+            <rect x="120" y="120" width="120" height="120" rx="22" stroke-width="2.5"/>
+            <rect x="152" y="152" width="56" height="56" rx="10" stroke-width="1.5" opacity="0.55"/>
+            <g stroke-width="2.5">
+              <line x1="150" y1="108" x2="150" y2="120"/><line x1="180" y1="108" x2="180" y2="120"/><line x1="210" y1="108" x2="210" y2="120"/>
+              <line x1="150" y1="240" x2="150" y2="252"/><line x1="180" y1="240" x2="180" y2="252"/><line x1="210" y1="240" x2="210" y2="252"/>
+              <line x1="108" y1="150" x2="120" y2="150"/><line x1="108" y1="180" x2="120" y2="180"/><line x1="108" y1="210" x2="120" y2="210"/>
+              <line x1="240" y1="150" x2="252" y2="150"/><line x1="240" y1="180" x2="252" y2="180"/><line x1="240" y1="210" x2="252" y2="210"/>
+            </g>
+            <g fill="currentColor" stroke="none">
+              <circle class="hn" cx="64" cy="44" r="5"/><circle class="hn" cx="300" cy="54" r="5"/>
+              <circle class="hn" cx="34" cy="150" r="5"/><circle class="hn" cx="326" cy="300" r="5"/>
+              <circle class="hn" cx="66" cy="322" r="5"/><circle class="hn" cx="210" cy="312" r="5"/>
+            </g>
           </svg>
         </div>
         <div class="badge"><span class="badge__dot"></span>${esc(c.heroTag)}</div>
