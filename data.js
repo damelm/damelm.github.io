@@ -26,10 +26,10 @@ const DATA = {
     { target: 6,  suffix: '',  label: { es: 'Herramientas en producción', en: 'Tools in production' } }
   ],
   services: [
-    { icon: 'lucide:wrench',       title: { es: 'Herramientas a medida', en: 'Custom tools' },            desc: { es: 'Apps internas que automatizan lo que hoy te come horas: tickets, reportes, evaluaciones, inventario.', en: 'Internal apps that automate what eats your hours today: tickets, reports, evaluations, inventory.' } },
-    { icon: 'lucide:network',      title: { es: 'Infraestructura y redes', en: 'Infrastructure & networks' }, desc: { es: 'Redes, servidores y conectividad multi-sede que funcionan sin sorpresas.', en: 'Networks, servers, and multi-site connectivity that just work.' } },
-    { icon: 'lucide:shield-check', title: { es: 'Seguridad', en: 'Security' },                            desc: { es: 'Protejo tus equipos y datos: monitoreo, control de accesos, backups y buenas prácticas.', en: 'I protect your devices and data: monitoring, access control, backups, and best practices.' } },
-    { icon: 'lucide:zap',          title: { es: 'Rápido y rentable', en: 'Fast & cost-effective' },        desc: { es: 'Soluciones self-hosted potenciadas con IA: menos licencias, menos costos, más control.', en: 'AI-powered self-hosted solutions: fewer licenses, lower costs, more control.' } }
+    { icon: 'lucide:sparkles',     lead: true, title: { es: 'Software y automatización con IA', en: 'AI software & automation' }, desc: { es: 'Te saco de encima el trabajo repetitivo: apps a medida, automatizaciones y agentes que tu equipo usa todos los días.', en: 'I take repetitive work off your plate: custom apps, automations and agents your team uses every day.' } },
+    { icon: 'lucide:network',      title: { es: 'Infraestructura y redes', en: 'Infrastructure & networks' }, desc: { es: 'Redes, servidores y conectividad multi-sede que andan sin sorpresas. Menos incendios, más tiempo para lo importante.', en: 'Networks, servers and multi-site connectivity that just work. Fewer fires, more time for what matters.' } },
+    { icon: 'lucide:shield-check', title: { es: 'Seguridad', en: 'Security' },                            desc: { es: 'Protejo tus equipos y datos: monitoreo, control de accesos y backups, con buenas prácticas y sin licencias carísimas.', en: 'I protect your devices and data: monitoring, access control and backups, best practices without pricey licenses.' } },
+    { icon: 'lucide:zap',          title: { es: 'Rápido y a bajo costo', en: 'Fast & low-cost' },          desc: { es: 'Soluciones self-hosted que bajan licencias y costos, y dejan el control en tu empresa.', en: 'Self-hosted solutions that cut licenses and costs, keeping control inside your company.' } }
   ],
   cases: [
     { num: '01', title: { es: 'Sistema de tickets', en: 'Ticketing system' }, desc: { es: 'Centralicé el soporte IT de 3 sedes en una sola plataforma con SLA y tableros.', en: 'Centralized IT support across 3 sites into one platform with SLA and dashboards.' }, result: { es: '~14.400 tickets/año procesados con métricas claras.', en: '~14,400 tickets/year handled with clear metrics.' }, tags: ['Docker', 'Apps Script', 'JS'] },
@@ -70,7 +70,7 @@ const COPY = {
     navCta: 'Hablemos',
     heroTag: 'Disponible para nuevos proyectos',
     heroA: 'Tecnología que', heroEm: 'trabaja para tu empresa',
-    heroSub: 'Me dedico a resolver problemas de tecnología y a construir herramientas que le faciliten el trabajo a tu equipo, apoyándome en IA para hacerlo rápido y accesible.',
+    heroSub: 'Construyo las herramientas y la infraestructura que tu empresa necesita, potenciadas con IA para hacerlo rápido, a medida y a bajo costo.',
     heroCta1: 'Hablemos', heroCta2: 'Ver proyectos', heroCtaAI: 'Preguntá a mi asistente IA',
     svcLabel: 'Servicios', svcTitle: 'Lo que puedo resolver',
     casesLabel: 'Casos', casesTitle: 'Proyectos reales, en producción',
@@ -83,7 +83,7 @@ const COPY = {
     expLabel: 'Trayectoria', expTitle: 'Más de 15 años en tecnología',
     techLabel: 'Trabajo con',
     certLabel: 'Formación', certTitle: 'Formación certificada', certIntro: 'Certificaciones verificables de Anthropic, Cisco y Edutin Academy — en IA, ciberseguridad y redes.', certVerify: 'Verificar →',
-    contactHead: '¿Hacemos que tu tecnología trabaje mejor?', contactSub: 'Contame qué necesitás y vemos cómo resolverlo. Respondo rápido.', contactBtn: 'Escribime', contactDownload: 'CV en PDF', location: 'Hecho en Argentina, operando desde Asunción, sin fronteras.',
+    contactHead: 'Pongamos tu tecnología a trabajar para vos.', contactSub: 'Contame qué necesitás y vemos cómo resolverlo. Te respondo rápido y sin compromiso.', contactBtn: 'Escribime', contactDownload: 'CV en PDF', location: 'Hecho en Argentina, operando desde Asunción, sin fronteras.',
     footerNote: 'Hecho a mano, potenciado con IA',
     now: 'NOW'
   },
@@ -91,7 +91,7 @@ const COPY = {
     navCta: "Let's talk",
     heroTag: 'Available for new projects',
     heroA: 'Technology that', heroEm: 'works for your business',
-    heroSub: "I solve technology problems and build tools that make your team's work easier — using AI to do it fast and affordably.",
+    heroSub: 'I build the tools and infrastructure your company needs, powered by AI to do it fast, custom and low-cost.',
     heroCta1: "Let's talk", heroCta2: 'See work', heroCtaAI: 'Ask my AI assistant',
     svcLabel: 'Services', svcTitle: 'What I can solve',
     casesLabel: 'Work', casesTitle: 'Real projects, in production',
@@ -104,7 +104,7 @@ const COPY = {
     expLabel: 'Experience', expTitle: '15+ years in technology',
     techLabel: 'I work with',
     certLabel: 'Education', certTitle: 'Certified training', certIntro: 'Verifiable certifications from Anthropic, Cisco and Edutin Academy — in AI, cybersecurity and networking.', certVerify: 'Verify →',
-    contactHead: 'Shall we make your tech work better?', contactSub: 'Tell me what you need and we figure out how to solve it. I reply fast.', contactBtn: 'Get in touch', contactDownload: 'CV as PDF', location: 'Made in Argentina, operating from Asunción, no borders.',
+    contactHead: "Let's put your tech to work for you.", contactSub: "Tell me what you need and we'll figure it out. I reply fast, no strings attached.", contactBtn: 'Get in touch', contactDownload: 'CV as PDF', location: 'Made in Argentina, operating from Asunción, no borders.',
     footerNote: 'Handcrafted, AI-powered',
     now: 'NOW'
   }

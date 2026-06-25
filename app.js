@@ -50,7 +50,7 @@
     ).join('');
 
     const services = DATA.services.map((s) =>
-      `<div class="card svc reveal"><div class="svc__icon"><iconify-icon icon="${s.icon}" aria-hidden="true"></iconify-icon></div><div class="svc__title">${esc(L(s.title, lang))}</div><div class="svc__desc">${esc(L(s.desc, lang))}</div></div>`
+      `<div class="card svc reveal${s.lead ? ' svc--lead' : ''}"><div class="svc__icon"><iconify-icon icon="${s.icon}" aria-hidden="true"></iconify-icon></div><div class="svc__title">${esc(L(s.title, lang))}</div><div class="svc__desc">${esc(L(s.desc, lang))}</div></div>`
     ).join('');
 
     const featuredCase = DATA.cases.find((x) => x.num === '05') || DATA.cases[DATA.cases.length - 1];

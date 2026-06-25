@@ -145,6 +145,8 @@ iconify-icon { display: inline-flex; }
 
 /* ---------- services ---------- */
 .svc { padding: 1.8rem; }
+.svc--lead { border-color: color-mix(in srgb, var(--accent) 38%, var(--cardB)); background: linear-gradient(160deg, color-mix(in srgb, var(--g2) 8%, var(--card)), var(--card)); }
+.svc--lead .svc__icon { background: linear-gradient(135deg, color-mix(in srgb,var(--g2) 42%,transparent), color-mix(in srgb,var(--accent) 32%,transparent)); }
 .svc__icon { width: 46px; height: 46px; border-radius: 13px; background: linear-gradient(135deg,color-mix(in srgb,var(--g1) 28%,transparent),color-mix(in srgb,var(--g2) 28%,transparent)); border: 1px solid var(--cardB); display: flex; align-items: center; justify-content: center; margin-bottom: 1.2rem; color: var(--accent); font-size: 24px; }
 .svc__title { font-family: var(--display); font-weight: 600; font-size: 1.15rem; margin-bottom: 0.5rem; }
 .svc__desc { color: var(--muted); font-size: 0.94rem; line-height: 1.55; }
