@@ -53,14 +53,27 @@
       `<div class="card svc reveal"><div class="svc__icon"><iconify-icon icon="${s.icon}" aria-hidden="true"></iconify-icon></div><div class="svc__title">${esc(L(s.title, lang))}</div><div class="svc__desc">${esc(L(s.desc, lang))}</div></div>`
     ).join('');
 
-    const cases = DATA.cases.map((x) =>
+    const featuredCase = DATA.cases.find((x) => x.num === '05') || DATA.cases[DATA.cases.length - 1];
+    const caseCard = (x) =>
       `<div class="card card--spot case reveal"><div class="card__in">
         <div class="case__head"><h3 class="case__title">${esc(L(x.title, lang))}</h3><span class="case__num">${esc(x.num)}</span></div>
         <p class="case__desc">${esc(L(x.desc, lang))}</p>
         <div class="case__result"><span>↗</span><span>${esc(L(x.result, lang))}</span></div>
         <div class="tags">${x.tags.map((t) => `<span class="tag">${esc(t)}</span>`).join('')}</div>
-      </div></div>`
-    ).join('');
+      </div></div>`;
+    const cases = DATA.cases.filter((x) => x !== featuredCase).map(caseCard).join('');
+    const featuredHtml = `<div class="card card--spot case-feat reveal"><div class="card__in case-feat__grid">
+        <div>
+          <div class="case-feat__badge">${lang === 'es' ? 'Caso destacado' : 'Featured project'}</div>
+          <h3 class="case-feat__title">${esc(L(featuredCase.title, lang))}</h3>
+          <p class="case-feat__desc">${esc(L(featuredCase.desc, lang))}</p>
+          <div class="case__result"><span>↗</span><span>${esc(L(featuredCase.result, lang))}</span></div>
+        </div>
+        <div class="case-feat__side">
+          <div class="case-feat__num">${esc(featuredCase.num)}</div>
+          <div class="tags">${featuredCase.tags.map((t) => `<span class="tag">${esc(t)}</span>`).join('')}</div>
+        </div>
+      </div></div>`;
 
     const osFeats = L(DATA.openwaFeatures, lang).map((f) => `<div class="os-feat"><span>→</span>${esc(f)}</div>`).join('');
     const osStack = DATA.openwaStack.map((t) => `<span class="tag">${esc(t)}</span>`).join('');
@@ -98,6 +111,17 @@
     <div class="wrap">
       <!-- HERO -->
       <section class="hero">
+        <div class="hero__deco" aria-hidden="true">
+          <svg viewBox="0 0 240 240" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <rect x="78" y="78" width="84" height="84" rx="16"/>
+            <line x1="100" y1="60" x2="100" y2="78"/><line x1="120" y1="60" x2="120" y2="78"/><line x1="140" y1="60" x2="140" y2="78"/>
+            <line x1="100" y1="162" x2="100" y2="180"/><line x1="120" y1="162" x2="120" y2="180"/><line x1="140" y1="162" x2="140" y2="180"/>
+            <line x1="60" y1="100" x2="78" y2="100"/><line x1="60" y1="120" x2="78" y2="120"/><line x1="60" y1="140" x2="78" y2="140"/>
+            <line x1="162" y1="100" x2="180" y2="100"/><line x1="162" y1="120" x2="180" y2="120"/><line x1="162" y1="140" x2="180" y2="140"/>
+            <path d="M60 100 H28 V44"/><path d="M180 140 H212 V196"/>
+            <circle cx="28" cy="44" r="4" fill="currentColor"/><circle cx="212" cy="196" r="4" fill="currentColor"/>
+          </svg>
+        </div>
         <div class="badge"><span class="badge__dot"></span>${esc(c.heroTag)}</div>
         <h1 class="hero__title">${esc(c.heroA)} <span class="hero__em">${esc(c.heroEm)}</span></h1>
         <p class="hero__sub">${esc(c.heroSub)}</p>
@@ -110,19 +134,20 @@
 
       <!-- SERVICES -->
       <section class="section">
-        <div class="head reveal"><div class="eyebrow">${esc(c.svcLabel)}</div><h2 class="h2">${esc(c.svcTitle)}</h2></div>
+        <div class="head reveal"><h2 class="h2">${esc(c.svcTitle)}</h2></div>
         <div class="grid grid--svc">${services}</div>
       </section>
 
       <!-- CASES -->
       <section class="section" id="casos">
-        <div class="head reveal"><div class="eyebrow">${esc(c.casesLabel)}</div><h2 class="h2">${esc(c.casesTitle)}</h2></div>
-        <div class="grid grid--cases">${cases}</div>
+        <div class="head reveal"><h2 class="h2">${esc(c.casesTitle)}</h2></div>
+        ${featuredHtml}
+        <div class="grid grid--cases" style="margin-top:1.1rem">${cases}</div>
       </section>
 
       <!-- OPEN SOURCE -->
       <section class="section">
-        <div class="head reveal"><div class="eyebrow">${esc(c.osLabel)}</div><h2 class="h2">${esc(c.osTitle)}</h2><p class="lead">${esc(c.osIntro)}</p></div>
+        <div class="head reveal"><h2 class="h2">${esc(c.osTitle)}</h2><p class="lead">${esc(c.osIntro)}</p></div>
         <div class="grid grid--os">
           <div class="card card--spot os-feature reveal">
             <div class="os-feature__grid">
@@ -159,14 +184,14 @@
       <!-- ABOUT -->
       <section class="section">
         <div class="about__grid">
-          <div class="reveal"><div class="eyebrow">${esc(c.aboutLabel)}</div><h2 class="h2">${esc(c.aboutTitle)}</h2></div>
+          <div class="reveal"><h2 class="h2">${esc(c.aboutTitle)}</h2></div>
           <div class="reveal"><p class="about__p1">${esc(c.aboutP1)}</p><p class="about__p2">${esc(c.aboutP2)}</p></div>
         </div>
       </section>
 
       <!-- EXPERIENCE -->
       <section class="section">
-        <div class="head reveal"><div class="eyebrow">${esc(c.expLabel)}</div><h2 class="h2">${esc(c.expTitle)}</h2></div>
+        <div class="head reveal"><h2 class="h2">${esc(c.expTitle)}</h2></div>
         <div>${jobs}</div>
       </section>
 
@@ -178,7 +203,7 @@
 
       <!-- CERTS -->
       <section class="section">
-        <div class="head reveal"><div class="eyebrow">${esc(c.certLabel)}</div><h2 class="h2">${esc(c.certTitle)}</h2><p class="lead">${esc(c.certIntro)}</p></div>
+        <div class="head reveal"><h2 class="h2">${esc(c.certTitle)}</h2><p class="lead">${esc(c.certIntro)}</p></div>
         <div class="grid grid--certs">${certs}</div>
       </section>
 
