@@ -34,7 +34,7 @@
 .chat-head__dot { width: 8px; height: 8px; border-radius: 50%; background: #28c840; box-shadow: 0 0 10px #28c840; flex: none; }
 .chat-head__txt { display: flex; flex-direction: column; line-height: 1.2; }
 .chat-head__t { font-family: var(--display); font-weight: 600; font-size: .92rem; }
-.chat-head__s { font-size: .64rem; color: var(--muted); }
+.chat-head__s { font-size: .75rem; color: var(--muted); }
 .chat-close { margin-left: auto; background: transparent; border: none; color: var(--muted); cursor: pointer; font-size: 1.2rem; line-height: 1; padding: .2rem .45rem; border-radius: 8px; }
 .chat-close:hover { color: var(--text); }
 
