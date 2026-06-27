@@ -11,20 +11,20 @@
 
   const UI = {
     es: {
-      open: 'Preguntame sobre mí', title: 'Asistente IA', sub: 'Llama 3.1 · Cloudflare AI',
-      placeholder: 'Preguntame sobre Damian…',
-      greeting: '¡Hola! Soy el asistente de Damian. Preguntame sobre mi experiencia, proyectos, stack o cómo contactarme.',
-      chips: ['¿Qué hace?', 'Experiencia en redes', 'Proyectos', '¿Cómo lo contacto?'],
+      open: 'Asistente Zeeben Labs', title: 'Asistente Zeeben Labs', sub: 'IA · Llama 3.1 · Cloudflare',
+      placeholder: 'Contanos qué necesita tu empresa…',
+      greeting: '¡Hola! Soy el asistente de Zeeben Labs. Contame qué necesita tu empresa y te digo cómo podemos resolverlo — o escribinos directo por WhatsApp.',
+      chips: ['¿Qué hacen?', 'Automatizar WhatsApp', 'Quiero una app a medida', '¿Cómo los contacto?'],
       thinking: 'Pensando…',
-      error: 'Error al conectar. Escribile directo: fx.damianpea@gmail.com · +595 992 879 800',
+      error: 'Error al conectar. Escribinos por WhatsApp: +595 992 879 800 · fx.damianpea@gmail.com',
     },
     en: {
-      open: 'Ask me anything', title: 'AI assistant', sub: 'Llama 3.1 · Cloudflare AI',
-      placeholder: 'Ask me about Damian…',
-      greeting: "Hi! I'm Damian's assistant. Ask me about my experience, projects, stack, or how to reach me.",
-      chips: ['What does he do?', 'Networking experience', 'Projects', 'How to contact?'],
+      open: 'Ask Zeeben Labs', title: 'Zeeben Labs assistant', sub: 'AI · Llama 3.1 · Cloudflare',
+      placeholder: 'Tell us what your company needs…',
+      greeting: "Hi! I'm the Zeeben Labs assistant. Tell me what your company needs and I'll tell you how we can solve it — or reach us directly on WhatsApp.",
+      chips: ['What do you do?', 'Automate WhatsApp', 'I need a custom app', 'How to reach you?'],
       thinking: 'Thinking…',
-      error: 'Connection error. Reach him directly: fx.damianpea@gmail.com · +595 992 879 800',
+      error: 'Connection error. Reach us on WhatsApp: +595 992 879 800 · fx.damianpea@gmail.com',
     }
   };
 

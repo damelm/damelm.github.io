@@ -7,6 +7,8 @@
   'use strict';
 
   const $app = document.getElementById('app');
+  // Formspree: reemplazar YOUR_FORM_ID por el id real del formulario (https://formspree.io)
+  const FORM_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const isTouch = window.matchMedia('(hover: none)').matches;
 
@@ -231,6 +233,17 @@
               <a class="meta-link" href="https://wa.me/595992879800" target="_blank" rel="noopener"><iconify-icon icon="simple-icons:whatsapp" aria-hidden="true"></iconify-icon>+595 992 879 800</a>
               <span><iconify-icon icon="lucide:map-pin" aria-hidden="true"></iconify-icon>${esc(c.location)}</span>
             </div>
+            <form class="contact-form" id="contactForm">
+              <div class="cf-label">${esc(c.formLabel)}</div>
+              <div class="cf-row">
+                <input class="cf-input" name="name" type="text" placeholder="${esc(c.formName)}" required>
+                <input class="cf-input" name="company" type="text" placeholder="${esc(c.formCompany)}">
+              </div>
+              <input class="cf-input" name="email" type="email" placeholder="${esc(c.formEmail)}" required>
+              <textarea class="cf-input cf-area" name="message" rows="3" placeholder="${esc(c.formMsg)}" required></textarea>
+              <button class="btn btn--primary cf-send" type="submit">${esc(c.formSend)} <span class="btn__arrow">→</span></button>
+              <div class="cf-status" id="cfStatus" role="status" aria-live="polite"></div>
+            </form>
           </div>
         </div>
       </section>
@@ -240,12 +253,33 @@
   }
 
   /* ---------------- interactividad ---------------- */
+  async function onContactSubmit(e) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const c = COPY[state.lang];
+    const status = document.getElementById('cfStatus');
+    const btn = form.querySelector('.cf-send');
+    btn.disabled = true; status.className = 'cf-status'; status.textContent = c.formSending;
+    try {
+      const res = await fetch(FORM_ENDPOINT, { method: 'POST', headers: { Accept: 'application/json' }, body: new FormData(form) });
+      if (!res.ok) throw new Error('http ' + res.status);
+      form.reset(); status.textContent = c.formOk; status.classList.add('is-ok');
+    } catch (err) {
+      console.error('[form]', err);
+      status.textContent = c.formErr; status.classList.add('is-err');
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
   function bindNav() {
     $app.querySelectorAll('.seg__btn').forEach((b) => b.addEventListener('click', () => setLang(b.dataset.lang)));
     const tb = document.getElementById('themeBtn');
     if (tb) tb.addEventListener('click', toggleTheme);
     const ask = document.getElementById('heroAskBtn');
     if (ask) ask.addEventListener('click', () => { const f = document.getElementById('chatFab'); if (f) f.click(); });
+    const form = document.getElementById('contactForm');
+    if (form) form.addEventListener('submit', onContactSubmit);
   }
 
   function countUp(container, animate) {
