@@ -97,14 +97,14 @@
 
     return `
     <nav class="nav">
-      <div class="nav__brand"><img class="nav__logo" src="assets/favicon.svg?v=20260624b" alt="" width="26" height="26">Damian Peña</div>
+      <div class="nav__brand"><img class="nav__logo" src="assets/zeeben-mark.png?v=zb1" alt="Zeeben Labs" width="26" height="26">Zeeben Labs</div>
       <div class="nav__actions">
         <div class="seg" role="group" aria-label="Idioma / Language">
           <button class="seg__btn ${lang === 'es' ? 'is-active' : ''}" data-lang="es" aria-pressed="${lang === 'es'}">ES</button>
           <button class="seg__btn ${lang === 'en' ? 'is-active' : ''}" data-lang="en" aria-pressed="${lang === 'en'}">EN</button>
         </div>
         <button class="icon-btn" id="themeBtn" aria-label="Cambiar tema / Toggle theme">${state.theme === 'dark' ? '◐' : '◑'}</button>
-        <a class="btn btn--sm" href="mailto:fx.damianpea@gmail.com">${esc(c.navCta)}</a>
+        <a class="btn btn--sm" href="https://wa.me/595992879800?text=${encodeURIComponent('Hola Zeeben Labs 👋, quiero consultar por un proyecto.')}" target="_blank" rel="noopener">${esc(c.navCta)}</a>
       </div>
     </nav>
 
@@ -137,7 +137,7 @@
         <h1 class="hero__title">${esc(c.heroA)} <span class="hero__em">${esc(c.heroEm)}</span></h1>
         <p class="hero__sub">${esc(c.heroSub)}</p>
         <div class="cta-row">
-          <a class="btn btn--primary btn--lg" href="mailto:fx.damianpea@gmail.com">${esc(c.heroCta1)} <span class="btn__arrow">→</span></a>
+          <a class="btn btn--primary btn--lg" href="https://wa.me/595992879800?text=${encodeURIComponent('Hola Zeeben Labs 👋, quiero consultar por un proyecto.')}" target="_blank" rel="noopener">${esc(c.heroCta1)} <span class="btn__arrow">→</span></a>
           <button class="btn btn--ghost btn--lg btn--ai" id="heroAskBtn" type="button"><span class="ai-dot"></span>${esc(c.heroCtaAI)}</button>
         </div>
         <div class="stats reveal" data-stats>${stats}</div>
@@ -225,7 +225,7 @@
           <div class="contact-card__in">
             <h2 class="contact__head">${esc(c.contactHead)}</h2>
             <p class="contact__sub">${esc(c.contactSub)}</p>
-            <div class="contact__cta"><a class="btn btn--primary btn--lg" href="mailto:fx.damianpea@gmail.com">${esc(c.contactBtn)} <span class="btn__arrow">→</span></a></div>
+            <div class="contact__cta"><a class="btn btn--primary btn--lg" href="https://wa.me/595992879800?text=${encodeURIComponent('Hola Zeeben Labs 👋, quiero consultar por un proyecto.')}" target="_blank" rel="noopener">${esc(c.contactBtn)} <span class="btn__arrow">→</span></a></div>
             <div class="contact__meta">
               <a class="meta-link" href="mailto:fx.damianpea@gmail.com"><iconify-icon icon="lucide:mail" aria-hidden="true"></iconify-icon>fx.damianpea@gmail.com</a>
               <a class="meta-link" href="https://wa.me/595992879800" target="_blank" rel="noopener"><iconify-icon icon="simple-icons:whatsapp" aria-hidden="true"></iconify-icon>+595 992 879 800</a>
@@ -235,7 +235,7 @@
         </div>
       </section>
 
-      <footer class="footer"><span>© 2026 Damian Marcos Peña</span><span>${esc(c.footerNote)}</span></footer>
+      <footer class="footer"><span>© 2026 Zeeben Labs</span><span>${esc(c.footerNote)}</span></footer>
     </div>`;
   }
 
