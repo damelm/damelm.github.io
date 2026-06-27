@@ -31,11 +31,12 @@
   const getLang = () => { try { return localStorage.getItem('cv_lang') || 'es'; } catch { return 'es'; } };
 
   /* ---------------- API call ---------------- */
-  async function askWorker(question) {
+  const convo = []; // memoria de la conversación: {role:'user'|'assistant', content}
+  async function askWorker(question, history) {
     const res = await fetch(WORKER_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ question }),
+      body: JSON.stringify({ question, history: history || [] }),
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
@@ -137,12 +138,14 @@
     busy = true;
     sendEl.disabled = true;
     inputEl.value = '';
+    const history = convo.slice(-8); // turnos previos (sin el actual)
     addMsg(text, 'user');
+    convo.push({ role: 'user', content: text });
     typing(true);
 
     let reply;
     try {
-      reply = await askWorker(text);
+      reply = await askWorker(text, history);
     } catch (e) {
       console.error('[chat]', e);
       reply = UI[getLang()].error;
@@ -150,6 +153,7 @@
 
     typing(false);
     addMsg(reply, 'bot');
+    convo.push({ role: 'assistant', content: reply });
     busy = false;
     sendEl.disabled = false;
     inputEl.focus();
