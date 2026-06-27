@@ -247,6 +247,8 @@ iconify-icon { display: inline-flex; }
 .contact-form { margin: 2.6rem auto 0; max-width: 540px; display: grid; gap: 0.7rem; text-align: left; }
 .cf-label { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); text-align: center; margin-bottom: 0.2rem; }
 .cf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; }
+.cf-field { display: grid; gap: 0.35rem; }
+.cf-lbl { font-size: 0.78rem; font-weight: 500; color: var(--muted); }
 .cf-input { width: 100%; background: var(--card); border: 1px solid var(--cardB); border-radius: 12px; padding: 0.8rem 1rem; color: var(--text); font-family: var(--sans); font-size: 0.95rem; transition: border-color .2s; }
 .cf-input::placeholder { color: var(--faint); }
 .cf-input:focus { outline: none; border-color: var(--accent); }

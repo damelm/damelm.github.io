@@ -236,11 +236,11 @@
             <form class="contact-form" id="contactForm">
               <div class="cf-label">${esc(c.formLabel)}</div>
               <div class="cf-row">
-                <input class="cf-input" name="name" type="text" placeholder="${esc(c.formName)}" required>
-                <input class="cf-input" name="company" type="text" placeholder="${esc(c.formCompany)}">
+                <label class="cf-field"><span class="cf-lbl">${esc(c.formName)}</span><input class="cf-input" name="name" type="text" autocomplete="name" required></label>
+                <label class="cf-field"><span class="cf-lbl">${esc(c.formCompany)}</span><input class="cf-input" name="company" type="text" autocomplete="organization"></label>
               </div>
-              <input class="cf-input" name="email" type="email" placeholder="${esc(c.formEmail)}" required>
-              <textarea class="cf-input cf-area" name="message" rows="3" placeholder="${esc(c.formMsg)}" required></textarea>
+              <label class="cf-field"><span class="cf-lbl">${esc(c.formEmail)}</span><input class="cf-input" name="email" type="email" autocomplete="email" required></label>
+              <label class="cf-field"><span class="cf-lbl">${esc(c.formMsg)}</span><textarea class="cf-input cf-area" name="message" rows="3" required></textarea></label>
               <button class="btn btn--primary cf-send" type="submit">${esc(c.formSend)} <span class="btn__arrow">→</span></button>
               <div class="cf-status" id="cfStatus" role="status" aria-live="polite"></div>
             </form>
