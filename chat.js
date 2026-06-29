@@ -1,49 +1,37 @@
 /* ============================================================
-   chat.js — "Preguntale a mi CV"
-   Asistente IA conectado a Cloudflare Workers AI (Llama 3.1-8B).
+   chat.js — Asistente de preventa de Zeeben Labs
+   Conectado al Worker de Cloudflare (Workers AI).
    ============================================================ */
 (function () {
   'use strict';
 
-  // URL del Worker de Cloudflare. Cambiá esto después de hacer wrangler deploy.
-  // Ejemplo: 'https://cv-damian-assistant.TU-USUARIO.workers.dev'
   const WORKER_URL = 'https://cv-damian-assistant.damelm.workers.dev';
 
-  const UI = {
-    es: {
-      open: 'Asistente Zeeben Labs', title: 'Asistente Zeeben Labs', sub: 'IA · Llama 3.1 · Cloudflare',
-      placeholder: 'Contanos qué necesita tu empresa…',
-      greeting: '¡Hola! Soy el asistente de Zeeben Labs. Contame qué necesita tu empresa y te digo cómo podemos resolverlo — o escribinos directo por WhatsApp.',
-      chips: ['¿Qué hacen?', 'Automatizar WhatsApp', 'Quiero una app a medida', '¿Cómo los contacto?'],
-      thinking: 'Pensando…',
-      error: 'Error al conectar. Escribinos por WhatsApp: +595 992 879 800 · fx.damianpea@gmail.com',
-    },
-    en: {
-      open: 'Ask Zeeben Labs', title: 'Zeeben Labs assistant', sub: 'AI · Llama 3.1 · Cloudflare',
-      placeholder: 'Tell us what your company needs…',
-      greeting: "Hi! I'm the Zeeben Labs assistant. Tell me what your company needs and I'll tell you how we can solve it — or reach us directly on WhatsApp.",
-      chips: ['What do you do?', 'Automate WhatsApp', 'I need a custom app', 'How to reach you?'],
-      thinking: 'Thinking…',
-      error: 'Connection error. Reach us on WhatsApp: +595 992 879 800 · fx.damianpea@gmail.com',
-    }
+  const U = {
+    open: 'Asistente Zeeben',
+    title: 'Asistente Zeeben Labs',
+    sub: 'IA · Cloudflare',
+    placeholder: 'Contanos qué necesita tu empresa…',
+    greeting: '¡Hola! Soy el asistente de Zeeben Labs. Contame qué tarea te come horas y te digo cómo la automatizamos — o escribinos directo por WhatsApp.',
+    chips: ['¿Qué hacen?', 'Automatizar WhatsApp', 'Quiero una app a medida', '¿Cómo los contacto?'],
+    error: 'No pude conectar. Escribinos por WhatsApp: +595 992 879 800 · fx.damianpea@gmail.com',
   };
 
-  const getLang = () => { try { return localStorage.getItem('cv_lang') || 'es'; } catch { return 'es'; } };
+  const ICON_SPARK = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 2 7.5 6.5 3 8l4.5 1.5L9 14l1.5-4.5L15 8l-4.5-1.5z"/><path d="M18 12l-.9 2.6-2.6.9 2.6.9.9 2.6.9-2.6 2.6-.9-2.6-.9z"/></svg>';
+  const ICON_SEND  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 
-  /* ---------------- API call ---------------- */
-  const convo = []; // memoria de la conversación: {role:'user'|'assistant', content}
+  const convo = [];
   async function askWorker(question, history) {
     const res = await fetch(WORKER_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ question, history: history || [] }),
     });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
-    return data.answer || UI[getLang()].error;
+    return data.answer || U.error;
   }
 
-  /* ---------------- UI helpers ---------------- */
   let panel, msgsEl, inputEl, sendEl, greeted = false;
 
   function el(tag, cls, html) {
@@ -74,35 +62,31 @@
     }
   }
 
-  /* ---------------- Build UI ---------------- */
   function build() {
-    const lang = getLang();
-    const u = UI[lang];
-
     const fab = el('button', 'chat-fab');
     fab.id = 'chatFab';
-    fab.innerHTML = `<iconify-icon icon="lucide:sparkles" aria-hidden="true"></iconify-icon><span class="chat-fab__label">${u.open}</span>`;
-    fab.setAttribute('aria-label', u.open);
+    fab.innerHTML = ICON_SPARK + '<span class="chat-fab__label">' + U.open + '</span>';
+    fab.setAttribute('aria-label', U.open);
 
     panel = el('section', 'chat-panel');
     panel.id = 'chatPanel';
     panel.hidden = true;
-    panel.setAttribute('aria-label', u.title);
-    panel.innerHTML = `
-      <div class="chat-head">
-        <span class="chat-head__dot"></span>
-        <span class="chat-head__txt">
-          <span class="chat-head__t">${u.title}</span>
-          <span class="chat-head__s">${u.sub}</span>
-        </span>
-        <button class="chat-close" id="chatClose" aria-label="Cerrar">×</button>
-      </div>
-      <div class="chat-msgs" id="chatMsgs"></div>
-      <div class="chat-chips" id="chatChips">${u.chips.map(q => `<button class="chat-chip">${q}</button>`).join('')}</div>
-      <form class="chat-input" id="chatForm">
-        <input type="text" id="chatInput" placeholder="${u.placeholder}" autocomplete="off" aria-label="${u.placeholder}">
-        <button class="chat-send" id="chatSend" type="submit" aria-label="Enviar">→</button>
-      </form>`;
+    panel.setAttribute('aria-label', U.title);
+    panel.innerHTML =
+      '<div class="chat-head">' +
+        '<span class="chat-head__dot"></span>' +
+        '<span class="chat-head__txt"><span class="chat-head__t">' + U.title + '</span>' +
+        '<span class="chat-head__s">' + U.sub + '</span></span>' +
+        '<button class="chat-close" id="chatClose" aria-label="Cerrar">×</button>' +
+      '</div>' +
+      '<div class="chat-msgs" id="chatMsgs"></div>' +
+      '<div class="chat-chips" id="chatChips">' +
+        U.chips.map(q => '<button class="chat-chip">' + q + '</button>').join('') +
+      '</div>' +
+      '<form class="chat-input" id="chatForm">' +
+        '<input type="text" id="chatInput" placeholder="' + U.placeholder + '" autocomplete="off" aria-label="' + U.placeholder + '">' +
+        '<button class="chat-send" id="chatSend" type="submit" aria-label="Enviar">' + ICON_SEND + '</button>' +
+      '</form>';
 
     document.body.appendChild(fab);
     document.body.appendChild(panel);
@@ -117,20 +101,24 @@
     panel.querySelector('#chatChips').addEventListener('click', e => {
       if (e.target.classList.contains('chat-chip')) send(e.target.textContent);
     });
+
+    // Cualquier botón con [data-open-chat] abre el asistente (ej. card "Probalo acá")
+    document.querySelectorAll('[data-open-chat]').forEach(b =>
+      b.addEventListener('click', () => setOpen(true))
+    );
+
+    // Hook de prueba: abrir con #chatdemo (para verificar el panel; inofensivo en producción)
+    if (location.hash === '#chatdemo') setOpen(true);
   }
 
   function setOpen(open) {
     panel.hidden = !open;
     if (open) {
       inputEl.focus();
-      if (!greeted) {
-        greeted = true;
-        addMsg(UI[getLang()].greeting, 'bot');
-      }
+      if (!greeted) { greeted = true; addMsg(U.greeting, 'bot'); }
     }
   }
 
-  /* ---------------- Send ---------------- */
   let busy = false;
   async function send(text) {
     text = (text || '').trim();
@@ -138,7 +126,7 @@
     busy = true;
     sendEl.disabled = true;
     inputEl.value = '';
-    const history = convo.slice(-8); // turnos previos (sin el actual)
+    const history = convo.slice(-8);
     addMsg(text, 'user');
     convo.push({ role: 'user', content: text });
     typing(true);
@@ -148,7 +136,7 @@
       reply = await askWorker(text, history);
     } catch (e) {
       console.error('[chat]', e);
-      reply = UI[getLang()].error;
+      reply = U.error;
     }
 
     typing(false);
@@ -159,7 +147,6 @@
     inputEl.focus();
   }
 
-  /* ---------------- Init ---------------- */
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', build);
   else build();
 })();
