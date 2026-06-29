@@ -197,12 +197,16 @@ h3 { font-size: var(--fs-h3); letter-spacing: -.02em; line-height: 1.25; }
   animation: chipflow 7s linear infinite;
 }
 @keyframes chipflow {
-  0%   { left: -8%;  opacity: 0; background: rgba(245,166,35,.14); border-color: rgba(245,166,35,.5); color: #FFD79A; }
-  9%   { opacity: 1; }
-  49%  { background: rgba(245,166,35,.14); border-color: rgba(245,166,35,.5); color: #FFD79A; }
-  50%  { background: rgba(31,182,240,.16); border-color: rgba(31,182,240,.6); color: #BDEBFF; }
-  91%  { opacity: 1; }
-  100% { left: 108%; opacity: 0; background: rgba(31,182,240,.16); border-color: rgba(31,182,240,.6); color: #BDEBFF; }
+  /* Lado A MANO (ámbar): se arrastra lento — la mayor parte del tiempo */
+  0%   { left: -10%; opacity: 0; background: rgba(245,166,35,.14); border-color: rgba(245,166,35,.5); color: #FFD79A; }
+  6%   { opacity: 1; }
+  60%  { left: 38%; opacity: 1; background: rgba(245,166,35,.14); border-color: rgba(245,166,35,.5); color: #FFD79A; }
+  /* Entra al motor Zeeben y se transforma */
+  66%  { left: 50%; background: rgba(31,182,240,.16); border-color: rgba(31,182,240,.6); color: #BDEBFF; }
+  /* Lado AUTOMATIZADO (cian): sale disparado — en una fracción del tiempo */
+  73%  { left: 112%; opacity: 1; }
+  74%  { opacity: 0; }
+  100% { left: 112%; opacity: 0; background: rgba(31,182,240,.16); border-color: rgba(31,182,240,.6); color: #BDEBFF; }
 }
 .engine__core {
   position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 4;
