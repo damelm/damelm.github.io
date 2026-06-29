@@ -233,7 +233,7 @@ h3 { font-size: var(--fs-h3); letter-spacing: -.02em; line-height: 1.25; }
 /* ----------------------------- Footer ------------------------------------ */
 .footer { position: relative; z-index: 1; border-top: 1px solid var(--linea); background: var(--noche); }
 .footer__in { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2rem; padding-block: 54px; }
-.footer__brand img { height: 28px; opacity: .9; margin-bottom: 14px; }
+.footer__brand img { height: 28px; width: auto; opacity: .9; margin-bottom: 14px; }
 .footer__brand p { color: var(--niebla); font-size: .9rem; max-width: 34ch; }
 .footer__cols { display: flex; gap: 4rem; flex-wrap: wrap; }
 .footer__col h4 { font-family: var(--mono); font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--niebla); margin-bottom: 14px; font-weight: 500; }
