@@ -32,7 +32,7 @@
     return data.answer || U.error;
   }
 
-  let panel, msgsEl, inputEl, sendEl, greeted = false;
+  let panel, msgsEl, inputEl, sendEl, fab, chatOpener = null, greeted = false;
 
   function el(tag, cls, html) {
     const e = document.createElement(tag);
@@ -63,10 +63,12 @@
   }
 
   function build() {
-    const fab = el('button', 'chat-fab');
+    fab = el('button', 'chat-fab');
     fab.id = 'chatFab';
     fab.innerHTML = ICON_SPARK + '<span class="chat-fab__label">' + U.open + '</span>';
     fab.setAttribute('aria-label', U.open);
+    fab.setAttribute('aria-controls', 'chatPanel');
+    fab.setAttribute('aria-expanded', 'false');
 
     panel = el('section', 'chat-panel');
     panel.id = 'chatPanel';
@@ -95,7 +97,7 @@
     inputEl = panel.querySelector('#chatInput');
     sendEl  = panel.querySelector('#chatSend');
 
-    fab.addEventListener('click', () => setOpen(panel.hidden));
+    fab.addEventListener('click', () => setOpen(panel.hidden, fab));
     panel.querySelector('#chatClose').addEventListener('click', () => setOpen(false));
     panel.querySelector('#chatForm').addEventListener('submit', e => { e.preventDefault(); send(inputEl.value); });
     panel.querySelector('#chatChips').addEventListener('click', e => {
@@ -104,18 +106,36 @@
 
     // Cualquier botón con [data-open-chat] abre el asistente (ej. card "Probalo acá")
     document.querySelectorAll('[data-open-chat]').forEach(b =>
-      b.addEventListener('click', () => setOpen(true))
+      b.addEventListener('click', () => setOpen(true, b))
     );
+
+    // Teclado: Escape cierra; Tab queda atrapado dentro del panel mientras está abierto
+    document.addEventListener('keydown', e => {
+      if (panel.hidden) return;
+      if (e.key === 'Escape') { setOpen(false); return; }
+      if (e.key === 'Tab') {
+        const f = panel.querySelectorAll('a[href], button:not([disabled]), input, [tabindex]:not([tabindex="-1"])');
+        if (!f.length) return;
+        const first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
 
     // Hook de prueba: abrir con #chatdemo (para verificar el panel; inofensivo en producción)
     if (location.hash === '#chatdemo') setOpen(true);
   }
 
-  function setOpen(open) {
+  function setOpen(open, opener) {
     panel.hidden = !open;
+    if (fab) fab.setAttribute('aria-expanded', String(open));
     if (open) {
+      if (opener) chatOpener = opener;
       inputEl.focus();
       if (!greeted) { greeted = true; addMsg(U.greeting, 'bot'); }
+    } else if (chatOpener) {
+      chatOpener.focus();
+      chatOpener = null;
     }
   }
 
