@@ -3,6 +3,14 @@
    Historia de color: ÁMBAR = lo manual / la fricción · CIAN = lo automatizado
    ========================================================================== */
 
+/* ===== Fuentes auto-hosteadas (subset latin) — sin cadena a Google ===== */
+@font-face{font-family:'Poppins';font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/poppins-400.woff2) format('woff2');}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:500;font-display:swap;src:url(assets/fonts/poppins-500.woff2) format('woff2');}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:600;font-display:swap;src:url(assets/fonts/poppins-600.woff2) format('woff2');}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:700;font-display:swap;src:url(assets/fonts/poppins-700.woff2) format('woff2');}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:800;font-display:swap;src:url(assets/fonts/poppins-800.woff2) format('woff2');}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:500;font-display:swap;src:url(assets/fonts/jetbrainsmono-500.woff2) format('woff2');}
+
 :root {
   /* Superficies */
   --abismo:        #070E1C;
@@ -240,7 +248,7 @@ h3 { font-size: var(--fs-h3); letter-spacing: -.02em; line-height: 1.25; }
 .footer__brand img { height: 28px; width: auto; opacity: .9; margin-bottom: 14px; }
 .footer__brand p { color: var(--niebla); font-size: .9rem; max-width: 34ch; }
 .footer__cols { display: flex; gap: 4rem; flex-wrap: wrap; }
-.footer__col h4 { font-family: var(--mono); font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--niebla); margin-bottom: 14px; font-weight: 500; }
+.footer__col h2 { font-family: var(--mono); font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--niebla); margin-bottom: 14px; font-weight: 500; }
 .footer__col a { display: block; color: var(--hueso); font-size: .95rem; padding: 4px 0; opacity: .85; transition: color .2s, opacity .2s; }
 .footer__col a:hover { color: var(--cian-claro); opacity: 1; }
 .footer__legal { width: 100%; border-top: 1px solid var(--linea); padding-block: 22px; color: var(--niebla); font-size: .82rem; }
