@@ -367,6 +367,27 @@ h3 { font-size: var(--fs-h3); letter-spacing: -.02em; line-height: 1.25; }
   78%,100% { left: 68%; border-color: #46d39a; }
 }
 
+/* Demo: hub de mensajería interno (OpsDesk) */
+.od { display: flex; align-items: center; gap: 20px; width: 82%; max-width: 340px; }
+.od-side { display: flex; flex-direction: column; gap: 12px; padding: 12px 10px; border-radius: 10px; border: 1px solid var(--linea); background: rgba(255,255,255,.02); }
+.od-dot { position: relative; width: 16px; height: 16px; border-radius: 50%; background: rgba(255,255,255,.10); border: 1px solid rgba(255,255,255,.14); }
+.od-dot.active { animation: odping 4s ease-in-out infinite; }
+.od-badge {
+  position: absolute; top: -6px; right: -6px; min-width: 14px; height: 14px; padding: 0 3px;
+  border-radius: 999px; background: var(--ambar); color: #2b1a04; font-family: var(--mono);
+  font-size: .5rem; font-weight: 700; font-style: normal; display: grid; place-items: center; opacity: 0;
+  animation: odbadge 4s ease-in-out infinite;
+}
+@keyframes odping { 0%,8% { box-shadow: none; } 16%,42% { box-shadow: 0 0 10px 1px rgba(245,166,35,.6); } 50%,100% { box-shadow: none; } }
+@keyframes odbadge { 0%,4% { opacity: 0; transform: scale(.5); } 12%,40% { opacity: 1; transform: scale(1); } 48%,100% { opacity: 0; transform: scale(.6); } }
+
+.od-win { flex: 1; display: flex; flex-direction: column; gap: 7px; padding: 12px; border-radius: 10px; border: 1px solid var(--cian); background: var(--superficie); box-shadow: 0 8px 24px rgba(0,0,0,.35); }
+.od-row { display: block; height: 10px; border-radius: 5px; background: rgba(255,255,255,.08); opacity: 0; }
+.od-row.r1 { width: 88%; animation: odrow 4s ease-in-out infinite; }
+.od-row.r2 { width: 64%; animation: odrow 4s ease-in-out infinite .12s; background: rgba(31,182,240,.28); }
+.od-row.r3 { width: 76%; animation: odrow 4s ease-in-out infinite .24s; }
+@keyframes odrow { 0%,45% { opacity: 0; transform: translateX(6px); } 55%,94% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+
 /* Proyecto ancho (chatbot) — llena la fila impar con el mismo peso visual */
 .project--wide { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; align-items: stretch; }
 .project--wide .pj-screen { height: auto; min-height: 240px; border-bottom: none; border-right: 1px solid var(--linea); }
@@ -401,6 +422,9 @@ h3 { font-size: var(--fs-h3); letter-spacing: -.02em; line-height: 1.25; }
   .pk-slot.busy { background: rgba(31,182,240,.85); border-color: rgba(31,182,240,.9); }
   .wa-bubble, .cb-msg, .cb-text { opacity: 1 !important; transform: none !important; }
   .cb-dots { display: none !important; }
+  .od-row { opacity: 1 !important; transform: none !important; }
+  .od-badge { opacity: 0 !important; }
+  .od-dot.active { box-shadow: 0 0 10px 1px rgba(245,166,35,.6) !important; }
 }
 
 /* ============== Resultados · Testimonios · Fundador · CTA (F5) ============== */
@@ -503,9 +527,11 @@ h3 { font-size: var(--fs-h3); letter-spacing: -.02em; line-height: 1.25; }
 
 /* Pausar los demos de proyectos hasta que entren al viewport (ahorra CPU/batería) */
 .project .pk-slot, .project .wa-bubble, .project .cb .c1, .project .cb .c2, .project .cb .c3,
-.project .cb-dots, .project .cb-text, .project .tk-card, .project .mb-flip .d0, .project .mb-flip .d1 { animation-play-state: paused; }
+.project .cb-dots, .project .cb-text, .project .tk-card, .project .mb-flip .d0, .project .mb-flip .d1,
+.project .od-dot.active, .project .od-badge, .project .od-row { animation-play-state: paused; }
 .project.in .pk-slot, .project.in .wa-bubble, .project.in .cb .c1, .project.in .cb .c2, .project.in .cb .c3,
-.project.in .cb-dots, .project.in .cb-text, .project.in .tk-card, .project.in .mb-flip .d0, .project.in .mb-flip .d1 { animation-play-state: running; }
+.project.in .cb-dots, .project.in .cb-text, .project.in .tk-card, .project.in .mb-flip .d0, .project.in .mb-flip .d1,
+.project.in .od-dot.active, .project.in .od-badge, .project.in .od-row { animation-play-state: running; }
 
 /* ----------------------------- Responsive -------------------------------- */
 @media (max-width: 860px) {
