@@ -14,7 +14,7 @@
     placeholder: 'Contanos qué necesita tu empresa…',
     greeting: '¡Hola! Soy el asistente de Zeeben Labs. Contame qué tarea te come horas y te digo cómo la automatizamos — o escribinos directo por WhatsApp.',
     chips: ['¿Qué hacen?', 'Automatizar WhatsApp', 'Quiero una app a medida', '¿Cómo los contacto?'],
-    error: 'No pude conectar. Escribinos por WhatsApp: +595 992 879 800 · fx.damianpea@gmail.com',
+    error: 'No pude conectar. Escribinos por WhatsApp: +595 992 879 800 · info@zeebenlabs.com',
   };
 
   const ICON_SPARK = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 2 7.5 6.5 3 8l4.5 1.5L9 14l1.5-4.5L15 8l-4.5-1.5z"/><path d="M18 12l-.9 2.6-2.6.9 2.6.9.9 2.6.9-2.6 2.6-.9-2.6-.9z"/></svg>';
