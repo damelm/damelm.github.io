@@ -29,8 +29,11 @@
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const items = document.querySelectorAll('.reveal');
   if (reduce || !('IntersectionObserver' in window)) {
+    document.documentElement.classList.remove('js-reveal');
     items.forEach(el => el.classList.add('in'));
   } else {
+    // Avisa al failsafe del <head> que el reveal quedó operativo.
+    document.documentElement.classList.add('reveal-ready');
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }

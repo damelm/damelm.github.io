@@ -254,8 +254,13 @@ h3 { font-size: var(--fs-h3); letter-spacing: -.02em; line-height: 1.25; }
 .footer__legal { width: 100%; border-top: 1px solid var(--linea); padding-block: 22px; color: var(--niebla); font-size: .82rem; }
 
 /* --------------------------- Reveal on scroll ---------------------------- */
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
-.reveal.in { opacity: 1; transform: none; }
+/* El estado oculto SOLO se aplica si el JS confirmó que puede revertirlo
+   (clase js-reveal en <html>). Si el script no carga o falla, el contenido
+   queda visible: una animación de entrada nunca debe ser la única vía por
+   la que aparece el contenido. */
+.reveal { transition: opacity .7s var(--ease), transform .7s var(--ease); }
+.js-reveal .reveal { opacity: 0; transform: translateY(24px); }
+.js-reveal .reveal.in { opacity: 1; transform: none; }
 
 /* ====================== Secciones de contenido (F3) ====================== */
 .grid { display: grid; gap: var(--gutter); }
