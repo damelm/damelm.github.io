@@ -1408,3 +1408,29 @@ h2, .t-h2--sm, .t-h2--name, .t-h2--cta { font-weight: 700; }
 @media (hover: none) and (prefers-reduced-motion: reduce) {
   .barra-cta { transition: none; }
 }
+
+/* ---- Cita de cliente dentro de un caso ---------------------------------
+   Aprobadas por el cliente antes de publicarse (Point Park, Congelados).  */
+.caso__cita {
+  margin: var(--e-3) 0 0;
+  padding-left: var(--e-3);
+  border-left: 2px solid var(--acento);
+}
+.caso__cita p {
+  margin: 0;
+  font-size: var(--fs-body-sm);
+  line-height: 1.55;
+  color: var(--txt);
+  font-style: italic;
+  text-wrap: pretty;
+}
+.caso__cita cite {
+  display: block;
+  margin-top: var(--e-2);
+  font-family: var(--mono);
+  font-size: var(--fs-mono-xs);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  font-style: normal;
+  color: var(--txt-mono);
+}
