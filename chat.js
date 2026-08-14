@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  const WORKER_URL = 'https://cv-damian-assistant.damelm.workers.dev';
+  const WORKER_URL = 'https://cv-damian-assistant.tech-fx-dam.workers.dev';
 
   const U = {
     open: 'Asistente Zeeben',
