@@ -73,6 +73,8 @@
     panel = el('section', 'chat-panel');
     panel.id = 'chatPanel';
     panel.hidden = true;
+    panel.setAttribute('role', 'dialog');
+    panel.setAttribute('aria-modal', 'true');
     panel.setAttribute('aria-label', U.title);
     panel.innerHTML =
       '<div class="chat-head">' +
@@ -81,7 +83,7 @@
         '<span class="chat-head__s">' + U.sub + '</span></span>' +
         '<button class="chat-close" id="chatClose" aria-label="Cerrar">×</button>' +
       '</div>' +
-      '<div class="chat-msgs" id="chatMsgs"></div>' +
+      '<div class="chat-msgs" id="chatMsgs" role="log" aria-live="polite" aria-atomic="false"></div>' +
       '<div class="chat-chips" id="chatChips">' +
         U.chips.map(q => '<button class="chat-chip">' + q + '</button>').join('') +
       '</div>' +

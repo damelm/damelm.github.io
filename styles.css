@@ -1,558 +1,1410 @@
-/* ==========================================================================
-   Zeeben Labs — sistema de diseño
-   Historia de color: ÁMBAR = lo manual / la fricción · CIAN = lo automatizado
+/* ===========================================================================
+   ZEEBEN LABS — hoja de estilos
+   Rediseño 2026-08. Orden: tipografía · sistema de diseño · hero · secciones
+   =========================================================================== */
+
+/* ============================================================================
+   ZEEBEN LABS — Fase 2 · Bloque tipográfico
+   ----------------------------------------------------------------------------
+   Bricolage Grotesque © 2022 The Bricolage Grotesque Project Authors
+   Mathieu Triay · SIL Open Font License 1.1 · sin Reserved Font Name
+   Auto-hospedaje comercial: PERMITIDO. Copia de la licencia en fase2/OFL.txt
+   (hay que dejarla en el repo junto a los .woff2).
+
+   Los dos cortes son instancias estáticas del corte óptico 96pt del variable
+   original (opsz pineado en 96 por Google Fonts, wdth pineado en 100).
+   Subset latin: U+0000-00FF + puntuación tipográfica. 237 glifos c/u.
    ========================================================================== */
 
-/* ===== Fuentes auto-hosteadas (subset latin) — sin cadena a Google ===== */
-@font-face{font-family:'Poppins';font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/poppins-400.woff2) format('woff2');}
-@font-face{font-family:'Poppins';font-style:normal;font-weight:500;font-display:swap;src:url(assets/fonts/poppins-500.woff2) format('woff2');}
-@font-face{font-family:'Poppins';font-style:normal;font-weight:600;font-display:swap;src:url(assets/fonts/poppins-600.woff2) format('woff2');}
-@font-face{font-family:'Poppins';font-style:normal;font-weight:700;font-display:swap;src:url(assets/fonts/poppins-700.woff2) format('woff2');}
-@font-face{font-family:'Poppins';font-style:normal;font-weight:800;font-display:swap;src:url(assets/fonts/poppins-800.woff2) format('woff2');}
-@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:500;font-display:swap;src:url(assets/fonts/jetbrainsmono-500.woff2) format('woff2');}
+/* --- Display: Bricolage Grotesque -------------------------------------- */
+
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('assets/fonts/bricolage-800.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+                 U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
+                 U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('assets/fonts/bricolage-700.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+                 U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
+                 U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* --- Fallback métricamente ajustada (anti-CLS) --------------------------
+   Métricas reales medidas con fontTools sobre bricolage-800/700.woff2 y
+   sobre C:\Windows\Fonts\arialbd.ttf (Arial Bold):
+
+     Bricolage 700 y 800 → unitsPerEm 1000 · hhea ascender 930 ·
+       descender -270 · lineGap 0 · fsSelection USE_TYPO_METRICS = 1
+       (OS/2 sTypo coincide con hhea, así que no hay ambigüedad de plataforma)
+     Arial Bold        → unitsPerEm 2048 · hhea 1854 / -434 / 67
+
+   size-adjust = anchoMedio(Bricolage) / anchoMedio(ArialBold), con el ancho
+   medio ponderado por frecuencia de letras del español SOBRE MAYÚSCULAS
+   (todo el display del diseño va en text-transform:uppercase) + 17% espacios:
+     800 → 0.58740 / 0.60898 = 96.46%
+     700 → 0.58149 / 0.60898 = 95.49%
+
+   Los *-override se dividen por size-adjust porque el navegador vuelve a
+   escalarlos por él (mismo cálculo que usa next/font):
+     ascent-override(800)  = 930 / (1000 × 0.9646) = 96.42%
+     descent-override(800) = 270 / (1000 × 0.9646) = 27.99%
+     ascent-override(700)  = 930 / (1000 × 0.9549) = 97.40%
+     descent-override(700) = 270 / (1000 × 0.9549) = 28.28%
+     line-gap-override     = 0 / … = 0%  (Bricolage tiene lineGap 0)
+
+   Verificado sobre los titulares reales del diseño: el error de ancho de
+   línea baja de 4.15% a 2.13% promedio (y a <1% en los h2 largos, que son
+   los que envuelven y por lo tanto los únicos que pueden generar CLS).
+   ----------------------------------------------------------------------- */
+
+@font-face {
+  font-family: 'Bricolage Fallback';
+  font-style: normal;
+  font-weight: 800;
+  src: local('Arial Bold'), local('Helvetica Bold'),
+       local('Arial'), local('Helvetica'), local('Liberation Sans Bold');
+  size-adjust: 96.46%;
+  ascent-override: 96.42%;
+  descent-override: 27.99%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Bricolage Fallback';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Arial Bold'), local('Helvetica Bold'),
+       local('Arial'), local('Helvetica'), local('Liberation Sans Bold');
+  size-adjust: 95.49%;
+  ascent-override: 97.40%;
+  descent-override: 28.28%;
+  line-gap-override: 0%;
+}
+
+/* --- Cuerpo: Poppins (ya en el repo, sin cambios) -----------------------
+   Poppins 700 y 800 se ELIMINAN: los reemplaza Bricolage.
+   ----------------------------------------------------------------------- */
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('assets/fonts/poppins-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('assets/fonts/poppins-500.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('assets/fonts/poppins-600.woff2') format('woff2');
+}
+
+
+/* --- Fallback métrico de Poppins -----------------------------------------
+   Medido: Poppins es 13.80% más ancha que Arial. Sin compensar, el lead
+   re-wrappea al llegar la webfont y empuja 26px (el 92% del CLS del sitio).
+   El LCP en mobile es ese párrafo, no el h1.
+   ------------------------------------------------------------------------ */
+@font-face {
+  font-family: 'Poppins Fallback';
+  font-style: normal;
+  font-weight: 400 600;
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans');
+  size-adjust: 113.80%;
+  ascent-override: 92.27%;
+  descent-override: 30.76%;
+  line-gap-override: 0%;
+}
+
+/* --- Mono: JetBrains Mono (ya en el repo, sin cambios) ------------------ */
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('assets/fonts/jetbrainsmono-500.woff2') format('woff2');
+}
+
+/* --- Custom properties -------------------------------------------------- */
 
 :root {
-  /* Superficies */
-  --abismo:        #070E1C;
-  --noche:         #0F1626;
-  --superficie:    #111B2E;
-  --superficie-2:  #16223A;
-
-  /* Acentos con rol */
-  --cian:          #1FB6F0;   /* automatizado / primary */
-  --cian-claro:    #34D2FB;   /* glow / highlight */
-  --indigo:        #0B1B4D;
-  --ambar:         #F5A623;   /* manual / fricción */
-
-  /* Texto */
-  --hueso:         #F6F8FC;   /* texto alto contraste */
-  --niebla:        #8A94AD;   /* texto secundario */
-  --linea:         rgba(255,255,255,.08);
-  --linea-fuerte:  rgba(255,255,255,.16);
-
-  /* Gradientes / efectos */
-  --grad-cian:     linear-gradient(135deg, var(--cian-claro) 0%, var(--cian) 42%, var(--indigo) 100%);
-  --grad-ambar:    linear-gradient(135deg, #FFCB6B 0%, var(--ambar) 100%);
-  --glow-cian:     0 0 44px -10px rgba(31,182,240,.5);
-  --glow-ambar:    0 0 40px -12px rgba(245,166,35,.5);
-
-  /* Tipografía */
-  --sans: 'Poppins', system-ui, -apple-system, sans-serif;
-  --mono: 'JetBrains Mono', ui-monospace, monospace;
-
-  /* Escala fluida */
-  --fs-display: clamp(2.6rem, 1.4rem + 5vw, 4.6rem);
-  --fs-h2:      clamp(1.9rem, 1.2rem + 2.6vw, 2.9rem);
-  --fs-h3:      clamp(1.15rem, 1rem + .6vw, 1.4rem);
-  --fs-lead:    clamp(1.05rem, .98rem + .4vw, 1.22rem);
-  --fs-body:    1rem;
-  --fs-mono:    .72rem;
-
-  /* Layout */
-  --maxw: 1200px;
-  --gutter: clamp(20px, 5vw, 80px);
-  --r-card: 18px;
-  --r-pill: 999px;
-
-  /* Motion */
-  --ease: cubic-bezier(.22,1,.36,1);
+  /* 'Bricolage Fallback' va JUSTO detrás de la real: es la única con métricas
+     ajustadas. Poppins queda como red de seguridad para plataformas sin
+     Arial/Helvetica/Liberation (algunos Android), donde no habrá compensación
+     de métricas pero sí una tipografía razonable. */
+  --display: 'Bricolage Grotesque', 'Bricolage Fallback', 'Poppins',
+             system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --sans:    'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 }
 
-/* ----------------------------- Reset ------------------------------------- */
+/* =============================================================================
+   ZEEBEN LABS — sistema.css
+   Sistema de diseño del rediseño de zeebenlabs.com
+   Tokens + reset + base + foco + utilidades + componentes + grillas.
+
+   Fuentes de verdad:
+     - SPEC.md §3.2 (tokens), §3.3 (sección por sección), §3.8 (foco), §4 (contraste)
+     - DECISIONES.md (reglas de color cerradas por el dueño)
+     - design_handoff_zeeben_landing/README.md (medidas y tiempos originales)
+
+   Reglas duras que este archivo respeta:
+     1. CSS plano. Sin @import, sin build, sin preprocesador, sin dependencias
+        externas. Ninguna fuente de CDN: las @font-face auto-hosteadas se
+        declaran fuera de este archivo (fase 2 / agente Fuentes).
+     2. Solo DOS fondos en toda la página: --bg y --bg-alt. Los estados hover
+        son tintes translúcidos sobre esos dos, no una tercera superficie.
+     3. --acento (#2D7BFF) NUNCA como color de texto (4.47:1 sobre --bg, falla
+        AA). Para texto va --acento-claro (#3D8BFF, 5.25:1).
+     4. Nunca `outline: none` sin reemplazo visible.
+
+   Tabla de contraste verificada (fórmula WCAG 2.x, ver reporte):
+     #EEF4FF/--bg 15.76 · #B4C6E2 10.04 · #93A8C9 7.20 · #7C93B6 5.56
+     #CFE0FF 13.06 · #8FA7C9 7.08 · #6B84A8 4.55 · #3D8BFF 5.25 · #A8CBFF 10.49
+     #F5A623 8.59 · #4ADE80 9.99 · #7BE495 11.08 · #C9D8EF 12.06
+     #001028 sobre acento 4.88 · #00122E sobre acento 4.79
+     Borde ghost rgba(238,244,255,.40) = 3.54:1 sobre --bg / 3.58:1 sobre --bg-alt
+============================================================================= */
+
+
+/* =============================================================================
+   1. TOKENS
+============================================================================= */
+:root {
+
+  /* ---- Superficies ------------------------------------------------------ */
+  --bg:            #111A2B;              /* fondo base */
+  --bg-alt:        #0C1422;              /* secciones pares / bandas */
+  --linea:         rgba(238,244,255,.12);/* línea de retícula y separadores */
+
+  /* Límite visual de controles (botón ghost, inputs).
+     El valor del prototipo era rgba(238,244,255,.24) = 2.08:1 → viola
+     WCAG 2.1 SC 1.4.11 (Non-text Contrast, exige 3:1).
+     Subido a .40 ⇒ 3.54:1 sobre --bg y 3.58:1 sobre --bg-alt. ✔ */
+  --linea-control: rgba(238,244,255,.40);
+
+  /* Tinte de estado (hover / focus-within). No es una tercera superficie:
+     es una capa translúcida de --acento sobre los dos fondos base. */
+  --tinte-hover:   rgba(45,123,255,.10);
+
+  /* ---- Texto ------------------------------------------------------------ */
+  --txt:           #EEF4FF;              /* alto contraste   15.76:1 */
+  --txt-cuerpo:    #B4C6E2;              /* cuerpo           10.04:1 */
+  --txt-2:         #93A8C9;              /* secundario        7.20:1 */
+  --txt-mono:      #7C93B6;              /* label mono        5.56:1 */
+  --txt-log:       #CFE0FF;              /* líneas de log    13.06:1 */
+  --txt-log-off:   rgba(207,224,255,.18);/* log apagado — DECORATIVO, jamás
+                                            estado final (§3.7) */
+  --txt-num:       #7E97BB;              /* numeración 001-006  4.55:1 (justo:
+                                            si cambia el fondo, recalcular) */
+  --txt-metric:    #8FA7C9;              /* métrica idle      7.08:1 */
+  --txt-caso:      #C9D8EF;              /* párrafo de caso  12.06:1 */
+
+  /* ---- Acento ----------------------------------------------------------- */
+  --acento:        #2D7BFF;              /* SOLO fondo (botones, sección CTA) */
+  --acento-claro:  #3D8BFF;              /* el acento cuando es TEXTO  5.25:1 */
+  --acento-hover:  #A8CBFF;              /* hover + anillo de foco    10.49:1 */
+  --sobre-acento:  #001028;              /* texto sobre botón acento   4.88:1 */
+  --cta-txt:       #00122E;              /* texto sobre la sección CTA 4.79:1
+                                            sólido, NO rgba(0,18,46,.8) (3.74) */
+
+  /* ---- Rol / estado ----------------------------------------------------- */
+  --ambar:         #F5A623;              /* SOLO sección "El problema" 8.59:1 */
+  --verde:         #4ADE80;              /* punto de estado activo     9.99:1 */
+  --verde-log:     #7BE495;              /* última línea del log      11.08:1 */
+
+  /* ---- Familias ---------------------------------------------------------
+     Estrategia híbrida aprobada (DECISIONES.md): se suma Bricolage Grotesque
+     para display y se conservan Poppins y JetBrains Mono ya auto-hosteadas.
+     Las @font-face viven en el CSS de producción, no acá. */
+  /* Los *Fallback* van JUSTO detrás de la real: son las únicas con métricas
+     ajustadas (size-adjust/ascent-override). Sin ellas el swap mueve el layout.
+     Este :root gana por orden sobre el del bloque tipográfico: si se tocan los
+     stacks, hay que tocarlos ACÁ. */
+  --display: 'Bricolage Grotesque', 'Bricolage Fallback', 'Poppins', system-ui, sans-serif;
+  --sans:    'Poppins', 'Poppins Fallback', system-ui, -apple-system, sans-serif;
+  --mono:    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* ---- Escala tipográfica (README :45) ---------------------------------- */
+  --fs-h1:      clamp(46px, 10.5vw, 150px);
+  --fs-h2:      clamp(32px, 4.6vw, 64px);
+  --fs-h2-sm:   clamp(30px, 3.6vw, 48px);   /* Casos */
+  --fs-h2-cta:  clamp(36px, 7vw, 96px);     /* CTA final */
+  --fs-h2-name: clamp(34px, 4.4vw, 60px);   /* nombre del fundador */
+  --fs-h3:      clamp(21px, 2.2vw, 28px);
+  --fs-h4:      19px;
+  --fs-lead:    clamp(17px, 1.5vw, 21px);
+  --fs-body:    15.5px;
+  --fs-body-sm: 15px;
+  --fs-mono:    12.5px;
+  --fs-mono-sm: 11.5px;
+  --fs-mono-xs: 11px;
+
+  --ls-display: -.04em;   /* tracking de títulos */
+  --ls-h1:      -.05em;
+  --ls-mono:    .12em;    /* labels mono (con JetBrains, .10em si aprieta) */
+  --ls-btn:     .04em;    /* botones grandes */
+  --ls-btn-nav: .05em;    /* botón del nav */
+  --lh-display: .92;
+  --lh-body:    1.55;
+
+  /* ---- Espaciado -------------------------------------------------------- */
+  --e-1:  4px;
+  --e-2:  8px;
+  --e-3:  12px;
+  --e-4:  16px;
+  --e-5:  22px;
+  --e-6:  28px;
+  --e-7:  34px;
+  --e-8:  48px;
+  --e-9:  64px;
+
+  /* ---- Layout (README :48-53) ------------------------------------------- */
+  --wrap:      1400px;                    /* alias legado: --maxw */
+  --maxw:      1400px;
+  --gutter:    28px;
+  --pad-sec:   clamp(56px, 7vw, 104px);   /* padding vertical de sección */
+  --pad-card:  clamp(26px, 3vw, 40px);
+
+  /* ---- Radios ----------------------------------------------------------- */
+  --radio-btn: 3px;                       /* único radio del sistema */
+  --radio-0:   0;                         /* tarjetas, paneles, modal */
+
+  /* ---- Retícula --------------------------------------------------------- */
+  --grid-gap:  2px;                       /* ver §6: por qué exactamente 2px */
+  --col-proyectos: 360px;
+  --col-servicios: 300px;
+  --col-proceso:   215px;
+  --col-extras:    240px;
+  --col-metricas:  180px;
+  --col-2col:      300px;                 /* bloques a dos columnas */
+
+  /* ---- Foco ------------------------------------------------------------- */
+  --foco:        var(--acento-hover);     /* 10.49:1 sobre --bg */
+  --foco-ancho:  2px;
+  --foco-offset: 3px;
+
+  /* ---- Motion (README :70-85) ------------------------------------------- */
+  --ease:        cubic-bezier(.22,1,.36,1);
+  --ease-digit:  cubic-bezier(.2,.8,.2,1);
+  --t-rapido:    200ms;   /* hover de fila / tarjeta / botón */
+  --t-medio:     300ms;   /* panel de log */
+  --t-filtro:    400ms;   /* filter de la captura */
+  --t-scale:     600ms;   /* transform de la captura */
+  --t-reveal:    700ms;   /* reveal on scroll */
+  --t-ciclo:     4800ms;  /* rotación de proyectos */
+  --t-log:       420ms;   /* línea de log */
+  --t-metric:    1600ms;  /* contador de métrica */
+  --t-flip:      1400ms;  /* cilindros de dígitos */
+  --t-digit:     550ms;   /* transición por dígito */
+  --t-hero-log:  2600ms;  /* rotación del log del hero */
+  --t-cta-chat:  2200ms;  /* rotación de la línea de chat del CTA */
+  --t-blink:     2000ms;  /* punto de estado */
+}
+
+
+/* =============================================================================
+   2. RESET MÍNIMO
+   Lo justo para que el sistema sea predecible. Nada de normalize completo.
+============================================================================= */
 *, *::before, *::after { box-sizing: border-box; }
-* { margin: 0; }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+html {
+  -webkit-text-size-adjust: 100%;   /* O6: iOS no reescala el cuerpo */
+  scroll-behavior: smooth;          /* O2 (se anula con reduced-motion) */
+}
+
+body,
+h1, h2, h3, h4, h5, h6,
+p, figure, blockquote, dl, dd, ul, ol {
+  margin: 0;
+}
+
+ul[class], ol[class] { list-style: none; padding: 0; }
+
+/* Los controles no heredan tipografía por defecto: hay que forzarlo. */
+button, input, select, textarea { font: inherit; color: inherit; }
+
+/* O4: evita overflow y el hueco fantasma del inline-block */
+img, svg, video, canvas { display: block; max-width: 100%; }
+img { height: auto; }
+
+/* Que la tabla de formación y los logs no rompan el layout */
+table { border-collapse: collapse; }
+
+
+/* =============================================================================
+   3. BASE
+============================================================================= */
 body {
+  background: var(--bg);
+  color: var(--txt-cuerpo);
   font-family: var(--sans);
   font-size: var(--fs-body);
-  line-height: 1.6;
-  color: var(--hueso);
-  background: var(--abismo);
+  line-height: var(--lh-body);
+  font-weight: 400;
+  overflow-x: hidden;               /* O5: red de seguridad contra overflow */
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  overflow-x: hidden;
-}
-img, svg { display: block; max-width: 100%; }
-a { color: inherit; text-decoration: none; }
-button { font: inherit; color: inherit; cursor: pointer; background: none; border: none; }
-:focus-visible { outline: 2px solid var(--cian-claro); outline-offset: 3px; border-radius: 4px; }
-
-/* Grano + aurora de fondo (fijos, detrás de todo) */
-body::before {
-  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background-image: url("assets/grain.svg");
-  background-size: 240px 240px;
-  opacity: .05; mix-blend-mode: overlay;
-}
-body::after {
-  content: ""; position: fixed; inset: -20% 0 auto 0; height: 70vh; z-index: 0; pointer-events: none;
-  background:
-    radial-gradient(60% 60% at 75% 0%, rgba(31,182,240,.12), transparent 70%),
-    radial-gradient(50% 50% at 15% 10%, rgba(11,27,77,.45), transparent 70%);
 }
 
-/* --------------------------- Utilidades ---------------------------------- */
-.wrap { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter); }
-.section { position: relative; z-index: 1; padding-block: clamp(64px, 9vw, 130px); }
-.eyebrow {
-  font-family: var(--mono); font-size: var(--fs-mono); font-weight: 500;
-  letter-spacing: .22em; text-transform: uppercase; color: var(--cian);
-  display: inline-flex; align-items: center; gap: .6rem;
+/* ---- Títulos -----------------------------------------------------------
+   Todos en display, mismo peso y tracking; solo cambia el tamaño.          */
+h1, h2, h3, h4,
+.t-h1, .t-h2, .t-h3, .t-h4 {
+  font-family: var(--display);
+  color: var(--txt);
+  letter-spacing: var(--ls-display);
+  line-height: 1.04;
+  font-weight: 700;
+  text-wrap: balance;
 }
-.eyebrow::before { content: ""; width: 28px; height: 1px; background: var(--cian); }
-.eyebrow--ambar { color: var(--ambar); }
-.eyebrow--ambar::before { background: var(--ambar); }
 
-h1, h2, h3 { line-height: 1.08; font-weight: 700; letter-spacing: -.03em; }
-h2 { font-size: var(--fs-h2); }
-h3 { font-size: var(--fs-h3); letter-spacing: -.02em; line-height: 1.25; }
-.lead { font-size: var(--fs-lead); color: var(--niebla); line-height: 1.6; }
-.section__head { max-width: 56ch; margin-bottom: clamp(36px, 5vw, 64px); }
-.section__head h2 { margin-top: 18px; }
-.section__head .lead { margin-top: 16px; }
-
-/* --------------------------- Botones ------------------------------------- */
-.btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
-  padding: .95rem 1.6rem; border-radius: var(--r-pill);
-  font-weight: 600; font-size: 1rem; letter-spacing: -.01em;
-  transition: transform .25s var(--ease), box-shadow .25s var(--ease), background .25s var(--ease);
+h1, .t-h1 {
+  font-size: var(--fs-h1);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-h1);
+  font-weight: 800;
+  text-transform: uppercase;
 }
-.btn svg { width: 20px; height: 20px; }
-.btn-primary { background: var(--grad-cian); color: #04121d; box-shadow: var(--glow-cian); }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 56px -8px rgba(31,182,240,.7); }
-.btn-ghost { border: 1px solid var(--linea-fuerte); color: var(--hueso); background: rgba(255,255,255,.03); }
-.btn-ghost:hover { border-color: var(--cian); color: var(--cian-claro); transform: translateY(-2px); }
 
-/* --------------------------- Tarjeta base -------------------------------- */
-.card {
-  position: relative; background: var(--superficie);
-  border: 1px solid var(--linea); border-radius: var(--r-card);
-  transition: transform .3s var(--ease), border-color .3s var(--ease), background .3s var(--ease);
+h2, .t-h2 {
+  font-size: var(--fs-h2);
+  line-height: 1.0;
+  font-weight: 800;
 }
-/* Filo de vidrio cian: reservado a los demos de proyectos (no en toda tarjeta) */
-.project::before {
-  content: ""; position: absolute; top: 0; left: 16%; right: 16%; height: 1px; z-index: 3;
-  background: linear-gradient(90deg, transparent, rgba(31,182,240,.7), transparent);
+.t-h2--sm   { font-size: var(--fs-h2-sm);   line-height: 1.02; }   /* Casos */
+.t-h2--name { font-size: var(--fs-h2-name); text-transform: uppercase; }
+.t-h2--cta  {
+  font-size: var(--fs-h2-cta);
+  line-height: .96;
+  letter-spacing: -.045em;
+  text-transform: uppercase;
+  max-width: 16ch;
 }
-.card--lift:hover { transform: translateY(-4px); border-color: var(--linea-fuerte); }
 
-/* ----------------------------- Nav --------------------------------------- */
-.nav {
-  position: fixed; inset: 0 0 auto 0; z-index: 50;
-  background: rgba(7,14,28,.72); backdrop-filter: blur(14px);
+h3, .t-h3 { font-size: var(--fs-h3); letter-spacing: -.035em; }
+h4, .t-h4 { font-size: var(--fs-h4); letter-spacing: -.03em; }
+
+/* ---- Cuerpo ----------------------------------------------------------- */
+p { text-wrap: pretty; }
+
+.lead {
+  font-family: var(--sans);
+  font-size: var(--fs-lead);
+  line-height: 1.55;
+  color: var(--txt-cuerpo);
+  max-width: 46ch;
+  text-wrap: pretty;
+}
+
+.txt-2  { color: var(--txt-2); font-size: var(--fs-body-sm); line-height: 1.5; }
+.txt-sm { font-size: var(--fs-body-sm); line-height: 1.55; }
+
+/* ---- Enlaces -----------------------------------------------------------
+   El acento como texto es --acento-claro, nunca --acento.                  */
+a { color: var(--acento-claro); text-decoration: none; }
+a:hover { color: var(--acento-hover); }
+
+/* Enlaces dentro de párrafos: subrayado siempre (el color solo no alcanza
+   como único distintivo — SC 1.4.1). */
+p a, .lead a, li a {
+  text-decoration: underline;
+  text-underline-offset: .18em;
+  text-decoration-thickness: 1px;
+}
+
+/* ---- Números que animan ------------------------------------------------
+   tabular-nums evita el salto de ancho al contar (§4.5 CLS). */
+.tabular { font-variant-numeric: tabular-nums; }
+
+
+/* =============================================================================
+   4. SISTEMA DE FOCO (SPEC §3.8)
+   Regla: TODO elemento interactivo tiene foco visible. Nunca `outline:none`
+   sin reemplazo. El anillo es #A8CBFF (10.49:1 sobre --bg, 11.11:1 sobre
+   --bg-alt) — muy por encima del 3:1 que exige SC 1.4.11 para indicadores.
+   Sin border-radius, porque el diseño nuevo no tiene radios (salvo botones).
+============================================================================= */
+
+/* Punto de partida: nadie pierde el foco por accidente. */
+:focus-visible {
+  outline: var(--foco-ancho) solid var(--foco);
+  outline-offset: var(--foco-offset);
+}
+
+/* Los botones sí tienen radio: el anillo lo acompaña. */
+.btn:focus-visible { border-radius: var(--radio-btn); }
+
+/* Sobre la sección CTA (fondo --acento) el celeste del anillo daría 2.35:1.
+   Ahí el anillo pasa a --cta-txt: 4.79:1 contra el azul. ✔ */
+.cta-final :focus-visible,
+.sobre-acento :focus-visible {
+  outline-color: var(--cta-txt);
+}
+
+/* Tarjetas de la retícula: su borde decorativo YA es un outline. Si la
+   tarjeta entera es focusable, el foco no crea un segundo anillo — engorda
+   y recolorea el que ya existe (sigue siendo un cambio inequívoco). */
+.card:focus-visible {
+  outline: var(--foco-ancho) solid var(--foco);
+  outline-offset: var(--foco-offset);
+}
+
+/* Foco dentro de una tarjeta o fila (un link, un botón): la superficie
+   reacciona igual que en :hover. Es lo que hace navegable por teclado un
+   diseño pensado para mouse (SPEC §4.4 A1). */
+.card:focus-within,
+.card:hover { background-color: var(--tinte-hover); }
+
+/* Nunca dejar un control sin límite visible al recibir foco */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible { outline: var(--foco-ancho) solid var(--foco); }
+
+/* Fallback para navegadores sin :focus-visible (no borra el foco, lo agrega) */
+:focus { outline-color: var(--foco); }
+
+
+/* =============================================================================
+   5. UTILIDADES
+============================================================================= */
+
+/* Contenedor: 1400px + 28px de aire lateral. */
+.wrap {
+  width: 100%;
+  max-width: var(--wrap);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* Sección con su ritmo vertical. */
+.section { padding-block: var(--pad-sec); }
+
+/* Banda de fondo alterno. Es el SEGUNDO y último fondo de la página. */
+.band-alt {
+  background: var(--bg-alt);
+  border-top: 1px solid var(--linea);
   border-bottom: 1px solid var(--linea);
 }
-.nav__in { display: flex; align-items: center; justify-content: space-between; height: 72px; }
-.nav__logo img { height: 30px; width: auto; }
-.nav__links { display: flex; align-items: center; gap: 2.2rem; }
-.nav__links a { color: var(--niebla); font-size: .96rem; transition: color .2s; }
-.nav__links a:hover { color: var(--hueso); }
-.nav__cta { display: inline-flex; }
-.nav__burger { display: none; width: 44px; height: 44px; align-items: center; justify-content: center; }
 
-/* ----------------------------- Hero (shell base) ------------------------- */
-.hero { position: relative; z-index: 1; padding-block: clamp(120px, 16vh, 200px) clamp(70px, 9vw, 120px); }
-.hero__grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(32px, 5vw, 72px); align-items: center; }
-.hero h1 { font-size: var(--fs-display); font-weight: 800; margin: 20px 0 22px; }
-.hero h1 .mark { color: var(--cian-claro); }
-.hero .lead { max-width: 46ch; }
-.hero__cta { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 36px; }
-.hero__visual { position: relative; }
+/* Full-bleed sobre el acento (CTA final). */
+.sobre-acento { background: var(--acento); color: var(--cta-txt); }
+.sobre-acento h1, .sobre-acento h2, .sobre-acento h3 { color: var(--cta-txt); }
 
-/* ===== Firma del hero: motor de automatización (A mano → Automatizado) ===== */
-@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: .2; } }
-
-.engine {
-  position: relative; width: 100%; aspect-ratio: 1 / 1; max-height: 560px;
-  border: 1px solid var(--linea); border-radius: var(--r-card); overflow: hidden;
-  background:
-    radial-gradient(120% 90% at 50% 45%, rgba(31,182,240,.10), transparent 70%),
-    var(--superficie);
-  box-shadow: var(--glow-cian);
-  display: grid; grid-template-rows: auto 1fr auto;
-  padding: clamp(20px, 3vw, 34px); gap: clamp(16px, 2.5vw, 28px);
-}
-.engine__top { display: flex; justify-content: space-between; align-items: center; }
-.engine__tag, .engine__live {
-  font-family: var(--mono); font-size: .64rem; letter-spacing: .16em; text-transform: uppercase;
-  color: var(--niebla); display: inline-flex; align-items: center; gap: .5rem;
-}
-.dot { width: 7px; height: 7px; border-radius: 50%; }
-.dot--cian { background: var(--cian); box-shadow: 0 0 8px var(--cian); }
-.dot.live { animation: blink 1.3s infinite; }
-
-.engine__lane { position: relative; align-self: center; height: 64px; }
-.engine__flow {
-  position: absolute; top: 50%; left: 2%; right: 2%; height: 2px; transform: translateY(-50%); border-radius: 2px;
-  background: linear-gradient(90deg, rgba(245,166,35,.45), rgba(31,182,240,.55));
-  -webkit-mask: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
-          mask: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
-}
-.engine__flow::after {
-  content: ""; position: absolute; inset: 0;
-  background: repeating-linear-gradient(90deg, transparent 0 7px, rgba(255,255,255,.6) 7px 11px);
-  opacity: .22; animation: flowdash 1s linear infinite;
-}
-@keyframes flowdash { to { background-position-x: 18px; } }
-
-.engine__chips { position: absolute; inset: 0; }
-.chip {
-  position: absolute; top: 50%; left: -8%; transform: translate(-50%, -50%); z-index: 2;
-  display: inline-flex; align-items: center; gap: .4rem; white-space: nowrap;
-  font-size: .74rem; font-weight: 600; padding: .4rem .62rem; border-radius: 9px;
-  background: rgba(245,166,35,.14); border: 1px solid rgba(245,166,35,.5); color: #FFD79A;
-  animation: chipflow 7s linear infinite;
-}
-@keyframes chipflow {
-  /* Lado A MANO (ámbar): se arrastra lento — la mayor parte del tiempo */
-  0%   { left: -10%; opacity: 0; background: rgba(245,166,35,.14); border-color: rgba(245,166,35,.5); color: #FFD79A; }
-  6%   { opacity: 1; }
-  60%  { left: 38%; opacity: 1; background: rgba(245,166,35,.14); border-color: rgba(245,166,35,.5); color: #FFD79A; }
-  /* Entra al motor Zeeben y se transforma */
-  66%  { left: 50%; background: rgba(31,182,240,.16); border-color: rgba(31,182,240,.6); color: #BDEBFF; }
-  /* Lado AUTOMATIZADO (cian): sale disparado — en una fracción del tiempo */
-  73%  { left: 112%; opacity: 1; }
-  74%  { opacity: 0; }
-  100% { left: 112%; opacity: 0; background: rgba(31,182,240,.16); border-color: rgba(31,182,240,.6); color: #BDEBFF; }
-}
-.engine__core {
-  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 4;
-  width: 62px; height: 62px; border-radius: 16px; display: grid; place-items: center;
-  background: var(--grad-cian); color: #fff; animation: corepulse 2.4s var(--ease) infinite;
-}
-.engine__core svg { width: 28px; height: 28px; }
-@keyframes corepulse {
-  0%,100% { box-shadow: 0 0 28px -8px rgba(31,182,240,.6); }
-  50%     { box-shadow: 0 0 54px -4px rgba(31,182,240,.95); }
+/* Texto solo para lectores de pantalla. Imprescindible para los cilindros de
+   dígitos y para el h2 de la banda de métricas (SPEC §3.3). */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 
-.engine__stats { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
-.engine__stat span { display: block; font-size: .7rem; color: var(--niebla); }
-.engine__stat b { font-family: var(--mono); font-size: clamp(1rem, 2.4vw, 1.3rem); font-weight: 500; }
-.engine__stat--manual b { color: var(--ambar); }
-.engine__stat--auto b { color: var(--cian-claro); }
-.engine__arrow { width: 22px; height: 22px; color: var(--niebla); flex: none; }
-
-@media (prefers-reduced-motion: reduce) {
-  .engine__chips .chip { animation: none !important; opacity: 1 !important; }
-  .engine__chips .chip:nth-child(1) { left: 13%; }
-  .engine__chips .chip:nth-child(2) { left: 33%; }
-  .engine__chips .chip:nth-child(3) { left: 64%; background: rgba(31,182,240,.16); border-color: rgba(31,182,240,.6); color: #BDEBFF; }
-  .engine__chips .chip:nth-child(4) { left: 86%; background: rgba(31,182,240,.16); border-color: rgba(31,182,240,.6); color: #BDEBFF; }
+/* Skip-link: invisible hasta que recibe foco, y ahí es un botón sólido. */
+.skip {
+  position: absolute;
+  left: var(--gutter);
+  top: 0;
+  z-index: 200;
+  transform: translateY(-120%);
+  background: var(--acento);
+  color: var(--sobre-acento);          /* 4.88:1 ✔ */
+  font-family: var(--mono);
+  font-size: var(--fs-mono);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: 12px 18px;
+  border-radius: var(--radio-btn);
+  text-decoration: none;
+  transition: transform var(--t-rapido) var(--ease);
+}
+.skip:focus-visible {
+  transform: translateY(12px);
+  outline: var(--foco-ancho) solid var(--foco);
+  outline-offset: var(--foco-offset);
 }
 
-/* ----------------------------- Footer ------------------------------------ */
-.footer { position: relative; z-index: 1; border-top: 1px solid var(--linea); background: var(--noche); }
-.footer__in { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2rem; padding-block: 54px; }
-.footer__brand img { height: 28px; width: auto; opacity: .9; margin-bottom: 14px; }
-.footer__brand p { color: var(--niebla); font-size: .9rem; max-width: 34ch; }
-.footer__cols { display: flex; gap: 4rem; flex-wrap: wrap; }
-.footer__col h2 { font-family: var(--mono); font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--niebla); margin-bottom: 14px; font-weight: 500; }
-.footer__col a { display: block; color: var(--hueso); font-size: .95rem; padding: 4px 0; opacity: .85; transition: color .2s, opacity .2s; }
-.footer__col a:hover { color: var(--cian-claro); opacity: 1; }
-.footer__legal { width: 100%; border-top: 1px solid var(--linea); padding-block: 22px; color: var(--niebla); font-size: .82rem; }
+/* Separador de bloque (hero, casos) */
+.hr { border: 0; border-top: 1px solid var(--linea); margin: 0; }
 
-/* --------------------------- Reveal on scroll ---------------------------- */
-/* El estado oculto SOLO se aplica si el JS confirmó que puede revertirlo
-   (clase js-reveal en <html>). Si el script no carga o falla, el contenido
-   queda visible: una animación de entrada nunca debe ser la única vía por
-   la que aparece el contenido. */
-.reveal { transition: opacity .7s var(--ease), transform .7s var(--ease); }
-.js-reveal .reveal { opacity: 0; transform: translateY(24px); }
-.js-reveal .reveal.in { opacity: 1; transform: none; }
 
-/* ====================== Secciones de contenido (F3) ====================== */
-.grid { display: grid; gap: var(--gutter); }
-.grid-3 { grid-template-columns: repeat(3, 1fr); }
-.grid-4 { grid-template-columns: repeat(4, 1fr); }
+/* =============================================================================
+   6. RETÍCULA DE TARJETAS — el detalle central del diseño
+   ---------------------------------------------------------------------------
+   Objetivo: que los bordes de todas las tarjetas formen UNA SOLA retícula,
+   sin líneas dobles, sin huecos, y sin que se rompa cuando `auto-fit` baja
+   de 4 → 3 → 2 → 1 columnas.
 
-.feature { padding: clamp(24px, 3vw, 34px); }
-.feature h3 { margin-bottom: 10px; }
-.feature p { color: var(--niebla); }
-.svc__label { display: block; font-family: var(--mono); font-size: .64rem; letter-spacing: .18em; text-transform: uppercase; color: var(--niebla); margin-bottom: 16px; }
+   Cómo funciona:
 
-.iconbox { margin-bottom: 18px; line-height: 0; }
-.iconbox svg { width: 30px; height: 30px; stroke-width: 1.5; }
-.iconbox--cian { color: var(--cian-claro); }
-.iconbox--ambar { color: var(--ambar); }
+   a) `outline`, no `border`. El outline se dibuja FUERA de la caja y NO ocupa
+      espacio de layout. Con `border`, las cajas de dos tarjetas vecinas están
+      separadas por el gap, así que se ven dos líneas de 1px con fondo en
+      medio: la clásica línea doble.
 
-/* Historia de color: las tarjetas "a mano" llevan el filo en ámbar */
-.card--manual::before { background: linear-gradient(90deg, transparent, rgba(245,166,35,.7), transparent); }
+   b) `gap: 2px` exactamente. Cada tarjeta proyecta 1px de outline hacia
+      afuera en sus cuatro lados. En una junta interior, la tarjeta izquierda
+      pone 1px y la derecha pone otro 1px: los dos ocupan el gap COMPLETO,
+      pegados y sin solaparse. Resultado: una línea continua, sin hueco de
+      fondo en el medio.
 
-/* Proceso: flujo de 4 pasos, coherente con la firma del hero */
-.proc { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gutter); }
-.proc::before { content: ""; position: absolute; top: 28px; left: 7%; right: 7%; height: 1px; background: linear-gradient(90deg, var(--ambar), var(--cian)); opacity: .4; }
-.proc__step { position: relative; }
-.proc__node { position: relative; z-index: 1; width: 56px; height: 56px; border-radius: 14px; display: grid; place-items: center; margin-bottom: 20px; background: var(--superficie); border: 1px solid var(--linea-fuerte); color: var(--cian-claro); box-shadow: 0 0 24px -14px rgba(31,182,240,.8); }
-.proc__node svg { width: 24px; height: 24px; }
-.proc__num { display: block; font-family: var(--mono); font-size: .62rem; letter-spacing: .18em; text-transform: uppercase; color: var(--niebla); margin-bottom: 8px; }
-.proc__step h3 { font-size: 1.12rem; margin-bottom: 8px; }
-.proc__step p { color: var(--niebla); font-size: .95rem; }
+      Por qué no `gap: 1px`: ahí los dos outlines caerían en el MISMO píxel.
+      Como --linea es translúcida (alpha .12), dos capas componen ~.23 y esa
+      junta se vería más clara que el resto de la retícula. El gap de 2px es
+      justamente lo que evita el doblado de alpha.
 
-@media (max-width: 900px) {
-  .grid-3 { grid-template-columns: 1fr; }
-  .grid-4 { grid-template-columns: repeat(2, 1fr); }
-  .proc { grid-template-columns: repeat(2, 1fr); }
-  .proc::before { display: none; }
-}
-@media (max-width: 560px) {
-  .grid-4 { grid-template-columns: 1fr; }
-  .proc { grid-template-columns: 1fr; }
+      Por qué no `gap: 0`: los outlines se superpondrían del todo (mismo
+      problema) y además las tarjetas quedarían pegadas sin junta visible.
+
+   c) Se sostiene al cambiar de columnas. Como cada tarjeta lleva outline en
+      sus cuatro lados, cualquier junta —horizontal o vertical, de la fila
+      completa o de la última fila incompleta— siempre la forman dos outlines
+      contiguos. No hay reglas del tipo `:nth-child` que haya que rehacer por
+      breakpoint, ni `border-right` que sobre en la última columna. `auto-fit`
+      reflowea y la retícula sigue cerrada sola.
+
+   d) Consecuencia asumida: las juntas interiores miden 2px y el perímetro
+      exterior 1px. Es intencional y es lo que pide el README: una sola
+      retícula, no un marco.
+
+   e) Cuidado al integrar: el outline pinta 1px fuera del área de grid. El
+      contenedor no puede tener `overflow: hidden` justo al ras, o recorta el
+      borde exterior. Dentro de `.wrap` (28px de padding) sobra lugar.
+============================================================================= */
+
+.reticula {
+  display: grid;
+  gap: var(--grid-gap);
+  grid-template-columns: repeat(auto-fit, minmax(var(--col, 300px), 1fr));
 }
 
-/* ====================== Proyectos (F4): demos en vivo ====================== */
-.grid-2 { grid-template-columns: repeat(2, 1fr); }
-.project { overflow: hidden; padding: 0; }
-.pj-screen {
-  position: relative; height: 212px; overflow: hidden; display: grid; place-items: center;
-  background: radial-gradient(120% 90% at 50% 0%, rgba(31,182,240,.06), transparent 70%), var(--superficie-2);
-  border-bottom: 1px solid var(--linea);
-}
-.pj-dots { position: absolute; top: 14px; left: 14px; display: flex; gap: 6px; z-index: 5; }
-.pj-dots span { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,.14); }
-.pj-tag { position: absolute; top: 13px; right: 14px; z-index: 5; font-family: var(--mono); font-size: .56rem; letter-spacing: .14em; text-transform: uppercase; color: var(--niebla); display: inline-flex; align-items: center; gap: .4rem; }
-.pj-tag .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cian); box-shadow: 0 0 8px var(--cian); }
-.pj-body { padding: clamp(20px, 2.5vw, 28px); }
-.pj-body h3 { margin-bottom: 8px; }
-.pj-body p { color: var(--niebla); font-size: .95rem; }
-
-/* Demo: estacionamiento */
-.pk { display: grid; gap: 14px; justify-items: center; }
-.pk-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-.pk-slot { width: 30px; height: 20px; border-radius: 4px; border: 1px solid rgba(31,182,240,.3); }
-.pk-slot.busy { animation: pkfill 5s ease-in-out infinite; }
-@keyframes pkfill {
-  0%,12%  { background: transparent; border-color: rgba(31,182,240,.3); box-shadow: none; }
-  28%,82% { background: rgba(31,182,240,.85); border-color: rgba(31,182,240,.9); box-shadow: 0 0 10px rgba(31,182,240,.5); }
-  100%    { background: transparent; border-color: rgba(31,182,240,.3); box-shadow: none; }
-}
-.pk-meta { font-family: var(--mono); font-size: .6rem; letter-spacing: .14em; text-transform: uppercase; color: var(--niebla); display: inline-flex; align-items: center; gap: .5rem; }
-.pk-meta .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cian); box-shadow: 0 0 8px var(--cian); }
-
-/* Demo: whatsapp — notificaciones que se envían en secuencia */
-.wa { display: flex; flex-direction: column; gap: 8px; width: 76%; }
-.wa-bubble { align-self: flex-end; max-width: 92%; font-size: .76rem; font-weight: 500; line-height: 1.3; padding: .45rem .7rem; border-radius: 12px 12px 4px 12px; background: rgba(31,182,240,.92); color: #04121d; opacity: 0; }
-.wa .wa-bubble:nth-child(1) { animation: waSeq1 7s ease-in-out infinite; }
-.wa .wa-bubble:nth-child(2) { animation: waSeq2 7s ease-in-out infinite; }
-.wa .wa-bubble:nth-child(3) { animation: waSeq3 7s ease-in-out infinite; }
-@keyframes waSeq1 { 0% { opacity: 0; transform: translateY(8px); } 6% { opacity: 1; transform: none; } 94% { opacity: 1; } 100% { opacity: 0; } }
-@keyframes waSeq2 { 0%,24% { opacity: 0; transform: translateY(8px); } 30% { opacity: 1; transform: none; } 94% { opacity: 1; } 100% { opacity: 0; } }
-@keyframes waSeq3 { 0%,50% { opacity: 0; transform: translateY(8px); } 56% { opacity: 1; transform: none; } 94% { opacity: 1; } 100% { opacity: 0; } }
-
-/* Demo: mundial */
-.mb { display: grid; gap: 12px; justify-items: center; }
-.mb-live { font-family: var(--mono); font-size: .6rem; letter-spacing: .14em; text-transform: uppercase; color: var(--niebla); display: inline-flex; align-items: center; gap: .5rem; }
-.mb-live .dot { width: 6px; height: 6px; border-radius: 50%; background: #ff5a5a; box-shadow: 0 0 8px #ff5a5a; }
-.mb-score { display: flex; align-items: center; gap: 14px; }
-.mb-team { font-size: .82rem; font-weight: 600; letter-spacing: .04em; color: var(--hueso); }
-.mb-num { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 2.5rem; line-height: 1; color: var(--hueso); }
-.mb-num .sep { color: var(--niebla); font-weight: 500; }
-.mb-flip { position: relative; display: inline-block; width: .62em; height: 1em; }
-.mb-flip span { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
-.mb-flip .d1 { opacity: 0; }
-.mb-flip .d0 { animation: mbd0 4s ease-in-out infinite; }
-.mb-flip .d1 { animation: mbd1 4s ease-in-out infinite; }
-@keyframes mbd0 { 0%,45% { opacity: 1; } 55%,100% { opacity: 0; } }
-@keyframes mbd1 { 0%,45% { opacity: 0; } 55%,100% { opacity: 1; } }
-
-/* Demo: tickets */
-.tk { width: 86%; }
-.tk-heads { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 7px; }
-.tk-heads span { font-family: var(--mono); font-size: .52rem; letter-spacing: .1em; text-transform: uppercase; color: var(--niebla); text-align: center; }
-.tk-track { position: relative; height: 86px; }
-.tk-lanes { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.tk-lane { border: 1px solid var(--linea); border-radius: 8px; background: rgba(255,255,255,.02); }
-.tk-card { position: absolute; top: 16px; left: 4%; width: 28%; padding: .5rem .6rem; border-radius: 8px; background: var(--superficie); border: 1px solid var(--cian); box-shadow: 0 8px 20px rgba(0,0,0,.45); animation: tkmove 6s ease-in-out infinite; }
-.tk-card .id { font-family: var(--mono); font-size: .6rem; color: var(--hueso); }
-.tk-card .bar { height: 4px; width: 70%; background: rgba(255,255,255,.2); border-radius: 3px; margin-top: 6px; }
-@keyframes tkmove {
-  0%,18%   { left: 4%;  border-color: var(--ambar); }
-  40%,55%  { left: 36%; border-color: var(--cian); }
-  78%,100% { left: 68%; border-color: #46d39a; }
-}
-
-/* Demo: hub de mensajería interno (OpsDesk) */
-.od { display: flex; align-items: center; gap: 20px; width: 82%; max-width: 340px; }
-.od-side { display: flex; flex-direction: column; gap: 12px; padding: 12px 10px; border-radius: 10px; border: 1px solid var(--linea); background: rgba(255,255,255,.02); }
-.od-dot { position: relative; width: 16px; height: 16px; border-radius: 50%; background: rgba(255,255,255,.10); border: 1px solid rgba(255,255,255,.14); }
-.od-dot.active { animation: odping 4s ease-in-out infinite; }
-.od-badge {
-  position: absolute; top: -6px; right: -6px; min-width: 14px; height: 14px; padding: 0 3px;
-  border-radius: 999px; background: var(--ambar); color: #2b1a04; font-family: var(--mono);
-  font-size: .5rem; font-weight: 700; font-style: normal; display: grid; place-items: center; opacity: 0;
-  animation: odbadge 4s ease-in-out infinite;
-}
-@keyframes odping { 0%,8% { box-shadow: none; } 16%,42% { box-shadow: 0 0 10px 1px rgba(245,166,35,.6); } 50%,100% { box-shadow: none; } }
-@keyframes odbadge { 0%,4% { opacity: 0; transform: scale(.5); } 12%,40% { opacity: 1; transform: scale(1); } 48%,100% { opacity: 0; transform: scale(.6); } }
-
-.od-win { flex: 1; display: flex; flex-direction: column; gap: 7px; padding: 12px; border-radius: 10px; border: 1px solid var(--cian); background: var(--superficie); box-shadow: 0 8px 24px rgba(0,0,0,.35); }
-.od-row { display: block; height: 10px; border-radius: 5px; background: rgba(255,255,255,.08); opacity: 0; }
-.od-row.r1 { width: 88%; animation: odrow 4s ease-in-out infinite; }
-.od-row.r2 { width: 64%; animation: odrow 4s ease-in-out infinite .12s; background: rgba(31,182,240,.28); }
-.od-row.r3 { width: 76%; animation: odrow 4s ease-in-out infinite .24s; }
-@keyframes odrow { 0%,45% { opacity: 0; transform: translateX(6px); } 55%,94% { opacity: 1; transform: none; } 100% { opacity: 0; } }
-
-/* Proyecto ancho (chatbot) — llena la fila impar con el mismo peso visual */
-.project--wide { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; align-items: stretch; }
-.project--wide .pj-screen { height: auto; min-height: 240px; border-bottom: none; border-right: 1px solid var(--linea); }
-.project--wide .pj-body { display: flex; flex-direction: column; justify-content: center; gap: 14px; }
-.project--wide .pj-body .btn { align-self: flex-start; }
-
-/* Demo: chatbot — conversación que se arma, con "escribiendo…" */
-.cb { display: flex; flex-direction: column; gap: 8px; width: 84%; }
-.cb-msg { max-width: 88%; font-size: .78rem; line-height: 1.35; padding: .45rem .7rem; border-radius: 12px; opacity: 0; }
-.cb-user { align-self: flex-end; background: rgba(31,182,240,.92); color: #04121d; border-bottom-right-radius: 4px; font-weight: 500; }
-.cb-bot { align-self: flex-start; position: relative; background: var(--superficie); border: 1px solid var(--linea); color: var(--hueso); border-bottom-left-radius: 4px; }
-.cb .c1 { animation: cbSeq1 8.5s ease-in-out infinite; }
-.cb .c2 { animation: cbSeq2 8.5s ease-in-out infinite; }
-.cb .c3 { animation: cbSeq3 8.5s ease-in-out infinite; }
-@keyframes cbSeq1 { 0% { opacity: 0; transform: translateY(8px); } 5% { opacity: 1; transform: none; } 93% { opacity: 1; } 100% { opacity: 0; } }
-@keyframes cbSeq2 { 0%,22% { opacity: 0; transform: translateY(8px); } 28% { opacity: 1; transform: none; } 93% { opacity: 1; } 100% { opacity: 0; } }
-@keyframes cbSeq3 { 0%,60% { opacity: 0; transform: translateY(8px); } 66% { opacity: 1; transform: none; } 93% { opacity: 1; } 100% { opacity: 0; } }
-.cb-dots { position: absolute; left: .7rem; top: 50%; transform: translateY(-50%); display: inline-flex; gap: 4px; animation: cbDotsShow 8.5s ease-in-out infinite; }
-.cb-dots span { width: 5px; height: 5px; border-radius: 50%; background: var(--niebla); animation: chatdot 1s infinite; }
-.cb-dots span:nth-child(2) { animation-delay: .15s; }
-.cb-dots span:nth-child(3) { animation-delay: .3s; }
-.cb-text { opacity: 0; animation: cbTextShow 8.5s ease-in-out infinite; }
-@keyframes cbDotsShow { 0%,30% { opacity: 1; } 40%,100% { opacity: 0; } }
-@keyframes cbTextShow { 0%,40% { opacity: 0; } 46%,100% { opacity: 1; } }
-
-@media (max-width: 760px) {
-  .grid-2 { grid-template-columns: 1fr; }
-  .project--wide { grid-template-columns: 1fr; }
-  .project--wide .pj-screen { border-right: none; border-bottom: 1px solid var(--linea); min-height: 210px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .pk-slot.busy { background: rgba(31,182,240,.85); border-color: rgba(31,182,240,.9); }
-  .wa-bubble, .cb-msg, .cb-text { opacity: 1 !important; transform: none !important; }
-  .cb-dots { display: none !important; }
-  .od-row { opacity: 1 !important; transform: none !important; }
-  .od-badge { opacity: 0 !important; }
-  .od-dot.active { box-shadow: 0 0 10px 1px rgba(245,166,35,.6) !important; }
-}
-
-/* ============== Resultados · Testimonios · Fundador · CTA (F5) ============== */
-.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gutter); margin-bottom: clamp(44px, 5vw, 68px); }
-.stat b { display: block; font-weight: 800; font-size: clamp(2rem, 4vw, 2.8rem); letter-spacing: -.03em; line-height: 1; margin-bottom: 8px; color: var(--hueso); }
-.stat span { color: var(--niebla); font-size: .92rem; }
-
-.quote { padding: clamp(26px, 3vw, 36px); }
-.quote .qmark { width: 28px; height: 28px; color: var(--cian); opacity: .85; margin-bottom: 14px; }
-.quote p { font-size: 1.05rem; line-height: 1.6; color: var(--hueso); margin-bottom: 22px; }
-.quote__who { display: flex; align-items: center; gap: 12px; }
-.quote__av { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: var(--grad-cian); color: #fff; font-weight: 700; font-size: .85rem; flex: none; }
-.quote__who b { display: block; font-size: .95rem; }
-.quote__who span { color: var(--niebla); font-size: .85rem; }
-
-.founder { display: grid; grid-template-columns: 280px 1fr; gap: clamp(28px, 4vw, 56px); align-items: start; }
-.founder__card { padding: clamp(26px, 3vw, 32px); text-align: center; }
-.founder__av { width: 84px; height: 84px; border-radius: 20px; margin: 0 auto 18px; display: grid; place-items: center; background: var(--grad-cian); color: #04121d; font-weight: 800; font-size: 1.6rem; letter-spacing: -.02em; }
-.founder__card h3 { font-size: 1.2rem; }
-.founder__role { color: var(--cian-claro); font-family: var(--mono); font-size: .62rem; letter-spacing: .16em; text-transform: uppercase; margin-top: 8px; }
-.founder__bio { color: var(--niebla); margin-top: 16px; font-size: .92rem; }
-.founder__certs h4 { font-family: var(--mono); font-size: .62rem; letter-spacing: .16em; text-transform: uppercase; color: var(--niebla); margin-bottom: 14px; }
-.certs { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; }
-.cert { display: block; padding: .7rem .85rem; border: 1px solid var(--linea); border-radius: 10px; background: var(--superficie); transition: border-color .2s var(--ease), transform .2s var(--ease); }
-.cert:hover { border-color: var(--cian); transform: translateY(-2px); }
-.cert .issuer { display: block; font-family: var(--mono); font-size: .54rem; letter-spacing: .12em; text-transform: uppercase; color: var(--cian); margin-bottom: 4px; }
-.cert b { font-size: .8rem; font-weight: 600; line-height: 1.25; }
-
-.cta { position: relative; overflow: hidden; text-align: center; border: 1px solid var(--linea); border-radius: var(--r-card); padding: clamp(44px, 6vw, 80px) var(--gutter); box-shadow: 0 0 90px -45px rgba(31,182,240,.45); background: radial-gradient(120% 140% at 50% 0%, rgba(31,182,240,.12), transparent 60%), var(--superficie); }
-.cta h2 { margin-bottom: 14px; }
-.cta .lead { margin: 0 auto 30px; max-width: 52ch; }
-.cta__btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-
-@media (max-width: 900px) {
-  .stats { grid-template-columns: repeat(2, 1fr); }
-  .founder { grid-template-columns: 1fr; }
-}
-@media (max-width: 560px) { .stats { grid-template-columns: 1fr; } }
-
-/* ============================== Chat IA ============================== */
-.chat-fab { position: fixed; right: 22px; bottom: 22px; z-index: 80; display: inline-flex; align-items: center; gap: .55rem; padding: .8rem 1.1rem; border-radius: var(--r-pill); background: var(--grad-cian); color: #04121d; font-weight: 600; font-size: .92rem; box-shadow: var(--glow-cian); transition: transform .25s var(--ease); }
-.chat-fab:hover { transform: translateY(-2px); }
-.chat-fab svg { width: 20px; height: 20px; }
-
-.chat-panel { position: fixed; right: 22px; bottom: 22px; z-index: 81; width: min(372px, calc(100vw - 32px)); height: min(560px, calc(100vh - 40px)); display: flex; flex-direction: column; background: var(--noche); border: 1px solid var(--linea-fuerte); border-radius: 18px; overflow: hidden; box-shadow: 0 24px 70px rgba(0,0,0,.6); }
-.chat-panel[hidden] { display: none; }
-.chat-head { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-bottom: 1px solid var(--linea); background: var(--superficie); }
-.chat-head__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cian); box-shadow: 0 0 8px var(--cian); animation: blink 1.3s infinite; flex: none; }
-.chat-head__txt { display: flex; flex-direction: column; line-height: 1.25; flex: 1; }
-.chat-head__t { font-weight: 600; font-size: .95rem; }
-.chat-head__s { font-family: var(--mono); font-size: .56rem; letter-spacing: .12em; text-transform: uppercase; color: var(--niebla); }
-.chat-close { width: 30px; height: 30px; border-radius: 8px; color: var(--niebla); font-size: 1.4rem; line-height: 1; }
-.chat-close:hover { color: var(--hueso); background: rgba(255,255,255,.06); }
-.chat-msgs { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
-.msg { max-width: 86%; padding: .6rem .8rem; border-radius: 12px; font-size: .9rem; line-height: 1.45; }
-.msg--user { align-self: flex-end; background: var(--grad-cian); color: #04121d; border-bottom-right-radius: 4px; font-weight: 500; }
-.msg--bot { align-self: flex-start; background: var(--superficie-2); border: 1px solid var(--linea); border-bottom-left-radius: 4px; color: var(--hueso); }
-.chat-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 16px 12px; }
-.chat-chip { font-size: .76rem; padding: .35rem .6rem; border-radius: var(--r-pill); border: 1px solid var(--linea-fuerte); color: var(--cian-claro); background: rgba(31,182,240,.06); transition: background .2s; }
-.chat-chip:hover { background: rgba(31,182,240,.16); }
-.chat-input { display: flex; gap: 8px; padding: 12px 14px; border-top: 1px solid var(--linea); background: var(--superficie); }
-.chat-input input { flex: 1; background: var(--abismo); border: 1px solid var(--linea-fuerte); border-radius: var(--r-pill); padding: .6rem .9rem; color: var(--hueso); font: inherit; font-size: .9rem; }
-.chat-input input:focus { outline: none; border-color: var(--cian); box-shadow: 0 0 0 3px rgba(31,182,240,.15); }
-.chat-send { width: 40px; height: 40px; flex: none; border-radius: 50%; background: var(--grad-cian); color: #04121d; display: grid; place-items: center; }
-.chat-send svg { width: 18px; height: 18px; }
-.chat-send:disabled { opacity: .5; }
-.chat-typing { display: inline-flex; gap: 4px; padding: 2px 0; }
-.chat-typing span { width: 6px; height: 6px; border-radius: 50%; background: var(--niebla); animation: chatdot 1s infinite; }
-.chat-typing span:nth-child(2) { animation-delay: .15s; }
-.chat-typing span:nth-child(3) { animation-delay: .3s; }
-@keyframes chatdot { 0%,60%,100% { opacity: .3; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-3px); } }
-
-@media (max-width: 480px) {
-  .chat-fab__label { display: none; }
-  .chat-fab { padding: .85rem; }
-  .chat-panel { right: 12px; left: 12px; bottom: 12px; width: auto; height: min(72vh, 560px); }
-}
-
-/* ===================== Formación (resumen) + Modal certificados ===================== */
-.founder__certs-intro { color: var(--niebla); font-size: .92rem; line-height: 1.6; margin-bottom: 18px; max-width: 60ch; }
-.cred { list-style: none; display: grid; gap: 10px; margin-bottom: 22px; }
-.cred li { display: flex; gap: 12px; align-items: baseline; padding: .65rem .85rem; border: 1px solid var(--linea); border-radius: 10px; background: var(--superficie); }
-.cred b { flex: none; min-width: 132px; font-size: .85rem; }
-.cred span { color: var(--niebla); font-size: .88rem; }
-
-.modal[hidden] { display: none; }
-.modal { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 20px; }
-.modal__backdrop { position: absolute; inset: 0; background: rgba(3,8,18,.72); backdrop-filter: blur(4px); }
-.modal__dialog { position: relative; z-index: 1; width: min(640px, 100%); max-height: 85vh; overflow-y: auto; background: var(--noche); border: 1px solid var(--linea-fuerte); border-radius: 18px; box-shadow: 0 30px 80px rgba(0,0,0,.6); }
-.modal__head { position: sticky; top: 0; display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; border-bottom: 1px solid var(--linea); background: var(--noche); }
-.modal__head h3 { font-size: 1.1rem; }
-.modal__close { width: 32px; height: 32px; border-radius: 8px; color: var(--niebla); font-size: 1.5rem; line-height: 1; }
-.modal__close:hover { color: var(--hueso); background: rgba(255,255,255,.06); }
-.modal__body { padding: 22px; }
-
-@media (max-width: 480px) {
-  .cred li { flex-direction: column; gap: 2px; }
-  .cred b { min-width: 0; }
-}
-
-/* Pausar los demos de proyectos hasta que entren al viewport (ahorra CPU/batería) */
-.project .pk-slot, .project .wa-bubble, .project .cb .c1, .project .cb .c2, .project .cb .c3,
-.project .cb-dots, .project .cb-text, .project .tk-card, .project .mb-flip .d0, .project .mb-flip .d1,
-.project .od-dot.active, .project .od-badge, .project .od-row { animation-play-state: paused; }
-.project.in .pk-slot, .project.in .wa-bubble, .project.in .cb .c1, .project.in .cb .c2, .project.in .cb .c3,
-.project.in .cb-dots, .project.in .cb-text, .project.in .tk-card, .project.in .mb-flip .d0, .project.in .mb-flip .d1,
-.project.in .od-dot.active, .project.in .od-badge, .project.in .od-row { animation-play-state: running; }
-
-/* ----------------------------- Responsive -------------------------------- */
-@media (max-width: 860px) {
-  .hero__grid { grid-template-columns: 1fr; }
-  .hero__visual { max-width: 420px; }
-  .nav__links, .nav__cta { display: none; }
-  .nav__burger { display: inline-flex; }
-  .nav[data-open="true"] .nav__links {
-    display: flex; flex-direction: column; gap: 1.1rem;
-    position: absolute; top: 72px; left: 0; right: 0; padding: 24px var(--gutter);
-    background: rgba(7,14,28,.97); border-bottom: 1px solid var(--linea);
+/* Cuando el ancho disponible es menor que --col, minmax() no puede achicar la
+   columna y aparece scroll horizontal. Esta línea lo previene sin tocar el
+   valor del token: el mínimo real es el menor entre --col y el 100%. */
+@supports (width: min(100%, 1px)) {
+  .reticula {
+    grid-template-columns: repeat(auto-fit, minmax(min(var(--col, 300px), 100%), 1fr));
   }
 }
 
-/* --------------------------- Reduced motion ------------------------------ */
+.card {
+  position: relative;
+  outline: 1px solid var(--linea);   /* ← el borde de la retícula */
+  outline-offset: 0;
+  border-radius: var(--radio-0);     /* sin radio: si hubiera, la junta se
+                                        abriría en cada esquina */
+  background-color: transparent;     /* la tarjeta NO es una tercera
+                                        superficie: se ve el fondo de la banda */
+  padding: var(--pad-card);
+  display: flex;
+  flex-direction: column;
+  gap: var(--e-3);
+  transition: background-color var(--t-rapido) var(--ease);
+}
+
+/* Variantes de tarjeta */
+.card--servicio { min-height: 290px; }
+.card--paso     { border-top: 2px solid var(--acento); padding: 26px 24px 32px; }
+.card--extra    { padding: 20px 22px; gap: var(--e-2); }
+.card--flush    { padding: 0; }        /* proyectos: la captura va al ras */
+
+/* Fila (sección "El problema"): misma lógica de estado que la tarjeta, pero
+   con separador inferior en vez de retícula. */
+.fila {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 18px;
+  align-items: center;
+  padding: 22px 12px;
+  border-bottom: 1px solid var(--linea);
+  transition: background-color var(--t-rapido) var(--ease),
+              padding-left    var(--t-rapido) var(--ease);
+}
+.fila:hover,
+.fila:focus-within {                   /* teclado = mouse */
+  background-color: var(--tinte-hover);
+  padding-left: 24px;
+}
+
+
+/* =============================================================================
+   7. COMPONENTES
+============================================================================= */
+
+/* ---- 7.1 Botones ------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--e-2);
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-btn);
+  text-decoration: none;
+  padding: 17px 30px;                  /* botón grande (README :52) */
+  border: 1px solid transparent;
+  border-radius: var(--radio-btn);
+  cursor: pointer;
+  background: none;
+  transition: background-color var(--t-rapido) var(--ease),
+              border-color     var(--t-rapido) var(--ease),
+              color            var(--t-rapido) var(--ease);
+}
+
+/* Sólido */
+.btn--primary {
+  background-color: var(--acento);
+  color: var(--sobre-acento);          /* #001028 sobre #2D7BFF = 4.88:1 ✔ */
+}
+.btn--primary:hover {
+  background-color: var(--acento-hover);
+  color: var(--sobre-acento);          /* #001028 sobre #A8CBFF = 12.9:1 ✔ */
+}
+
+/* Ghost — el borde es el único límite del control: 3:1 obligatorio.
+   rgba(238,244,255,.40) = 3.54:1 sobre --bg. */
+.btn--ghost {
+  background-color: transparent;
+  color: var(--txt);                   /* 15.76:1 ✔ */
+  border-color: var(--linea-control);
+}
+.btn--ghost:hover {
+  border-color: var(--acento-hover);   /* 10.49:1 ✔ */
+  color: var(--acento-hover);
+}
+
+/* Tamaño del nav */
+.btn--nav {
+  font-size: 13.5px;
+  padding: 11px 20px;
+  letter-spacing: var(--ls-btn-nav);
+}
+
+/* Botón del bloque "Formación": ghost con padding propio (SPEC §3.3) */
+.btn--formacion { padding: 14px 24px; letter-spacing: var(--ls-btn-nav); }
+
+/* Botones dentro de la sección CTA (fondo --acento).
+   El ghost invierte: el límite es --cta-txt, 4.79:1 contra el azul ✔ */
+.sobre-acento .btn--primary {
+  background-color: var(--cta-txt);
+  color: #FFFFFF;                      /* #FFF sobre #00122E = 18.5:1 ✔ */
+}
+.sobre-acento .btn--primary:hover { background-color: #001A42; }
+.sobre-acento .btn--ghost {
+  color: var(--cta-txt);               /* 4.79:1 ✔ */
+  border-color: var(--cta-txt);        /* 4.79:1 ✔ */
+}
+.sobre-acento .btn--ghost:hover { background-color: rgba(0,18,46,.12); }
+
+.btn[disabled], .btn[aria-disabled="true"] { opacity: .55; cursor: not-allowed; }
+
+
+/* ---- 7.2 Eyebrow / labels mono ----------------------------------------- */
+.eyebrow {
+  font-family: var(--mono);
+  font-size: var(--fs-mono);
+  font-weight: 500;
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--txt-mono);              /* 5.56:1 ✔ */
+  display: block;
+}
+/* Ámbar: SOLO en la sección "El problema" (regla de rol, no preferencia) */
+.eyebrow--ambar { color: var(--ambar); }          /* 8.59:1 ✔ */
+.eyebrow--acento { color: var(--acento-claro); }  /* 5.25:1 ✔ */
+
+.label-mono {
+  font-family: var(--mono);
+  font-size: var(--fs-mono-sm);
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--txt-mono);
+}
+.label-mono--xs { font-size: var(--fs-mono-xs); }
+
+/* Chip mono (solución del problema, tag de proyecto, rubro del caso) */
+.chip {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: var(--fs-mono-sm);
+  letter-spacing: .1em;
+  color: var(--acento-claro);          /* 5.25:1 ✔ */
+  border: 1px solid rgba(61,139,255,.35);
+  padding: 6px 10px;
+  border-radius: var(--radio-0);
+  white-space: nowrap;
+}
+/* El chip NO es un control: su borde de 1.74:1 es decoración, no un límite
+   que haya que percibir (SC 1.4.11 no aplica). El texto ya cumple 5.25:1. */
+
+/* Punto de estado */
+.dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--verde);
+  flex: 0 0 auto;
+  display: inline-block;
+}
+.dot--vivo { animation: zbBlink var(--t-blink) infinite; }
+@keyframes zbBlink { 0%, 100% { opacity: .25 } 50% { opacity: 1 } }
+
+/* Línea mono de log / estado */
+.log-linea {
+  font-family: var(--mono);
+  font-size: var(--fs-mono);
+  line-height: 1.7;
+  color: var(--txt-log);               /* 13.06:1 ✔ */
+}
+.log-linea .t { color: var(--txt-num); }        /* timestamp 4.55:1 ✔ */
+.log-linea.is-off { color: var(--txt-log-off); }/* transitorio: nunca es el
+                                                   estado final (§3.7) */
+.log-linea.is-last { color: var(--verde-log); } /* 11.08:1 ✔ */
+
+/* Numeración de tarjeta (001-006) */
+.num-card {
+  font-family: var(--mono);
+  font-size: var(--fs-mono-sm);
+  color: var(--txt-num);
+  letter-spacing: .08em;
+}
+
+
+/* ---- 7.3 Cabecera de sección ------------------------------------------- */
+.sec-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: end;
+  justify-content: space-between;
+  margin-bottom: var(--e-8);
+}
+.sec-head__nota {
+  font-family: var(--mono);
+  font-size: var(--fs-mono-sm);
+  letter-spacing: .08em;
+  color: var(--txt-mono);
+  max-width: 30ch;
+}
+.sec-head h2 { margin-top: var(--e-3); }
+
+
+/* =============================================================================
+   8. GRILLAS RESPONSIVAS
+   Un solo mecanismo: repeat(auto-fit, minmax(--col, 1fr)). Cambia el token,
+   no la regla. Sin media queries: el layout responde al ancho disponible.
+============================================================================= */
+.reticula--proyectos { --col: var(--col-proyectos); }  /* 360px */
+.reticula--servicios { --col: var(--col-servicios); }  /* 300px */
+.reticula--proceso   { --col: var(--col-proceso);   }  /* 215px */
+.reticula--extras    { --col: var(--col-extras);    }  /* 240px */
+.reticula--metricas  { --col: var(--col-metricas); gap: 24px; }
+
+/* Bloques a dos columnas (problema, casos, fundador): aire generoso en vez
+   de retícula — acá no hay tarjetas que deban unir bordes. */
+.dos-col {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(var(--col-2col), 100%), 1fr));
+  gap: clamp(28px, 4vw, 64px);
+}
+.dos-col--start { align-items: start; }
+
+/* Fila de botones que envuelve sin romper */
+.acciones { display: flex; flex-wrap: wrap; gap: var(--e-3); }
+
+
+/* =============================================================================
+   9. REVEAL ON SCROLL — lógica invertida (SPEC §4.6)
+   El contenido es visible por defecto. El estado oculto SOLO existe si el JS
+   confirmó que está vivo agregando `js-on` al <html>. Si app.js no carga, la
+   página se lee entera.
+============================================================================= */
+.reveal { opacity: 1; transform: none; }
+
+.js-reveal .reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity var(--t-reveal) var(--ease),
+              transform var(--t-reveal) var(--ease);
+}
+.js-reveal .reveal.in { opacity: 1; transform: none; }
+/* Tabular es más rápido que el IntersectionObserver: sin esto, el foco puede
+   aterrizar en un control cuyo bloque sigue en opacity:0 (SC 2.4.7 / 2.4.11).
+   Va en CSS y no en JS para que funcione aunque el observer nunca dispare. */
+.js-reveal .reveal:focus-within { opacity: 1; transform: none; transition: none; }
+
+
+/* =============================================================================
+   10. prefers-reduced-motion
+   Regla global + los estados finales explícitos. El error clásico de esta
+   migración es matar la animación sin definir dónde queda el elemento: el log
+   apagado (rgba(207,224,255,.18) = 1.5:1) quedaría permanentemente ilegible.
+============================================================================= */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
-  .reveal { opacity: 1; transform: none; }
+
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  html { scroll-behavior: auto; }
+
+  /* El contenido revelado se pinta ya visible */
+  .reveal,
+  .js-reveal .reveal { opacity: 1; transform: none; }
+
+  /* Estados finales explícitos, no "sin animación" */
+  .log-linea.is-off { color: var(--txt-log); }   /* legible: 13.06:1 */
+  .dot--vivo        { animation: none; opacity: 1; }
+
+  /* El skip-link sigue apareciendo al enfocarse, sin deslizamiento */
+  .skip { transition: none; }
+}
+
+/* =============================================================================
+   Zeeben Labs · hero-fx — estilos mínimos del canvas y su contenedor.
+   -----------------------------------------------------------------------------
+   Sólo posicionamiento, apilado y el fondo estático de fallback.
+   Nada del titular, del lead ni de los botones: eso va en styles.css.
+   ============================================================================= */
+
+/* --- Contenedor ------------------------------------------------------------
+   `isolation:isolate` crea un contexto de apilado propio, así el z-index del
+   canvas no compite con la nav ni con el chat.
+   `overflow:hidden` evita que el canvas genere scroll horizontal en mobile.
+
+   El background de acá es el FALLBACK: se ve siempre, y queda tapado por el
+   canvas (que es opaco) sólo cuando el efecto arrancó. Si no hay WebGL, si el
+   device es de gama baja o si no corre el JS, esto es lo que se ve. */
+.hero-fx-host {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background-color: #111A2B;
+  background-image:
+    radial-gradient(52% 62% at 24% 46%, rgba(45, 123, 255, .10) 0%, rgba(45, 123, 255, 0) 70%),
+    linear-gradient(178deg, #111A2B 0%, #0C1422 100%);
+}
+
+/* Retícula estática del fallback: los mismos 34 px de celda que usa el shader,
+   con un desvanecido radial para que no llegue plana a los bordes. */
+.hero-fx-host::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: .85;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(180, 198, 226, .075) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(180, 198, 226, .075) 1px, transparent 1px);
+  background-size: 34px 34px;
+  -webkit-mask-image: radial-gradient(72% 72% at 50% 50%, #000 0%, transparent 100%);
+          mask-image: radial-gradient(72% 72% at 50% 50%, #000 0%, transparent 100%);
+}
+
+/* --- Canvas ----------------------------------------------------------------
+   Arranca invisible A PROPÓSITO. El JS le pone data-hero-fx-estado="listo"
+   recién después de dibujar el primer frame. Así nunca hay un canvas negro (ni
+   un flash) tapando el hero: sin JS, sin WebGL o en gama baja se queda en
+   opacity:0 y manda el fondo de arriba. */
+canvas[data-hero-fx] {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;   /* los clicks pasan de largo hacia los botones */
+  opacity: 0;
+  transition: opacity .45s linear;
+}
+
+canvas[data-hero-fx][data-hero-fx-estado="listo"] { opacity: 1; }
+
+/* Con reduced-motion no hay ni siquiera un fundido: aparece y listo. */
+@media (prefers-reduced-motion: reduce) {
+  canvas[data-hero-fx] { transition: none; }
+}
+
+/* --- Contenido -------------------------------------------------------------
+   El wrapper del texto tiene que quedar por encima del canvas. Esto es apilado,
+   no estilo: el tamaño, los colores y el ritmo del hero se definen aparte. */
+.hero-fx-contenido {
+  position: relative;
+  z-index: 1;
+}
+/* =============================================================================
+   4. SECCIONES Y COMPONENTES DE PÁGINA
+   Todo lo que sistema.css no cubre: nav, hero, proyectos con captura,
+   fundador, footer, chat y modal. Usa exclusivamente los tokens de arriba.
+============================================================================= */
+
+
+/* ---- Nav sticky --------------------------------------------------------- */
+.nav {
+  position: sticky; top: 0; z-index: 60;
+  background: rgba(17, 26, 43, .86);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--linea);
+}
+.nav__in {
+  display: flex; align-items: center; gap: var(--e-5);
+  padding-block: var(--e-3);
+}
+.nav__logo { display: flex; align-items: center; margin-right: auto; }
+.nav__logo img { height: 26px; width: auto; }
+.nav__links { display: flex; flex-wrap: wrap; gap: var(--e-2) var(--e-5); }
+.nav__links a {
+  font-family: var(--mono); font-size: var(--fs-mono);
+  letter-spacing: .07em; text-transform: uppercase;
+  color: var(--txt-2); text-decoration: none;
+}
+.nav__links a:hover { color: var(--acento-hover); }
+.nav__burger { display: none; }
+
+@media (max-width: 860px) {
+  .nav__links {
+    display: none;
+    position: absolute; inset: 100% 0 auto 0;
+    flex-direction: column; gap: 0;
+    /* Fondo OPACO: el panel se superpone al contenido y con blur no se lee. */
+    background: var(--bg-alt);
+    border-bottom: 1px solid var(--linea);
+    padding: var(--e-3) var(--gutter);
+  }
+  .nav__links.is-open { display: flex; }
+  .nav__links a { padding: var(--e-3) 0; border-bottom: 1px solid var(--linea); }
+  .nav__links a:last-child { border-bottom: 0; }
+  .nav__cta { display: none; }
+  .nav__burger {
+    /* 44x44 es el mínimo de WCAG 2.2 SC 2.5.8 (Target Size) */
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px; padding: 0;
+    background: none; border: 1px solid var(--linea-control);
+    border-radius: var(--radio-btn); color: var(--txt); cursor: pointer;
+  }
+}
+
+
+/* ---- Hero --------------------------------------------------------------- */
+.hero { position: relative; padding-block: clamp(48px, 7vw, 96px) clamp(40px, 5vw, 72px); }
+.hero__log {
+  display: flex; align-items: center; gap: var(--e-2);
+  font-family: var(--mono); font-size: var(--fs-mono);
+  letter-spacing: .1em; text-transform: uppercase; color: var(--acento-claro);
+  /* Alto reservado: el texto rota y sin esto empujaría el h1 (CLS). */
+  min-height: 1.4em;
+}
+.hero h1 { margin: var(--e-5) 0 0; }
+.hero h1 .acento { color: var(--acento); }   /* legal: es texto grande (≥46px) */
+.hero__pie {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--e-6); align-items: end;
+  margin-top: var(--e-6); padding-top: var(--e-5);
+  border-top: 1px solid var(--linea);
+}
+.hero__pie .lead { margin: 0; max-width: 46ch; }
+
+
+/* ---- Banda de métricas -------------------------------------------------- */
+.metrica b {
+  display: block;
+  font-family: var(--display); font-weight: 800;
+  font-size: clamp(38px, 4.4vw, 62px); line-height: 1;
+  letter-spacing: -.04em; color: var(--txt);
+  font-variant-numeric: tabular-nums;
+}
+.metrica span {
+  display: block; margin-top: var(--e-2);
+  font-family: var(--mono); font-size: var(--fs-mono-sm);
+  letter-spacing: .12em; text-transform: uppercase; color: var(--txt-metric);
+}
+
+
+/* ---- 01 · El problema --------------------------------------------------- */
+.problema__fila {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--e-3) var(--e-4);
+  padding: var(--e-4) 0; border-bottom: 1px solid var(--linea);
+  transition: background-color var(--t-rapido) var(--ease);
+}
+.problema__fila:hover,
+.problema__fila:focus-within { background: var(--tinte-hover); }
+.problema__num {
+  font-family: var(--mono); font-size: var(--fs-mono-sm);
+  color: var(--ambar); flex: none; min-width: 2.5em;
+}
+.problema__cuerpo { flex: 1 1 16rem; }
+.problema__cuerpo h3 { margin: 0 0 var(--e-1); }
+.problema__cuerpo p { margin: 0; color: var(--txt-2); font-size: var(--fs-body-sm); }
+/* El chip baja a su propio renglón cuando falta ancho. */
+.problema__fila .chip { flex: 0 1 auto; margin-left: auto; }
+
+
+/* ---- 03 · Proyectos con captura ----------------------------------------- */
+.proyecto { display: flex; flex-direction: column; }
+.proyecto__shot {
+  position: relative; overflow: hidden;
+  block-size: clamp(210px, 22vw, 280px);
+  background: var(--bg-alt);
+}
+.proyecto__shot img {
+  inline-size: 100%; block-size: 100%;
+  object-fit: cover; object-position: top left; display: block;
+  /* Estado en reposo: apagada. Se enciende cuando la tarjeta se ejecuta. */
+  filter: saturate(.35) brightness(.72);
+  transform: scale(1);
+  transition: filter var(--t-filtro) var(--ease), transform var(--t-scale) var(--ease);
+}
+.proyecto.is-activo .proyecto__shot img,
+.proyecto:hover .proyecto__shot img,
+.proyecto:focus-within .proyecto__shot img {
+  filter: saturate(1) brightness(1);
+  transform: scale(1.03);
+}
+/* Degradado para que el log se lea sobre cualquier captura. */
+.proyecto__shot::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  /* Arranca a .10 pero llega a .82 ANTES de donde empieza el log, para que las
+     capturas de dashboards claros no lo dejen por debajo de AA. */
+  background: linear-gradient(180deg, rgba(12,20,34,.10) 0%, rgba(12,20,34,.55) 34%,
+                              rgba(12,20,34,.88) 58%, rgba(12,20,34,.95) 100%);
+}
+.proyecto__tag {
+  position: absolute; top: var(--e-3); left: var(--e-3); z-index: 2;
+  display: inline-flex; align-items: center; gap: .45rem;
+  font-family: var(--mono); font-size: var(--fs-mono-xs);
+  letter-spacing: .14em; text-transform: uppercase; color: var(--txt);
+  background: rgba(7, 14, 28, .72); padding: .3rem .55rem;
+}
+/* Panel de log: decorativo, el contenido real vive en el cuerpo de la tarjeta. */
+.proyecto__log {
+  position: absolute; left: var(--e-3); right: var(--e-3); bottom: var(--e-6); z-index: 2;
+  display: grid; gap: .18rem;
+  font-family: var(--mono); font-size: var(--fs-mono-xs); line-height: 1.5;
+  opacity: 0; transform: translateY(10px);
+  transition: opacity var(--t-medio) var(--ease), transform var(--t-medio) var(--ease);
+}
+.proyecto.is-activo .proyecto__log,
+.proyecto:hover .proyecto__log,
+.proyecto:focus-within .proyecto__log { opacity: 1; transform: none; }
+.proyecto__metrica {
+  position: absolute; left: var(--e-3); right: var(--e-3); bottom: var(--e-3); z-index: 2;
+  display: flex; justify-content: space-between; align-items: baseline; gap: var(--e-2);
+  font-family: var(--mono); font-size: var(--fs-mono-sm); color: var(--txt-metric);
+}
+.proyecto__metrica b { color: var(--txt); font-weight: 500; font-variant-numeric: tabular-nums; }
+.proyecto__cuerpo { padding: var(--pad-card); flex: 1; }
+.proyecto__cuerpo h3 { margin: 0 0 var(--e-2); }
+.proyecto__cuerpo p { margin: 0; color: var(--txt-2); font-size: var(--fs-body-sm); }
+.proyecto__num {
+  float: right; font-family: var(--mono); font-size: var(--fs-mono-sm); color: var(--txt-num);
+}
+
+
+/* ---- 06 · Fundador ------------------------------------------------------ */
+.formacion { width: 100%; border-collapse: collapse; }
+.formacion th { text-align: left; font-weight: 600; padding: var(--e-3) 0; }
+.formacion td { text-align: right; color: var(--txt-2); padding: var(--e-3) 0; }
+.formacion tr { border-bottom: 1px solid var(--linea); }
+
+
+/* ---- Footer ------------------------------------------------------------- */
+.footer { border-top: 1px solid var(--linea); background: var(--bg-alt); }
+.footer__in {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--e-3) var(--e-5);
+  padding-block: var(--e-6);
+  font-family: var(--mono); font-size: var(--fs-mono-sm); color: var(--txt-mono);
+}
+.footer__marca { display: flex; align-items: center; gap: var(--e-3); }
+.footer__marca img { height: 22px; width: auto; }
+.footer__links { margin-left: auto; display: flex; flex-wrap: wrap; gap: var(--e-2) var(--e-4); }
+.footer__links a { color: var(--acento-claro); }
+
+
+/* =============================================================================
+   5. CHAT FLOTANTE
+   El markup lo genera chat.js — estas clases tienen que existir tal cual.
+============================================================================= */
+.chat-fab {
+  position: fixed; right: 18px; bottom: 18px; z-index: 90;
+  display: inline-flex; align-items: center; gap: .5rem;
+  padding: 12px 18px; border: 0; border-radius: 999px;
+  background: var(--acento); color: var(--sobre-acento);
+  font-family: var(--sans); font-size: .92rem; font-weight: 600;
+  cursor: pointer; box-shadow: 0 10px 30px -10px rgba(45,123,255,.7);
+  transition: background-color var(--t-rapido) var(--ease);
+}
+.chat-fab:hover { background: var(--acento-hover); }
+.chat-fab svg { width: 18px; height: 18px; }
+
+.chat-panel {
+  position: fixed; right: 18px; bottom: 18px; z-index: 95;
+  width: min(380px, calc(100vw - 36px));
+  max-height: min(560px, calc(100vh - 36px));
+  display: flex; flex-direction: column;
+  background: var(--bg-alt); border: 1px solid var(--linea-control);
+  box-shadow: 0 24px 60px -20px rgba(0,0,0,.7);
+}
+.chat-panel[hidden] { display: none; }
+.chat-head {
+  display: flex; align-items: center; gap: .6rem;
+  padding: var(--e-3) var(--e-4); border-bottom: 1px solid var(--linea);
+}
+.chat-head__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--verde); flex: none; }
+.chat-head__txt { display: grid; }
+.chat-head__t { font-weight: 600; font-size: .95rem; }
+.chat-head__s {
+  font-family: var(--mono); font-size: var(--fs-mono-xs);
+  letter-spacing: .1em; text-transform: uppercase; color: var(--txt-mono);
+}
+.chat-close {
+  margin-left: auto; background: none; border: 0; cursor: pointer;
+  color: var(--txt-2); font-size: 1.4rem; line-height: 1;
+  width: 32px; height: 32px; border-radius: var(--radio-btn);
+}
+.chat-close:hover { color: var(--txt); }
+.chat-msgs {
+  flex: 1; overflow-y: auto; padding: var(--e-4);
+  display: flex; flex-direction: column; gap: var(--e-3);
+}
+.msg {
+  max-width: 86%; padding: .55rem .8rem; font-size: .9rem; line-height: 1.45;
+  border-radius: 12px;
+}
+.msg--bot  { align-self: flex-start; background: rgba(238,244,255,.06); color: var(--txt-cuerpo); }
+.msg--user { align-self: flex-end;   background: var(--acento); color: var(--sobre-acento); }
+.chat-typing { display: inline-flex; gap: 4px; }
+.chat-typing span {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--txt-mono);
+  animation: chatDot 1.2s infinite;
+}
+.chat-typing span:nth-child(2) { animation-delay: .15s; }
+.chat-typing span:nth-child(3) { animation-delay: .3s; }
+@keyframes chatDot { 0%,100% { opacity: .25; } 50% { opacity: 1; } }
+.chat-chips { display: flex; flex-wrap: wrap; gap: .4rem; padding: 0 var(--e-4) var(--e-3); }
+.chat-chip {
+  font-family: var(--mono); font-size: var(--fs-mono-xs);
+  padding: .35rem .6rem; cursor: pointer;
+  background: none; border: 1px solid var(--linea-control);
+  border-radius: var(--radio-btn); color: var(--txt-2);
+}
+.chat-chip:hover { border-color: var(--acento); color: var(--txt); }
+.chat-input { display: flex; gap: .5rem; padding: var(--e-3) var(--e-4) var(--e-4); border-top: 1px solid var(--linea); }
+.chat-input input {
+  flex: 1; padding: .6rem .75rem; font: inherit; font-size: .9rem;
+  background: rgba(238,244,255,.05); border: 1px solid var(--linea-control);
+  border-radius: var(--radio-btn); color: var(--txt);
+}
+.chat-input input::placeholder { color: var(--txt-mono); }
+.chat-send {
+  flex: none; width: 42px; border: 0; border-radius: var(--radio-btn);
+  background: var(--acento); color: var(--sobre-acento); cursor: pointer;
+}
+.chat-send:hover { background: var(--acento-hover); }
+.chat-send:disabled { opacity: .5; cursor: default; }
+.chat-send svg { width: 18px; height: 18px; }
+
+
+/* =============================================================================
+   6. MODAL DE CERTIFICADOS
+   La mecánica la maneja app.js — estas clases tienen que existir tal cual.
+============================================================================= */
+.modal { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: var(--e-4); }
+.modal[hidden] { display: none; }
+.modal__backdrop { position: absolute; inset: 0; background: rgba(7,14,28,.78); }
+.modal__dialog {
+  position: relative; width: min(720px, 100%); max-height: 86vh;
+  display: flex; flex-direction: column;
+  background: var(--bg-alt); border: 1px solid var(--linea-control);
+}
+.modal__head {
+  display: flex; align-items: center; gap: var(--e-3);
+  padding: var(--e-4); border-bottom: 1px solid var(--linea);
+}
+.modal__head h3 { margin: 0; }
+.modal__close {
+  margin-left: auto; background: none; border: 0; cursor: pointer;
+  color: var(--txt-2); font-size: 1.6rem; line-height: 1;
+  width: 36px; height: 36px; border-radius: var(--radio-btn);
+}
+.modal__close:hover { color: var(--txt); }
+.modal__body { padding: var(--e-4); overflow-y: auto; }
+.certs { display: grid; gap: 2px; }
+.cert {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--e-2) var(--e-3);
+  padding: var(--e-3); outline: 1px solid var(--linea);
+  color: var(--txt); text-decoration: none;
+  transition: background-color var(--t-rapido) var(--ease);
+}
+a.cert:hover { background: var(--tinte-hover); }
+.cert .issuer {
+  font-family: var(--mono); font-size: var(--fs-mono-xs);
+  letter-spacing: .12em; text-transform: uppercase; color: var(--acento-claro);
+  flex: none; min-width: 9em;
+}
+.cert b { font-weight: 600; font-size: var(--fs-body-sm); }
+
+/* La fila "También corriendo" es compacta: sus títulos van a escala h4,
+   no a la escala de sección. (El prototipo los tiene como h4 de 19px.) */
+.card--extra h3 {
+  font-size: var(--fs-h4);
+  line-height: 1.25;
+  letter-spacing: -.01em;
+}
+.card--extra .btn { margin-top: var(--e-3); }
+
+/* ---- CTA final: banda full-bleed en acento ------------------------------
+   El fondo lo pone .sobre-acento. Acá va el espaciado y la inversión de los
+   botones: sobre el azul, el primario pasa a oscuro y el ghost a borde oscuro
+   (un botón azul sobre fondo azul no existiría). */
+.cta-final { padding-block: clamp(64px, 8vw, 120px); }
+.cta-final .lead { color: var(--cta-txt); max-width: 46ch; }
+/* Sin opacity: componer #00122E al 72% sobre el azul da 3.31:1 y falla AA. */
+.cta-final .label-mono { color: var(--cta-txt); min-height: 1.4em; }
+.cta-final .hero__pie { border-top-color: rgba(0,18,46,.28); }
+
+/* Los botones sobre acento ya los resuelve el sistema (4.79:1). */
+
+/* ---- Estados finales legibles sin movimiento ---------------------------
+   Con prefers-reduced-motion (y sin JS) el panel de log y las capturas se
+   quedaban en su estado APAGADO para siempre: opacity 0 y saturate(.35).
+   El default tiene que ser el estado final legible, no el transitorio.
+   Es la misma regla que declara la cabecera de app.js.                    */
+@media (prefers-reduced-motion: reduce) {
+  .proyecto__log { opacity: 1 !important; transform: none !important; }
+  .proyecto__shot img { filter: none !important; transform: none !important; }
+  .log-linea.is-off { color: var(--txt-log) !important; }
+}
+/* Sin JS tampoco hay quien encienda nada: si el script no confirmó que puede
+   manejar la rotación, el log y las capturas se muestran en su estado final. */
+html:not(.reveal-ready) .proyecto__log { opacity: 1; transform: none; }
+html:not(.reveal-ready) .proyecto__shot img { filter: none; transform: none; }
+
+/* ---- Correcciones de fidelidad contra el prototipo ---------------------- */
+
+/* Casos: los títulos de razón son h3 chicos, no escala de sección. */
+.razon__t { font-size: var(--fs-h4); line-height: 1.3; letter-spacing: -.01em; margin-bottom: var(--e-1); }
+
+/* Casos: los 2 casos se apilan a todo el ancho (no en 2 columnas angostas:
+   son párrafos de 6-7 renglones y quedaban ilegibles). */
+.reticula--casos { --col: 100%; }
+
+/* Servicios: el número va gigante y translúcido, como en el prototipo,
+   no como un label mono chico. */
+.card--servicio .num-card {
+  font-family: var(--display);
+  font-size: clamp(40px, 4.4vw, 64px);
+  font-weight: 800;
+  letter-spacing: -.04em;
+  line-height: 1;
+  color: rgba(45, 123, 255, .4);
+  margin-bottom: var(--e-4);
+}
+
+/* Los h2 de sección van en 700, no en 800 (el 800 se reserva al h1). */
+h2, .t-h2--sm, .t-h2--name, .t-h2--cta { font-weight: 700; }
+
+/* Espaciados finos detectados en la verificación visual. */
+.t-h2--name + .label-mono { margin-bottom: var(--e-4); }   /* rol → bio */
+.proyecto__log { bottom: calc(var(--e-6) + 6px); }          /* log → barra de métrica */
+.reticula--extras .label-mono { align-self: center; }       /* rótulo "También corriendo" */
+
+/* =============================================================================
+   Ajustes para pantallas táctiles
+   En móvil no hay hover: la captura de cada proyecto solo se encendía durante
+   su turno de rotación (4800 ms de un ciclo de 28 800 ms = 17% del tiempo).
+   O sea que las 6 pruebas de trabajo real se veían grises el 83% del tiempo.
+   En táctil van siempre a color.
+============================================================================= */
+@media (hover: none) {
+  .proyecto__shot img { filter: none; transform: none; }
+  .proyecto.is-activo .proyecto__shot img { transform: none; }
+  /* El log sí sigue el ciclo: es lo que muestra que el sistema "corre". */
+}
+
+/* ---- Casos: Antes / Hoy ------------------------------------------------- */
+.caso { display: grid; gap: var(--e-2); }
+.caso .label-mono--xs { color: var(--acento-claro); margin-bottom: var(--e-1); }
+.caso__antes, .caso__hoy { margin: 0; font-size: var(--fs-body-sm); line-height: 1.6; }
+.caso__antes { color: var(--txt-2); }
+.caso__hoy   { color: var(--txt-cuerpo); }
+.caso__antes b:first-child { color: var(--ambar); font-weight: 600; }
+.caso__hoy   b:first-child { color: var(--verde); font-weight: 600; }
+.caso__dato  { color: var(--txt); font-weight: 600; }
+
+/* =============================================================================
+   Barra de acción en móvil
+   Con ~11 pantallas de scroll, quien se convence a la mitad tenía que seguir
+   bajando hasta el final para encontrar un botón. Aparece recién pasada la
+   sección de proyectos (interés real) y se esconde al llegar al CTA, donde el
+   botón ya está en pantalla. Solo en táctil: en desktop no hace falta.
+============================================================================= */
+.barra-cta { display: none; }
+
+@media (hover: none) {
+  .barra-cta {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 88;
+    display: flex; gap: 8px; align-items: center;
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+    background: rgba(12, 20, 34, .94);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid var(--linea-control);
+    transform: translateY(110%);
+    transition: transform .28s var(--ease);
+  }
+  .barra-cta.is-visible { transform: none; }
+  .barra-cta__wa {
+    flex: 1; justify-content: center;
+    padding: 14px 18px; font-size: 15px;
+  }
+  .barra-cta__chat {
+    flex: none; width: 52px; height: 52px; padding: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .barra-cta__chat svg { width: 22px; height: 22px; }
+  /* El FAB del chat se retira: su función pasa a la barra. */
+  .chat-fab { display: none; }
+  /* El panel del chat sube para no quedar tapado por la barra. */
+  .chat-panel { bottom: 76px; max-height: min(520px, calc(100vh - 100px)); }
+}
+@media (hover: none) and (prefers-reduced-motion: reduce) {
+  .barra-cta { transition: none; }
 }
