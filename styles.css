@@ -1434,3 +1434,16 @@ h2, .t-h2--sm, .t-h2--name, .t-h2--cta { font-weight: 700; }
   font-style: normal;
   color: var(--txt-mono);
 }
+
+/* ---- Modal de certificados: agrupado ------------------------------------ */
+.certs__grupo {
+  margin: var(--e-4) 0 var(--e-1);
+  font-family: var(--mono); font-size: var(--fs-mono-xs);
+  letter-spacing: .14em; text-transform: uppercase; color: var(--txt-mono);
+}
+.certs__grupo:first-child { margin-top: 0; }
+.cert__nota {
+  font-family: var(--mono); font-size: var(--fs-mono-xs);
+  font-weight: 400; color: var(--txt-mono); letter-spacing: .08em;
+  margin-left: .5rem;
+}
