@@ -2050,14 +2050,28 @@ h2, .t-h2--sm, .t-h2--name, .t-h2--cta { font-weight: 700; }
    Por eso se recorta el aire, baja la escala del titular y los botones quedan
    después de la demo. En escritorio nada de esto aplica. */
 @media (max-width: 999px) {
-  .hero { padding-block: var(--e-6) var(--e-7); }
-  .hero__log { font-size: 10.5px; letter-spacing: .07em; }
-  .hero h1 { margin-top: var(--e-4); font-size: clamp(34px, 10.4vw, 52px); }
-  .hero .lead { margin: var(--e-4) 0 0; font-size: var(--fs-body-sm); }
-  .hero__demo { margin-top: var(--e-5); }
-  .hero__acciones { margin-top: var(--e-6); }
-  .tel { height: 268px; }
-  .libreta__lista { height: 79px; }        /* 2 filas visibles; el resto llega al escribir */
+  /* Todo este bloque existe para que la demo entre en el primer pantallazo de
+     un celular REAL: no los 844px del viewport nominal, sino los ~700 que
+     quedan una vez que el navegador pone su barra de direcciones y la de
+     navegación. Con 844 entraba; con 700 quedaba cortada y había que
+     scrollear, que es justo lo que la demo no puede pedir. */
+  .hero { padding-block: var(--e-5) var(--e-6); }
+  .hero__log { font-size: 10px; letter-spacing: .06em; }
+  .hero h1 { margin-top: var(--e-3); font-size: clamp(30px, 9.2vw, 46px); }
+  .hero .lead { margin: var(--e-3) 0 0; font-size: 13.5px; line-height: 1.5; }
+  .hero__demo { margin-top: var(--e-4); }
+  .hero__acciones { margin-top: var(--e-5); }
+  .rubros button { padding: 8px 3px; }
+  .cadena { margin-top: 8px; gap: 8px; }
+  .tel { height: 214px; }
+  .tel__cab { padding: 8px 12px; }
+  .tel__ava { width: 28px; height: 28px; font-size: 13px; }
+  .tel__hilo { padding: 11px 11px; gap: 6px; }
+  .glob { font-size: 13px; padding: 6px 10px 7px; }
+  .tel__pie { padding: 7px 9px; }
+  .libreta__lista { height: 74px; }        /* 2 filas; el JS trae a la vista la que se agenda */
+  .cita { padding: 7px 12px; }
+  .demo__pie { margin-top: 8px; font-size: 10px; }
 }
 
 @media (min-width: 1000px) {
@@ -2072,4 +2086,18 @@ h2, .t-h2--sm, .t-h2--name, .t-h2--cta { font-weight: 700; }
   .hero__demo     { grid-area: demo; align-self: center; }
   .hero__acciones { grid-area: acciones; align-self: start; margin-top: var(--e-6);
                     padding-top: var(--e-5); border-top: 1px solid var(--linea); }
+}
+
+/* ---- Celulares de pantalla baja -----------------------------------------
+   El limitante no es el ancho sino el ALTO: un iPhone SE deja ~640px útiles y
+   un celular común con las dos barras del navegador ronda los 700. Con la
+   escala normal, la agenda —donde cae el turno, o sea el remate de la demo—
+   quedaba abajo del fold. Se recorta hasta que entre. */
+@media (max-width: 999px) and (max-height: 720px) {
+  .hero { padding-block: var(--e-4) var(--e-5); }
+  .hero h1 { font-size: clamp(26px, 8vw, 38px); }
+  .hero .lead { font-size: 12.5px; }
+  .tel { height: 172px; }
+  .glob { font-size: 12.5px; }
+  .demo__pie { display: none; }   /* el campo de texto ya invita a escribir */
 }
