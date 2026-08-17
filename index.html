@@ -805,13 +805,13 @@
 <!-- hero-fx.js salió del sitio: el canvas WebGL fue reemplazado por la demo en
      vivo del hero. El fuente queda en el repo por si alguna vez se retoma, pero
      no se sirve — 12,5 KB y un loop de GPU permanente para decoración. -->
-<script src="app.js" defer></script>
-<script src="demo-hero.min.js" defer></script>
-<script src="chat.js" defer></script>
+<script src="app.js?v=4fe7ecee" defer></script>
+<script src="demo-hero.min.js?v=75b1d7f4" defer></script>
+<script src="chat.js?v=c834c38c" defer></script>
 <!-- motion.js trae el `defer` escrito acá (los tres de arriba lo reciben de build.py)
      y `fetchpriority="low"` para no competir con las fuentes tardías: sin eso costaba
      +150 ms de LCP. No carga GSAP hasta que el visitante se acerca a 900 px del primer
      [data-m], así que quien lee el hero y se va no descarga un byte. -->
-<script src="motion.min.js" defer fetchpriority="low"></script>
+<script src="motion.min.js?v=b862ba3f" defer fetchpriority="low"></script>
 </body>
 </html>
