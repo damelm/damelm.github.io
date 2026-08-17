@@ -2101,3 +2101,49 @@ h2, .t-h2--sm, .t-h2--name, .t-h2--cta { font-weight: 700; }
   .glob { font-size: 12.5px; }
   .demo__pie { display: none; }   /* el campo de texto ya invita a escribir */
 }
+
+/* ---- Campo de escritura de la demo: cómodo de usar de verdad -------------
+   16px es un umbral, no una preferencia estética: por debajo de eso Safari en
+   iOS hace zoom automático al enfocar el campo, la página salta de escala y el
+   visitante queda peleando con el navegador en vez de probando el producto.
+   El botón sube a 40px para acercarse al mínimo táctil recomendado. */
+.tel__pie { padding: 10px; gap: 8px; }
+.tel__pie input {
+  font-size: 16px;
+  padding: 11px 15px;
+  border-radius: 21px;
+}
+.tel__pie button { width: 40px; height: 40px; }
+.tel__pie button svg { width: 18px; height: 18px; }
+
+/* La bajada y los botones, ahora hermanos de la demo en el DOM. */
+.hero__lead { max-width: 52ch; }
+
+@media (max-width: 999px) {
+  .hero__lead { margin: var(--e-5) 0 0; font-size: 13.5px; line-height: 1.55; }
+  /* Se recupera parte del alto que gana el campo más grande. */
+  .tel { height: 206px; }
+  .tel__pie { padding: 8px 9px; }
+  .tel__pie input { padding: 10px 14px; }
+}
+@media (max-width: 999px) and (max-height: 720px) {
+  .hero__lead { margin-top: var(--e-4); font-size: 12.5px; }
+  .tel { height: 168px; }
+}
+@media (min-width: 1000px) {
+  .hero__grid {
+    grid-template-areas: "texto demo" "lead demo" "acciones demo";
+    grid-template-rows: auto auto 1fr;
+  }
+  .hero__lead { grid-area: lead; margin: var(--e-5) 0 0; }
+  .hero__acciones { margin-top: var(--e-5); }
+}
+
+/* En escritorio la demo se alineaba al centro de la columna de texto, que con
+   titular + bajada + botones es alta: eso la empujaba fuera del primer
+   pantallazo. Arranca arriba, junto al titular, que es donde tiene que estar. */
+@media (min-width: 1000px) {
+  .hero__demo { align-self: start; }
+  .tel { height: 316px; }
+  .libreta__lista { height: 118px; }
+}
