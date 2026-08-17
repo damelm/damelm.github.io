@@ -33,6 +33,7 @@
   const RUBROS = {
     salud: {
       ini: 'C', quien: 'Consultorio', titulo: 'Agenda de hoy', pedir: 'Pedí un turno…',
+      horarios: ['15:00', '16:10', '17:20', '18:40', '09:30', '11:00'],
       previos: [['09:00', 'M. Gauto', '30 min'], ['11:30', 'R. Benítez', '30 min']],
       guion: [
         ['Hola, necesito un turno', 'mia', null],
@@ -51,6 +52,7 @@
     },
     gastro: {
       ini: 'R', quien: 'Restaurante', titulo: 'Reservas de hoy', pedir: 'Reservá una mesa…',
+      horarios: ['19:30', '20:30', '21:00', '21:30', '22:00'],
       previos: [['20:00', 'Fam. Cáceres', '4 pers.'], ['20:30', 'J. Rolón', '2 pers.']],
       guion: [
         ['Buenas, ¿tienen mesa para hoy?', 'mia', null],
@@ -69,6 +71,7 @@
     },
     estudio: {
       ini: 'E', quien: 'Estudio contable', titulo: 'Reuniones de hoy', pedir: 'Pedí una reunión…',
+      horarios: ['15:00', '16:00', '17:00', '09:00', '10:30'],
       previos: [['10:00', 'V. Cabral', 'IVA'], ['12:00', 'F. Ovelar', 'Balance']],
       guion: [
         ['Hola, necesito asesoría por el IVA', 'mia', null],
@@ -93,6 +96,14 @@
   let citas = 0;
   let historial = [];
 
+  /* Cada cambio de rubro abre una "generación" nueva. Limpiar el hilo no
+     alcanzaba: el guion es una secuencia con pausas, y al cambiar de rubro
+     seguía vivo dormido en un await — cuando despertaba escribía sus globos en
+     la conversación nueva y se mezclaban las tres. Ahora todo lo que escribe
+     verifica primero que su generación siga siendo la vigente. */
+  let generacion = 0;
+  const vigente = gen => gen === generacion;
+
   const hora = () => new Date().toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' });
   const esperar = ms => new Promise(r => setTimeout(r, reduce ? 40 : ms));
 
@@ -107,7 +118,7 @@
     hilo.scrollTop = hilo.scrollHeight;
   }
 
-  async function pensando(ms) {
+  async function pensando(ms, gen) {
     const p = document.createElement('div');
     p.className = 'puntos';
     p.innerHTML = '<i></i><i></i><i></i>';
@@ -115,9 +126,31 @@
     hilo.scrollTop = hilo.scrollHeight;
     await esperar(ms);
     p.remove();
+    return gen === undefined || vigente(gen);
+  }
+
+  /* ── Horarios ──────────────────────────────────────────────────────────
+     La agenda no puede aceptar dos cosas a la misma hora: un sistema que pisa
+     turnos no es el que estamos vendiendo. Si el horario pedido está ocupado
+     se busca el siguiente libre del rubro y el bot lo dice. */
+  const ocupadas = () =>
+    new Set([...lista.children].map(c => c.querySelector('time').textContent));
+
+  function estaOcupada(h) { return ocupadas().has(h); }
+
+  function proximaLibre(desde) {
+    const usadas = ocupadas();
+    const libres = RUBROS[rubro].horarios
+      .filter(h => !usadas.has(h) && h !== desde)
+      .sort();
+    // Se prefiere un horario POSTERIOR al pedido: si alguien pide las 17:20 y
+    // se le ofrece las 15:00, suena a que no se entendió. Recién si no queda
+    // nada más tarde se propone uno anterior.
+    return libres.find(h => h > desde) || libres[0] || null;
   }
 
   function agendar([h, quien, detalle], nueva) {
+    if (estaOcupada(h)) return false;
     const d = document.createElement('div');
     d.className = 'cita' + (nueva ? ' nueva' : '');
     const t = document.createElement('time'); t.textContent = h;
@@ -137,6 +170,7 @@
       const tope = d.offsetTop - (lista.clientHeight - d.offsetHeight);
       if (tope > 0) lista.scrollTo({ top: tope, behavior: reduce ? 'auto' : 'smooth' });
     }
+    return true;
   }
 
   function pintarRubro() {
@@ -150,14 +184,21 @@
     R.previos.forEach(c => agendar(c, false));
   }
 
-  async function correrGuion() {
+  async function correrGuion(gen) {
     for (const [txt, quien, cita] of RUBROS[rubro].guion) {
-      if (tomado) return;
+      if (tomado || !vigente(gen)) return;
       await esperar(quien === 'mia' ? 950 : 700);
-      if (tomado) return;
-      if (quien === 'suya') { await pensando(620); if (tomado) return; }
+      if (tomado || !vigente(gen)) return;
+      if (quien === 'suya') {
+        const sigue = await pensando(620, gen);
+        if (tomado || !sigue) return;
+      }
       decir(txt, quien);
-      if (cita) { await esperar(340); agendar(cita, true); }
+      if (cita) {
+        await esperar(340);
+        if (!vigente(gen)) return;
+        agendar(cita, true);
+      }
     }
   }
 
@@ -165,7 +206,7 @@
      Se le pregunta al Worker, que corre el modelo haciendo de recepcionista
      del rubro elegido. Si no contesta a tiempo o falla, responden las reglas
      locales: una demo muda es peor que una demo simple. */
-  async function responder(texto) {
+  async function responder(texto, gen) {
     const R = RUBROS[rubro];
     let respuesta = null, turno = null;
 
@@ -198,37 +239,67 @@
       respuesta = txt; turno = cita;
     }
 
+    if (!vigente(gen)) return;   // cambió de rubro mientras se esperaba al Worker
+
+    /* Choque de horario. Si el turno propuesto pisa uno existente, se corrige
+       ANTES de mostrar la respuesta: el bot ofrece el siguiente libre en vez de
+       anunciar una hora que no va a poder dar. Antes agendaba encima sin decir
+       nada, que es exactamente lo que un sistema de turnos no puede hacer. */
+    if (turno && estaOcupada(turno[0])) {
+      const alterna = proximaLibre(turno[0]);
+      if (alterna) {
+        respuesta = `Las ${turno[0]} ya están tomadas. Te puedo dar ${alterna}, ¿te sirve?`;
+        turno = [alterna, turno[1], turno[2]];
+      } else {
+        respuesta = `Hoy ya tengo todo ocupado. ¿Te busco lugar para mañana?`;
+        turno = null;
+      }
+    }
+
     decir(respuesta, 'suya');
     historial.push({ role: 'user', content: texto }, { role: 'assistant', content: respuesta });
-    if (turno) { await esperar(340); agendar(turno, true); }
+    if (turno) {
+      await esperar(340);
+      if (vigente(gen)) agendar(turno, true);
+    }
   }
 
   form.addEventListener('submit', async e => {
     e.preventDefault();
     const txt = entrada.value.trim();
     if (!txt) return;
+    const gen = generacion;
     tomado = true; clearTimeout(tGuion);
     decir(txt, 'mia');
     entrada.value = '';
-    await pensando(500);
-    await responder(txt);
+    if (!await pensando(500, gen)) return;
+    await responder(txt, gen);
   });
 
   raiz.querySelectorAll('.rubros button').forEach(b => {
     b.addEventListener('click', () => {
+      if (b.dataset.rubro === rubro) return;      // ya está elegido
       raiz.querySelectorAll('.rubros button')
         .forEach(o => o.setAttribute('aria-pressed', String(o === b)));
       rubro = b.dataset.rubro;
+      // Invalida todo lo que esté en vuelo: guiones dormidos en una pausa y
+      // respuestas del Worker que todavía no volvieron.
+      generacion++;
+      const gen = generacion;
       tomado = false; clearTimeout(tGuion);
       pintarRubro();
-      tGuion = setTimeout(correrGuion, 420);
+      tGuion = setTimeout(() => correrGuion(gen), 420);
     });
   });
 
   /* Arranca cuando el hero está a la vista. Si el visitante entró y se fue
      sin mirar, no corrió ni un timer. */
   pintarRubro();
-  const arrancar = () => { if (!tomado) tGuion = setTimeout(correrGuion, 500); };
+  const arrancar = () => {
+    if (tomado) return;
+    const gen = generacion;
+    tGuion = setTimeout(() => correrGuion(gen), 500);
+  };
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver(es => {
       if (es[0].isIntersecting) { io.disconnect(); arrancar(); }
