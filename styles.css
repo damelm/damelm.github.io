@@ -1944,7 +1944,7 @@ h2, .t-h2--sm, .t-h2--name, .t-h2--cta { font-weight: 700; }
 .tel {
   background: var(--wa-chat); border: 1px solid var(--linea); border-radius: 14px;
   overflow: hidden; display: flex; flex-direction: column;
-  height: 320px;                       /* reservado: el hilo se llena por JS */
+  height: min(46dvh, 420px);           /* reservado: el hilo se llena por JS */
 }
 .tel__cab {
   display: flex; align-items: center; gap: 10px; padding: 10px 13px;
@@ -2002,7 +2002,7 @@ h2, .t-h2--sm, .t-h2--name, .t-h2--cta { font-weight: 700; }
 .libreta__cab b { color: var(--verde); font-weight: 500; font-variant-numeric: tabular-nums; }
 /* overflow auto y no hidden: el JS scrollea hasta el turno recién agendado
    cuando no entra en la ventana visible. */
-.libreta__lista { display: flex; flex-direction: column; height: 118px; overflow-y: auto; scrollbar-width: none; }
+.libreta__lista { display: flex; flex-direction: column; height: 111px; overflow-y: auto; scrollbar-width: none; }
 .libreta__lista::-webkit-scrollbar { display: none; }
 .cita {
   display: flex; align-items: center; gap: 11px; padding: 8px 12px;
@@ -2036,8 +2036,6 @@ h2, .t-h2--sm, .t-h2--name, .t-h2--cta { font-weight: 700; }
   .hero__grid { display: grid; grid-template-columns: 1fr .92fr; gap: clamp(32px, 4vw, 64px); align-items: center; }
   .hero__demo { margin-top: 0; }
   .hero__pie { grid-template-columns: 1fr; }
-  .tel { height: 360px; }
-  .libreta__lista { height: 154px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .glob, .cita.nueva { animation: none; }
@@ -2063,13 +2061,11 @@ h2, .t-h2--sm, .t-h2--name, .t-h2--cta { font-weight: 700; }
   .hero__acciones { margin-top: var(--e-5); }
   .rubros button { padding: 8px 3px; }
   .cadena { margin-top: 8px; gap: 8px; }
-  .tel { height: 214px; }
   .tel__cab { padding: 8px 12px; }
   .tel__ava { width: 28px; height: 28px; font-size: 13px; }
   .tel__hilo { padding: 11px 11px; gap: 6px; }
   .glob { font-size: 13px; padding: 6px 10px 7px; }
   .tel__pie { padding: 7px 9px; }
-  .libreta__lista { height: 74px; }        /* 2 filas; el JS trae a la vista la que se agenda */
   .cita { padding: 7px 12px; }
   .demo__pie { margin-top: 8px; font-size: 10px; }
 }
@@ -2097,7 +2093,6 @@ h2, .t-h2--sm, .t-h2--name, .t-h2--cta { font-weight: 700; }
   .hero { padding-block: var(--e-4) var(--e-5); }
   .hero h1 { font-size: clamp(26px, 8vw, 38px); }
   .hero .lead { font-size: 12.5px; }
-  .tel { height: 172px; }
   .glob { font-size: 12.5px; }
   .demo__pie { display: none; }   /* el campo de texto ya invita a escribir */
 }
@@ -2122,13 +2117,11 @@ h2, .t-h2--sm, .t-h2--name, .t-h2--cta { font-weight: 700; }
 @media (max-width: 999px) {
   .hero__lead { margin: var(--e-5) 0 0; font-size: 13.5px; line-height: 1.55; }
   /* Se recupera parte del alto que gana el campo más grande. */
-  .tel { height: 206px; }
   .tel__pie { padding: 8px 9px; }
   .tel__pie input { padding: 10px 14px; }
 }
 @media (max-width: 999px) and (max-height: 720px) {
   .hero__lead { margin-top: var(--e-4); font-size: 12.5px; }
-  .tel { height: 168px; }
 }
 @media (min-width: 1000px) {
   .hero__grid {
@@ -2144,6 +2137,24 @@ h2, .t-h2--sm, .t-h2--name, .t-h2--cta { font-weight: 700; }
    pantallazo. Arranca arriba, junto al titular, que es donde tiene que estar. */
 @media (min-width: 1000px) {
   .hero__demo { align-self: start; }
-  .tel { height: 316px; }
-  .libreta__lista { height: 118px; }
+}
+
+
+/* ---- Alturas de la demo: fuente unica -----------------------------------
+   Prioridad: que la demo sea COMODA de usar. No que entre todo en el fold.
+   Si el copy y los botones quedan abajo, se scrollea y no pasa nada; un chat
+   de 170px donde entran dos globos, en cambio, no invita a escribir.
+
+   `dvh` y no `vh`: en un celular, vh cuenta la pantalla entera e ignora las
+   barras del navegador, asi que el chat quedaba mas alto que el espacio real.
+   dvh usa el viewport que de verdad hay.
+
+   Cualquier ajuste de estas alturas se hace ACA. Habia siete reglas peleandose
+   por la cascada y ese es el motivo de que este bloque exista. */
+.tel            { height: min(42dvh, 400px); }
+.libreta__lista { height: 74px; }               /* 2 filas: el JS scrollea hasta la que se agenda */
+
+@media (min-width: 1000px) {
+  .tel            { height: min(54dvh, 460px); }
+  .libreta__lista { height: 148px; }            /* 4 filas */
 }
