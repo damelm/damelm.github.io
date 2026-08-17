@@ -2158,3 +2158,24 @@ h2, .t-h2--sm, .t-h2--name, .t-h2--cta { font-weight: 700; }
   .tel            { height: min(54dvh, 460px); }
   .libreta__lista { height: 148px; }            /* 4 filas */
 }
+
+/* ---- Titular del hero: escala por CONTENEDOR, no por viewport ------------
+   El sistema dimensiona .t-h1 con una escala fluida atada al ancho de la
+   VENTANA. Eso funcionaba cuando el hero era de una sola columna. Desde que la
+   demo ocupa la mitad derecha, el titular vive en una columna de ~670px
+   mientras su tamaño se sigue calculando contra 1920: crecia a 150px, pedia
+   784px de ancho y tenia 667. Resultado: "TU WHATSAPP" perdia la P final.
+
+   Estaba roto en los CINCO anchos de escritorio (1024 a 2560), no solo en
+   monitores grandes. Se detecto con la auditoria de nueve anchos, despues de
+   haberlo "arreglado" tres veces mirando solo el celular.
+
+   `cqi` mide el ancho del contenedor, asi que el titular se ajusta a la
+   columna que le toque sin importar el tamaño de la ventana. El 17% sale de la
+   proporcion real de la fuente: "TU WHATSAPP" en Bricolage 800 mide 5,23 veces
+   su tamaño, o sea que 1/5,23 = 19% llenaria la columna exacta; 17% deja aire.
+   El min() con 150px conserva el techo del sistema. */
+@media (min-width: 1000px) {
+  .hero__texto { container-type: inline-size; }
+  .hero__texto h1 { font-size: min(17cqi, 150px); }
+}

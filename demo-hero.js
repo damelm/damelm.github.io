@@ -213,10 +213,22 @@
     try {
       const corte = new AbortController();
       const reloj = setTimeout(() => corte.abort(), 7000);
+      /* La agenda viaja con cada mensaje. Sin esto el Worker recita una lista
+         de horarios escrita a mano en su prompt y ofrece turnos que ya están
+         tomados, porque el estado real solo existe acá. Una sola fuente de
+         verdad: la agenda que el visitante está viendo. */
+      const tomados = [...ocupadas()];
       const res = await fetch(WORKER, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: texto, modo: 'demo', rubro, history: historial.slice(-6) }),
+        body: JSON.stringify({
+          question: texto, modo: 'demo', rubro,
+          agenda: {
+            ocupados: tomados,
+            libres: R.horarios.filter(h => !tomados.includes(h)),
+          },
+          history: historial.slice(-6),
+        }),
         signal: corte.signal,
       });
       clearTimeout(reloj);
