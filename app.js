@@ -172,14 +172,17 @@
     }, ms);
     cicloEnViewport(el, c);
   }
-  // El primer texto de cada lista tiene que ser IDÉNTICO al que está escrito en
-  // page.html: el rotador arranca en el índice 0 y recién en el primer tick pasa
-  // al 1. Si no coinciden, la línea salta apenas carga el JS.
+  // Dos reglas para esta lista:
+  // 1. El primer texto tiene que ser IDÉNTICO al que está escrito en page.html:
+  //    el rotador arranca en el índice 0 y recién en el primer tick pasa al 1.
+  //    Si no coinciden, la línea salta apenas carga el JS.
+  // 2. Cortos. En un celular angosto, una frase de más de ~34 caracteres se va
+  //    a dos renglones y empuja media página hacia abajo en cada rotación.
   rotador(document.querySelector('[data-hero-log]'), [
-    'congelados · consulta resuelta sin intervención',
-    'congelados · pedido tomado y derivado a reparto',
-    'senderwa · 449 mensajes enviados hoy',
-    'northstar · 18 consultas calificadas este mes'
+    'congelados · consulta resuelta',
+    'congelados · pedido a reparto',
+    'senderwa · 449 enviados hoy',
+    'northstar · 18 consultas del mes'
   ], 2600);
   rotador(document.querySelector('[data-cta-chat]'), [
     'Te respondemos en minutos.',

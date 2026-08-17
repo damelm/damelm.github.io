@@ -904,79 +904,11 @@ summary:focus-visible,
   .skip { transition: none; }
 }
 
-/* =============================================================================
-   Zeeben Labs · hero-fx — estilos mínimos del canvas y su contenedor.
-   -----------------------------------------------------------------------------
-   Sólo posicionamiento, apilado y el fondo estático de fallback.
-   Nada del titular, del lead ni de los botones: eso va en styles.css.
-   ============================================================================= */
+/* El bloque de estilos del canvas WebGL (hero-fx) se elimino de aca: el hero
+   paso a tener la demo en vivo y el canvas salio del sitio. El fondo que
+   estaba en .hero-fx-host —degradado y reticula— se conservo y hoy vive en
+   .hero, en la seccion 8. */
 
-/* --- Contenedor ------------------------------------------------------------
-   `isolation:isolate` crea un contexto de apilado propio, así el z-index del
-   canvas no compite con la nav ni con el chat.
-   `overflow:hidden` evita que el canvas genere scroll horizontal en mobile.
-
-   El background de acá es el FALLBACK: se ve siempre, y queda tapado por el
-   canvas (que es opaco) sólo cuando el efecto arrancó. Si no hay WebGL, si el
-   device es de gama baja o si no corre el JS, esto es lo que se ve. */
-.hero-fx-host {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  background-color: #111A2B;
-  background-image:
-    radial-gradient(52% 62% at 24% 46%, rgba(45, 123, 255, .10) 0%, rgba(45, 123, 255, 0) 70%),
-    linear-gradient(178deg, #111A2B 0%, #0C1422 100%);
-}
-
-/* Retícula estática del fallback: los mismos 34 px de celda que usa el shader,
-   con un desvanecido radial para que no llegue plana a los bordes. */
-.hero-fx-host::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  opacity: .85;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(180, 198, 226, .075) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(180, 198, 226, .075) 1px, transparent 1px);
-  background-size: 34px 34px;
-  -webkit-mask-image: radial-gradient(72% 72% at 50% 50%, #000 0%, transparent 100%);
-          mask-image: radial-gradient(72% 72% at 50% 50%, #000 0%, transparent 100%);
-}
-
-/* --- Canvas ----------------------------------------------------------------
-   Arranca invisible A PROPÓSITO. El JS le pone data-hero-fx-estado="listo"
-   recién después de dibujar el primer frame. Así nunca hay un canvas negro (ni
-   un flash) tapando el hero: sin JS, sin WebGL o en gama baja se queda en
-   opacity:0 y manda el fondo de arriba. */
-canvas[data-hero-fx] {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;   /* los clicks pasan de largo hacia los botones */
-  opacity: 0;
-  transition: opacity .45s linear;
-}
-
-canvas[data-hero-fx][data-hero-fx-estado="listo"] { opacity: 1; }
-
-/* Con reduced-motion no hay ni siquiera un fundido: aparece y listo. */
-@media (prefers-reduced-motion: reduce) {
-  canvas[data-hero-fx] { transition: none; }
-}
-
-/* --- Contenido -------------------------------------------------------------
-   El wrapper del texto tiene que quedar por encima del canvas. Esto es apilado,
-   no estilo: el tamaño, los colores y el ritmo del hero se definen aparte. */
-.hero-fx-contenido {
-  position: relative;
-  z-index: 1;
-}
 /* =============================================================================
    4. SECCIONES Y COMPONENTES DE PÁGINA
    Todo lo que sistema.css no cubre: nav, hero, proyectos con captura,
@@ -1037,8 +969,20 @@ canvas[data-hero-fx][data-hero-fx-estado="listo"] { opacity: 1; }
   display: flex; align-items: center; gap: var(--e-2);
   font-family: var(--mono); font-size: var(--fs-mono);
   letter-spacing: .1em; text-transform: uppercase; color: var(--acento-claro);
-  /* Alto reservado: el texto rota y sin esto empujaría el h1 (CLS). */
-  min-height: 1.4em;
+  /* Alto FIJO, no mínimo: el texto rota entre frases de largo distinto y en
+     pantallas angostas unas entran en un renglón y otras en dos. Con
+     min-height la línea crecía a la segunda frase y empujaba el titular, la
+     bajada y todo el resto de la página hacia abajo, a cada rotación.
+     El nowrap + overflow son la red: si alguien agrega una frase larga, se
+     recorta en vez de romper el layout. */
+  height: 1.5em;
+  overflow: hidden;
+}
+.hero__log > span:last-child {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .hero h1 { margin: var(--e-5) 0 0; }
 .hero h1 .acento { color: var(--acento); }   /* legal: es texto grande (≥46px) */
@@ -1942,4 +1886,190 @@ h2, .t-h2--sm, .t-h2--name, .t-h2--cta { font-weight: 700; }
    y más entre renglones. */
 @media (max-width: 400px) {
   .clientes__lista { gap: var(--e-4) var(--e-5); }
+}
+
+
+/* =============================================================================
+   8. HERO CON DEMO EN VIVO
+   Reemplaza al canvas WebGL. El fondo (degradado + retícula) se hereda de lo
+   que antes era .hero-fx-host: se conserva el carácter visual sin el costo de
+   GPU, y el lugar del canvas lo ocupa una demostración del producto.
+
+   Regla que gobierna todo el bloque: las dos cajas tienen alto reservado y se
+   llenan por JS. Si demo-hero.js no carga, el hero se lee completo igual y
+   nada se mueve al aparecer el contenido (CLS).
+============================================================================= */
+.hero {
+  isolation: isolate;
+  overflow: hidden;
+  background-color: #111A2B;
+  background-image:
+    radial-gradient(52% 62% at 24% 46%, rgba(45, 123, 255, .10) 0%, rgba(45, 123, 255, 0) 70%),
+    linear-gradient(178deg, #111A2B 0%, #0C1422 100%);
+}
+.hero::before {
+  content: "";
+  position: absolute; inset: 0; z-index: 0;
+  opacity: .85; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(180, 198, 226, .075) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(180, 198, 226, .075) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: radial-gradient(ellipse 76% 66% at 30% 44%, #000 34%, transparent 76%);
+}
+.hero__grid { position: relative; z-index: 1; }
+.hero__texto { min-width: 0; }
+
+/* Paleta de WhatsApp. Vive acotada a este bloque a propósito: no son colores
+   de la marca, son los de la app que estamos representando. */
+.hero__demo {
+  --wa: #25D366; --wa-chat: #0B141A; --wa-mia: #005C4B; --wa-suya: #202C33;
+  margin-top: var(--e-7);
+  min-width: 0;
+}
+
+.rubros { display: flex; gap: 2px; background: var(--linea); border: 1px solid var(--linea); }
+.rubros button {
+  flex: 1; min-width: 0; padding: 9px 3px;
+  background: var(--bg-alt); border: none; cursor: pointer;
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: .03em;
+  text-transform: uppercase; color: var(--txt-2);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  transition: background var(--t-rapido) var(--ease), color var(--t-rapido) var(--ease);
+}
+.rubros button[aria-pressed="true"] { background: var(--acento); color: #04121D; }
+
+.cadena { margin-top: 11px; display: flex; flex-direction: column; gap: 11px; }
+
+.tel {
+  background: var(--wa-chat); border: 1px solid var(--linea); border-radius: 14px;
+  overflow: hidden; display: flex; flex-direction: column;
+  height: 320px;                       /* reservado: el hilo se llena por JS */
+}
+.tel__cab {
+  display: flex; align-items: center; gap: 10px; padding: 10px 13px;
+  background: var(--wa-suya); border-bottom: 1px solid rgba(255,255,255,.06); flex-shrink: 0;
+}
+.tel__ava {
+  width: 32px; height: 32px; border-radius: 50%; background: var(--wa);
+  display: grid; place-items: center; flex-shrink: 0;
+  font-family: var(--display); font-size: 14px; color: #07301C;
+}
+.tel__quien { display: block; font-size: 13px; font-weight: 600; line-height: 1.25; color: var(--txt); }
+.tel__est { display: block; font-family: var(--mono); font-size: 9.5px; color: var(--wa); letter-spacing: .06em; }
+.tel__hilo {
+  flex: 1; overflow-y: auto; padding: 14px 12px;
+  display: flex; flex-direction: column; gap: 7px; scroll-behavior: smooth;
+}
+.glob {
+  max-width: 82%; padding: 7px 11px 8px; border-radius: 9px;
+  font-size: 13.5px; line-height: 1.42; color: var(--txt);
+  animation: globSube .28s cubic-bezier(.22,.61,.36,1) both;
+}
+.glob--suya { background: var(--wa-suya); align-self: flex-start; border-top-left-radius: 2px; }
+.glob--mia  { background: var(--wa-mia);  align-self: flex-end;   border-top-right-radius: 2px; }
+.glob time { display: block; font-family: var(--mono); font-size: 9px; opacity: .55; margin-top: 2px; text-align: right; }
+@keyframes globSube { from { opacity: 0; transform: translateY(9px) scale(.97); } to { opacity: 1; transform: none; } }
+
+.puntos {
+  display: flex; gap: 3px; padding: 10px 12px; background: var(--wa-suya);
+  border-radius: 9px; border-top-left-radius: 2px; align-self: flex-start; width: fit-content;
+}
+.puntos i { width: 5px; height: 5px; border-radius: 50%; background: var(--txt-2); animation: puntoLat 1.1s infinite; }
+.puntos i:nth-child(2) { animation-delay: .15s; }
+.puntos i:nth-child(3) { animation-delay: .3s; }
+@keyframes puntoLat { 0%,60%,100% { opacity:.3; transform:none; } 30% { opacity:1; transform:translateY(-3px); } }
+
+.tel__pie { display: flex; gap: 7px; padding: 9px 10px; background: var(--wa-suya); flex-shrink: 0; }
+.tel__pie input {
+  flex: 1; min-width: 0; background: var(--wa-chat); border: none; border-radius: 18px;
+  padding: 9px 14px; color: var(--txt); font-family: var(--sans); font-size: 13.5px;
+}
+.tel__pie input::placeholder { color: var(--txt-2); opacity: .75; }
+.tel__pie button {
+  width: 34px; height: 34px; border-radius: 50%; background: var(--wa); border: none;
+  display: grid; place-items: center; flex-shrink: 0; color: #07301C; cursor: pointer;
+}
+.tel__pie button svg { width: 16px; height: 16px; }
+
+.libreta { border: 1px solid var(--linea); background: var(--bg-alt); overflow: hidden; }
+.libreta__cab {
+  display: flex; justify-content: space-between; align-items: center;
+  margin: 0; padding: 8px 12px; background: #080E1A; border-bottom: 1px solid var(--linea);
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--txt-2);
+}
+.libreta__cab b { color: var(--verde); font-weight: 500; font-variant-numeric: tabular-nums; }
+/* overflow auto y no hidden: el JS scrollea hasta el turno recién agendado
+   cuando no entra en la ventana visible. */
+.libreta__lista { display: flex; flex-direction: column; height: 118px; overflow-y: auto; scrollbar-width: none; }
+.libreta__lista::-webkit-scrollbar { display: none; }
+.cita {
+  display: flex; align-items: center; gap: 11px; padding: 8px 12px;
+  font-size: 12.5px; color: var(--txt-2); border-bottom: 1px solid var(--linea);
+}
+.cita:last-child { border-bottom: none; }
+.cita time {
+  font-family: var(--mono); font-size: 11px; color: var(--txt-2);
+  flex-shrink: 0; width: 38px; font-variant-numeric: tabular-nums;
+}
+.cita span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cita em {
+  margin-left: auto; font-style: normal; font-family: var(--mono); font-size: 9px;
+  letter-spacing: .06em; color: var(--txt-2); flex-shrink: 0;
+}
+.cita.nueva { color: var(--txt); animation: citaCae .5s cubic-bezier(.22,.61,.36,1) both; }
+.cita.nueva time { color: var(--acento-claro); }
+.cita.nueva em { color: var(--verde); }
+@keyframes citaCae {
+  0%   { opacity: 0; transform: translateX(22px); background: rgba(45,123,255,.22); }
+  60%  { background: rgba(45,123,255,.22); }
+  100% { opacity: 1; transform: none; background: transparent; }
+}
+
+.demo__pie {
+  margin: 11px 0 0; font-family: var(--mono); font-size: var(--fs-mono);
+  letter-spacing: .05em; color: var(--txt-2); text-align: center; line-height: 1.5;
+}
+
+@media (min-width: 1000px) {
+  .hero__grid { display: grid; grid-template-columns: 1fr .92fr; gap: clamp(32px, 4vw, 64px); align-items: center; }
+  .hero__demo { margin-top: 0; }
+  .hero__pie { grid-template-columns: 1fr; }
+  .tel { height: 360px; }
+  .libreta__lista { height: 154px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .glob, .cita.nueva { animation: none; }
+  .puntos i { animation: none; opacity: .6; }
+}
+
+/* ---- Hero compacto en móvil ---------------------------------------------
+   La demo tiene que entrar en el primer pantallazo de un celular: es lo que
+   convence, y si cae bajo el fold el hero vuelve a ser "texto y dos botones".
+   Por eso se recorta el aire, baja la escala del titular y los botones quedan
+   después de la demo. En escritorio nada de esto aplica. */
+@media (max-width: 999px) {
+  .hero { padding-block: var(--e-6) var(--e-7); }
+  .hero__log { font-size: 10.5px; letter-spacing: .07em; }
+  .hero h1 { margin-top: var(--e-4); font-size: clamp(34px, 10.4vw, 52px); }
+  .hero .lead { margin: var(--e-4) 0 0; font-size: var(--fs-body-sm); }
+  .hero__demo { margin-top: var(--e-5); }
+  .hero__acciones { margin-top: var(--e-6); }
+  .tel { height: 268px; }
+  .libreta__lista { height: 79px; }        /* 2 filas visibles; el resto llega al escribir */
+}
+
+@media (min-width: 1000px) {
+  /* En escritorio los botones vuelven bajo el texto, en la columna izquierda:
+     la demo ocupa la derecha completa y hay lugar de sobra. */
+  .hero__grid {
+    grid-template-areas: "texto demo" "acciones demo";
+    grid-template-rows: auto 1fr;
+    align-items: start;
+  }
+  .hero__texto    { grid-area: texto; }
+  .hero__demo     { grid-area: demo; align-self: center; }
+  .hero__acciones { grid-area: acciones; align-self: start; margin-top: var(--e-6);
+                    padding-top: var(--e-5); border-top: 1px solid var(--linea); }
 }
