@@ -11,9 +11,12 @@
     open: 'Asistente Zeeben',
     title: 'Asistente Zeeben Labs',
     sub: 'IA · Cloudflare',
-    placeholder: 'Contanos qué necesita tu empresa…',
-    greeting: '¡Hola! Soy el asistente de Zeeben Labs. Contame qué tarea te come horas y te digo cómo la automatizamos — o escribinos directo por WhatsApp.',
-    chips: ['¿Qué hacen?', 'Automatizar WhatsApp', 'Quiero una app a medida', '¿Cómo los contacto?'],
+    placeholder: 'Contanos qué proceso te consume tiempo…',
+    greeting: '¡Hola! Soy el asistente de Zeeben Labs. Contanos qué proceso te consume más tiempo y te decimos cómo se automatiza — o escribinos directo por WhatsApp.',
+    // Los chips son las preguntas que el Worker sabe responder. NO agregar acá
+    // "¿cuánto sale?" hasta que el system prompt del Worker conozca los precios
+    // publicados: hoy improvisaría una respuesta y contradiría a la página.
+    chips: ['¿Qué hacen?', 'Atender WhatsApp solo', 'Agendar turnos', '¿Cómo los contacto?'],
     error: 'No pude conectar. Escribinos por WhatsApp: +595 992 879 800 · info@zeebenlabs.com',
   };
 

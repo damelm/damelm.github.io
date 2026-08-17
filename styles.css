@@ -147,18 +147,24 @@
   src: url('assets/fonts/jetbrainsmono-500.woff2') format('woff2');
 }
 
-/* --- Custom properties -------------------------------------------------- */
+/* --- Custom properties --------------------------------------------------
+   ACÁ NO VA UN :root. Los stacks --display / --sans / --mono se declaran UNA
+   SOLA VEZ, en §1 TOKENS (más abajo en este mismo archivo).
 
-:root {
-  /* 'Bricolage Fallback' va JUSTO detrás de la real: es la única con métricas
-     ajustadas. Poppins queda como red de seguridad para plataformas sin
-     Arial/Helvetica/Liberation (algunos Android), donde no habrá compensación
-     de métricas pero sí una tipografía razonable. */
-  --display: 'Bricolage Grotesque', 'Bricolage Fallback', 'Poppins',
-             system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --sans:    'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-}
+   Por qué la regla es "uno solo" y no "el último gana":
+   acá había un segundo :root que definía los tres stacks, y su --sans era
+   'Poppins', system-ui, … SIN 'Poppins Fallback'. Funcionaba de casualidad,
+   porque el :root de §1 viene después y pisa por orden de cascada. El día que
+   alguien reordenó el archivo, el --sans sin fallback ganó, el size-adjust de
+   113.80% quedó muerto, el lead del hero (que es el LCP en mobile) re-wrappeó
+   al llegar la webfont y el CLS del sitio se fue a 0.014.
+
+   Las familias *Fallback* son las únicas con métricas ajustadas
+   (size-adjust / ascent-override). Si están declaradas en dos lugares, uno de
+   los dos queda desincronizado tarde o temprano y el CLS vuelve en silencio:
+   no rompe nada visible, solo mueve el layout 26px al cargar la fuente.
+   Un solo punto de verdad = no hay desincronización posible.
+   ----------------------------------------------------------------------- */
 
 /* =============================================================================
    ZEEBEN LABS — sistema.css
@@ -241,8 +247,9 @@
      Las @font-face viven en el CSS de producción, no acá. */
   /* Los *Fallback* van JUSTO detrás de la real: son las únicas con métricas
      ajustadas (size-adjust/ascent-override). Sin ellas el swap mueve el layout.
-     Este :root gana por orden sobre el del bloque tipográfico: si se tocan los
-     stacks, hay que tocarlos ACÁ. */
+     ESTE ES EL ÚNICO LUGAR donde se declaran los tres stacks. No agregar otro
+     :root con --display/--sans/--mono en ningún lado: ya pasó una vez y costó
+     0.014 de CLS (el detalle, arriba, en el bloque tipográfico). */
   --display: 'Bricolage Grotesque', 'Bricolage Fallback', 'Poppins', system-ui, sans-serif;
   --sans:    'Poppins', 'Poppins Fallback', system-ui, -apple-system, sans-serif;
   --mono:    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -1446,4 +1453,493 @@ h2, .t-h2--sm, .t-h2--name, .t-h2--cta { font-weight: 700; }
   font-family: var(--mono); font-size: var(--fs-mono-xs);
   font-weight: 400; color: var(--txt-mono); letter-spacing: .08em;
   margin-left: .5rem;
+}
+
+
+/* =============================================================================
+   7. REPOSICIONAMIENTO — secciones nuevas
+   ---------------------------------------------------------------------------
+   Clientes · Productos con precio · Escalones · "¿Por qué en tu servidor?" ·
+   Continuidad · "¿Y si lo tuyo no es un bot?"
+
+   Reglas que respeta este bloque (las mismas del resto del archivo):
+     · Cero tokens nuevos. Todo sale de :root (§1).
+     · Solo dos superficies: --bg y --bg-alt. Los estados usan --tinte-hover.
+     · --acento NUNCA como texto (4.47:1). Para texto, --acento-claro (5.25:1).
+     · Ámbar solo en --servidor__multa (excepción autorizada del rol "problema").
+     · Nada que cambie de alto después de cargar: los únicos elementos que
+       pueden mutar contenido (los logos de clientes) llevan alto reservado.
+     · Mobile-first: verificado a 360px ⇒ 304px de contenido dentro de .wrap
+       (28px de gutter a cada lado) y 252px dentro de una tarjeta (--pad-card
+       cae a 26px en ese ancho).
+============================================================================= */
+
+
+/* ---- 7.1 Franja de clientes --------------------------------------------
+   Vive DENTRO de la .section.band-alt de métricas, separada por la misma
+   línea de 1px que usa el resto del sistema.                              */
+.clientes {
+  margin-top: var(--e-8);
+  padding-top: var(--e-7);
+  border-top: 1px solid var(--linea);
+  text-align: center;
+}
+
+.clientes__label {
+  font-family: var(--mono);
+  font-size: var(--fs-mono-sm);
+  font-weight: 500;
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--txt-mono);              /* 5.56:1 ✔ */
+  margin-bottom: var(--e-5);
+}
+
+.clientes__lista {
+  display: flex;
+  flex-wrap: wrap;                     /* en 360px baja a 1-2 por renglón */
+  justify-content: center;
+  align-items: center;
+  gap: var(--e-4) clamp(20px, 4.5vw, 48px);
+}
+
+/* El alto de la fila lo fija el <li>, NO su contenido, así que el renglón mide
+   lo mismo con texto o con imagen y nada se mueve al cargar (§CLS). Este valor
+   y el max-height de la regla de abajo tienen que cambiar SIEMPRE juntos. */
+.clientes__lista li {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  font-family: var(--sans);
+  font-size: var(--fs-body-sm);
+  font-weight: 500;
+  letter-spacing: .01em;
+  color: var(--txt-2);                 /* 7.20:1 ✔ atenuado pero legible */
+}
+
+/* Los cuatro logos son marcas hechas para fondo claro: Point Park es negro,
+   Northstar azul marino, Congelados verde, SUBLIM.ARTE multicolor. Sobre
+   #111A2B, en su color original, los dos primeros directamente desaparecen.
+   `brightness(0) invert(1)` los aplana a blanco puro respetando el alfa, que
+   además homogeneiza cuatro estéticas que no tienen nada que ver entre sí.
+   Por eso los archivos son WebP con transparencia real: sobre un PNG con fondo
+   blanco este filtro devolvería un rectángulo.
+   En hover NO se vuelve al color: se subiría el brillo de marcas que a color
+   son ilegibles acá. Solo sube la opacidad. */
+.clientes__lista img {
+  max-height: 36px;
+  width: auto;
+  opacity: .65;
+  filter: brightness(0) invert(1);
+  transition: opacity var(--t-rapido) var(--ease);
+}
+.clientes__lista li:hover img,
+.clientes__lista li:focus-within img { opacity: 1; }
+
+
+/* ---- 7.2 Productos con precio -------------------------------------------
+   Reemplaza a la retícula de servicios y hereda su ancho de columna: es la
+   misma familia de tarjeta, no una grilla nueva. La junta de 1px la resuelve
+   .reticula (§6) — outline, no border, y gap de 2px.
+
+   .producto se define autosuficiente (outline + padding + estado) para que
+   funcione lleve o no también la clase .card: todos los valores son idénticos
+   a los de .card, así que si están las dos no hay conflicto ni doble línea. */
+.reticula--productos { --col: var(--col-servicios); }   /* 300px */
+
+/* El markup es <article class="card producto">: la caja (outline de retícula,
+   --pad-card, flex column, gap, fondo transparente y el hover con
+   --tinte-hover) YA la da .card. Acá NO se redeclara nada de eso — duplicarlo
+   no rompía (mismas propiedades, mismos valores: el outline no se dibuja dos
+   veces ni el padding se suma), pero eran diez líneas que había que mantener
+   sincronizadas con .card a mano. .producto solo agrega lo que .card no tiene.
+
+   IMPORTANTE (hook de GSAP): .reticula--productos lleva data-m="stagger" y
+   otro teammate anima sus hijos directos. La única transición que toca a
+   .producto es la de background-color que hereda de .card — nada de opacity,
+   transform ni will-change, que son las propiedades que maneja GSAP. No
+   agregar acá transiciones de transform/opacity: pelean con el stagger. */
+.producto h3 { margin: 0; }
+.producto > p { margin: 0; color: var(--txt-2); font-size: var(--fs-body-sm); }
+
+/* Precio: escala de display, pero por debajo de la de sección — es un dato,
+   no un titular.
+
+   Tiene que servir para "Gs. 5.990.000" y para "A cotizar" y dejar el precio
+   a la MISMA altura en las tres tarjetas. Dos medidas:
+
+   a) Alto fijo de un renglón: line-height 1 + min-height 1em + nowrap. Así el
+      bloque del precio mide exactamente lo mismo tenga 13 caracteres o 9, y
+      nunca envuelve a dos renglones (que es lo único que lo movería).
+
+   b) El clamp está calculado para que "Gs. 5.990.000" (≈7.3em de ancho en
+      Bricolage 800 con el tracking de -.04em) entre SIEMPRE sin envolver, en
+      el peor caso de cada layout:
+        360px  → fuente 28px, ancho útil 252px, precio ≈204px  ✔
+        960px  → 3 columnas de 300px, fuente 28.8px, útil 242px, ≈210px  ✔
+        1000px → fuente 30px,   útil 253px, ≈218px  ✔
+        1400px → fuente 40px,   útil 366px, ≈291px  ✔
+      El techo es 40px (no 46) justo por el caso de 960-1100px, donde las 3
+      columnas están en su mínimo y la fuente por vw sería demasiado grande. */
+.producto__precio {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1;
+  min-height: 1em;                     /* alto de renglón reservado (§CLS) */
+  letter-spacing: -.04em;
+  color: var(--txt);                   /* 15.76:1 ✔ */
+  font-variant-numeric: tabular-nums;  /* mismo criterio que .tabular */
+  white-space: nowrap;                 /* ver (a): nunca dos renglones */
+  max-width: 100%;
+  margin-top: var(--e-2);
+}
+/* El <b class="tabular"> de adentro no debe reinterpretar el peso: `bolder`
+   sobre 800 computa 900, y Bricolage no tiene 900 (el navegador sintetiza y
+   engorda el número solo en esa tarjeta). Hereda todo. */
+.producto__precio b {
+  font: inherit;
+  font-weight: 800;
+  letter-spacing: inherit;
+}
+
+/* Reserva de alto para la bajada, SOLO cuando las tarjetas están una al lado
+   de la otra (a partir de ~960px la retícula ya está en 3 columnas). Es lo
+   que hace que el precio arranque a la misma altura en las tres pese a que
+   las bajadas tengan largos distintos. Apilado en móvil no aplica: ahí sería
+   aire muerto y la alineación no se percibe. 3 renglones × 1.5 = 4.5em. */
+@media (min-width: 960px) {
+  .producto > p { min-height: 4.5em; }
+}
+
+/* "Desde": va arriba del número, en su propio renglón, para no comerse ancho
+   en móvil. Mono chico y atenuado, como el resto de los rótulos del sistema. */
+.producto__desde {
+  display: block;
+  font-family: var(--mono);
+  font-size: var(--fs-mono-sm);
+  font-weight: 500;
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--txt-mono);              /* 5.56:1 ✔ */
+  margin-bottom: var(--e-1);
+}
+
+.producto__nota {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: var(--fs-mono-xs);
+  letter-spacing: .06em;
+  color: var(--txt-mono);              /* 5.56:1 ✔ */
+}
+
+/* Lista de qué incluye. El reset borra list-style de ul[class], así que la
+   viñeta la ponemos nosotros: un guion corto en acento-claro, discreto y
+   alineado con el texto aunque el ítem envuelva a dos renglones. */
+.producto__incluye {
+  display: grid;
+  gap: var(--e-2);
+  margin-top: var(--e-3);
+  padding-top: var(--e-4);
+  border-top: 1px solid var(--linea);
+}
+.producto__incluye li {
+  position: relative;
+  padding-left: 18px;
+  font-size: var(--fs-body-sm);
+  line-height: 1.5;
+  color: var(--txt-cuerpo);            /* 10.04:1 ✔ */
+}
+.producto__incluye li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .68em;                          /* centro óptico del primer renglón */
+  width: 8px;
+  height: 1px;
+  background: var(--acento-claro);     /* decorativo, no portador de info */
+}
+
+/* Destacado: la misma convención que .card--paso — filete de 2px en acento
+   arriba. Sin glow ni sombra. El padding-top compensa los 2px del borde para
+   que el contenido siga alineado con las tarjetas vecinas.
+   Pisa el `padding` shorthand de .card por orden de fuente (misma
+   especificidad, esta regla va después): por eso no puede volver a subir. */
+.producto--destacado {
+  border-top: 2px solid var(--acento);
+  padding-top: calc(var(--pad-card) - 2px);
+}
+
+/* Complemento: párrafo suelto bajo la grilla, dentro del .wrap.
+   ("¿Necesitás también tu web? La hacemos…")
+
+   Tiene que leerse un escalón POR DEBAJO de las tres tarjetas. Lo consigue con
+   la receta que el sistema ya usa para todo lo secundario —--fs-body-sm +
+   --txt-2, igual que .problema__cuerpo p y .proyecto__cuerpo p— más ancho de
+   lectura contenido y aire generoso arriba, que es lo que lo despega de la
+   retícula y lo marca como un apéndice y no como una cuarta oferta.
+
+   Sin filete superior a propósito: .escalones ya abre con uno, y dos líneas
+   seguidas bajo la misma grilla se leerían como un doble separador. */
+.complemento {
+  max-width: 58ch;
+  margin: var(--e-8) 0 0;
+  font-size: var(--fs-body-sm);
+  line-height: 1.6;
+  color: var(--txt-2);                 /* 7.20:1 ✔ */
+  text-wrap: pretty;
+}
+.complemento b,
+.complemento strong { color: var(--txt); font-weight: 600; }
+
+
+/* ---- 7.3 Escalones de precio --------------------------------------------
+   Van en filas, no en chips: los ítems son frases y .chip lleva
+   white-space:nowrap, que a 360px se saldría de la pantalla.               */
+.escalones {
+  margin-top: var(--e-8);
+  padding-top: var(--e-7);
+  border-top: 1px solid var(--linea);
+}
+
+.escalones__lista {
+  display: grid;
+  gap: 0;
+}
+.escalones__lista > li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--e-1) var(--e-3);
+  padding: var(--e-3) 0;
+  border-bottom: 1px solid var(--linea);
+  font-size: var(--fs-body-sm);
+  line-height: 1.5;
+  color: var(--txt-cuerpo);            /* 10.04:1 ✔ */
+}
+/* El dato que sube el precio, si viene marcado, resalta sin cambiar de color
+   de rol. */
+.escalones__lista > li b { color: var(--txt); font-weight: 600; }
+
+.escalones__cierre {
+  margin: var(--e-5) 0 0;
+  font-size: var(--fs-body-sm);
+  line-height: 1.6;
+  color: var(--txt-2);                 /* 7.20:1 ✔ */
+}
+/* El <a> ya hereda --acento-claro + subrayado de la regla `p a, li a`. */
+
+
+/* ---- 7.4 ¿Por qué en tu servidor? ---------------------------------------
+   Tres bloques educativos. Misma mecánica de retícula que servicios y
+   proyectos: grid con gap 2px + outline de 1px por bloque.                 */
+.reticula--servidor { --col: var(--col-servicios); }    /* 300px */
+
+/* Igual que .producto: el markup es <article class="card servidor__bloque">,
+   así que la caja entera (outline de retícula, padding, flex column, gap,
+   hover) la da .card. Acá solo van los hijos. */
+.servidor__bloque h3 { margin: 0; }
+.servidor__bloque p  { margin: 0; color: var(--txt-2); font-size: var(--fs-body-sm); }
+
+/* La cifra de la multa — "Gs. 585.385.000".
+   ÚNICO uso nuevo de ámbar fuera de "El problema": es el mismo rol semántico
+   (el costo de no hacer nada), no una decisión estética. #F5A623 = 8.59:1 ✔.
+
+   Es un dato legal verificado, no un titular de alarma. Por eso el techo es
+   34px y no la escala de sección: tiene que leerse como una cifra de informe,
+   no como un grito. Un número más grande que el h3 que lo acompaña sería
+   exactamente el registro alarmista que no queremos.
+
+   nowrap + min-height: una cifra legal partida en dos renglones se lee mal y
+   además cambiaría el alto del bloque. El clamp está calculado para que
+   "Gs. 585.385.000" (15 caracteres, ≈7.2em en Bricolage 800 con el tracking
+   de -.04em) entre sin envolver en el peor caso de cada layout:
+     360px  → fuente 24px, ancho útil 252px, cifra ≈173px  ✔
+     960px  → 3 columnas de 300px, fuente 25px, útil 242px, ≈180px  ✔
+     1400px → fuente 34px, útil 366px, ≈245px  ✔                       */
+.servidor__multa {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(24px, 2.6vw, 34px);
+  line-height: 1;
+  min-height: 1em;                     /* alto de renglón reservado (§CLS) */
+  letter-spacing: -.04em;
+  color: var(--ambar);
+  font-variant-numeric: tabular-nums;  /* sin salto de ancho si se anima */
+  white-space: nowrap;
+  max-width: 100%;
+}
+/* Mismo caso que .producto__precio: un <b> adentro computaría `bolder` sobre
+   800 = 900, peso que Bricolage no tiene y el navegador sintetiza. */
+.servidor__multa b { font: inherit; font-weight: 800; letter-spacing: inherit; }
+
+/* Si la leyenda ("Techo por infracción con datos sensibles") viniera anidada
+   dentro de la cifra en vez de como <p> hermano, vuelve al registro de texto
+   normal: ni display, ni ámbar, ni nowrap. */
+.servidor__multa span,
+.servidor__multa small {
+  display: block;
+  font-family: var(--sans);
+  font-size: var(--fs-body-sm);
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: normal;
+  white-space: normal;
+  color: var(--txt-2);                 /* 7.20:1 ✔ */
+  margin-top: var(--e-2);
+}
+
+/* Atribución legal. Cierra con "Esto no es asesoramiento legal", así que es
+   una línea que la gente TIENE que poder leer: es chica y secundaria, pero no
+   letra chica de contrato. Contra la primera versión de esta regla subí las
+   dos palancas que importan —tamaño 11px → 12.5px (--fs-mono, el mismo cuerpo
+   que usan el nav y las líneas de log) y color --txt-mono → --txt-2 (5.56:1 →
+   7.20:1)— y aflojé el tracking, que a este cuerpo entorpecía más que ayudar.
+   Sigue siendo mono y sigue siendo el elemento más liviano del bloque: la
+   jerarquía la da el contraste con los 15px del párrafo, no la ilegibilidad. */
+.servidor__fuente {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: var(--fs-mono);           /* 12.5px */
+  line-height: 1.6;
+  letter-spacing: .03em;
+  color: var(--txt-2);                 /* 7.20:1 ✔ */
+}
+/* Subrayado explícito: la regla `p a, li a` solo cubre el caso <p>, y esto
+   puede ser un <p> o un <small>. El color no puede ser el único distintivo
+   del enlace (SC 1.4.1). */
+.servidor__fuente a {
+  color: var(--acento-claro);          /* 5.25:1 ✔ */
+  text-decoration: underline;
+  text-underline-offset: .18em;
+  text-decoration-thickness: 1px;
+}
+
+
+/* ---- 7.5 Continuidad ----------------------------------------------------
+   Responde "¿y si te pasa algo?". Ancho de lectura, no full-bleed.         */
+.continuidad {
+  max-width: 68ch;
+  margin-inline: auto;
+}
+
+/* Pregunta destacada: mismo tratamiento de cita que .caso__cita (filete de
+   2px en acento a la izquierda), en escala de subtítulo. */
+.continuidad__q {
+  margin: 0 0 var(--e-6);
+  padding-left: var(--e-4);
+  border-left: 2px solid var(--acento);
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: var(--fs-h3);
+  line-height: 1.2;
+  letter-spacing: -.035em;
+  color: var(--txt);                   /* 15.76:1 ✔ */
+  text-wrap: balance;
+}
+
+.continuidad__lista {
+  display: grid;
+  gap: 0;
+}
+.continuidad__lista > li {
+  padding: var(--e-4) 0;
+  border-bottom: 1px solid var(--linea);
+  font-size: var(--fs-body-sm);
+  line-height: 1.6;
+  color: var(--txt-cuerpo);            /* 10.04:1 ✔ */
+}
+.continuidad__lista > li:first-child { border-top: 1px solid var(--linea); }
+.continuidad__lista > li b { color: var(--txt); font-weight: 600; }
+
+
+/* ---- 7.6 ¿Y si lo tuyo no es un bot? ------------------------------------ */
+.otro {
+  max-width: 68ch;
+  margin-inline: auto;
+}
+.otro > p { color: var(--txt-cuerpo); }
+
+/* Línea técnica destacada. Escala de subtítulo (no de sección) y color de
+   texto alto: es la prueba, tiene que leerse antes que el párrafo. */
+.otro__prueba {
+  margin: var(--e-5) 0 0;
+  padding-top: var(--e-5);
+  border-top: 1px solid var(--linea);
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: var(--fs-h3);
+  line-height: 1.2;
+  letter-spacing: -.035em;
+  color: var(--txt);                   /* 15.76:1 ✔ */
+  text-wrap: balance;
+}
+
+
+/* ---- 7.7 Botón que se ve como enlace ------------------------------------
+   <button class="btn-enlace" type="button" data-open-chat>probalo acá</button>
+   dentro de un párrafo de texto corrido. Es un BOTÓN (abre el chat, no navega
+   a ningún lado), así que el elemento correcto es <button> y lo que hay que
+   arreglar es la apariencia, no la semántica.
+
+   Ojo con el nombre: NO comparte nada con .btn. Los selectores de clase son
+   exactos, así que ni .btn ni .btn:focus-visible ni .btn[disabled] lo tocan.
+   Es un componente aparte y por eso se resetea desde cero.
+
+   El reset base del archivo ya le da `font: inherit` a los <button>; acá se
+   repite explícito porque esta regla tiene que sobrevivir sola si alguien
+   toca el reset. */
+.btn-enlace {
+  -webkit-appearance: none;
+          appearance: none;
+  display: inline;                     /* fluye con el texto del párrafo */
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;                       /* familia, cuerpo, peso y línea del <p> */
+  color: var(--acento-claro);          /* 5.25:1 ✔ — --acento (4.47) no sirve
+                                          para texto normal */
+  text-align: inherit;
+  vertical-align: baseline;
+  cursor: pointer;
+  /* El color no puede ser el único distintivo de un control dentro de texto
+     corrido (SC 1.4.1). Mismo subrayado que `p a, .lead a, li a`. */
+  text-decoration: underline;
+  text-underline-offset: .18em;
+  text-decoration-thickness: 1px;
+  transition: color var(--t-rapido) var(--ease);
+}
+.btn-enlace:hover { color: var(--acento-hover); }   /* 10.49:1 ✔ */
+
+/* Foco propio: el offset de 3px del sistema, sobre un elemento inline, se
+   monta sobre los renglones de arriba y abajo. Acá va 2px y con el radio de
+   los controles, que es lo que lo hace legible dentro del párrafo. */
+.btn-enlace:focus-visible {
+  outline: var(--foco-ancho) solid var(--foco);   /* #A8CBFF, 10.49:1 ✔ */
+  outline-offset: 2px;
+  border-radius: var(--radio-btn);
+}
+
+
+/* ---- 7.8 prefers-reduced-motion de este bloque --------------------------
+   La regla global de §10 ya lleva toda transición a .001ms. Esto es
+   explícito y además fija el ESTADO FINAL de los logos: sin movimiento
+   siguen atenuados a propósito (es su estado de reposo, no un transitorio),
+   y el hover deja de ser una animación para ser un cambio instantáneo.
+   .producto y .servidor__bloque no figuran acá: su única transición viene de
+   .card, que §10 ya cubre. */
+@media (prefers-reduced-motion: reduce) {
+  .clientes__lista img,
+  .btn-enlace { transition: none; }
+}
+
+
+/* ---- 7.9 Ajuste fino en pantallas muy angostas --------------------------
+   A 360px el gutter de 28px deja 304px. Nada de arriba desborda, pero la
+   franja de clientes gana legibilidad si los nombres respiran menos entre sí
+   y más entre renglones. */
+@media (max-width: 400px) {
+  .clientes__lista { gap: var(--e-4) var(--e-5); }
 }

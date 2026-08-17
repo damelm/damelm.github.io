@@ -172,16 +172,19 @@
     }, ms);
     cicloEnViewport(el, c);
   }
+  // El primer texto de cada lista tiene que ser IDÉNTICO al que está escrito en
+  // page.html: el rotador arranca en el índice 0 y recién en el primer tick pasa
+  // al 1. Si no coinciden, la línea salta apenas carga el JS.
   rotador(document.querySelector('[data-hero-log]'), [
-    'point_park · 12 vehículos dentro',
+    'congelados · consulta resuelta sin intervención',
+    'congelados · pedido tomado y derivado a reparto',
     'senderwa · 449 mensajes enviados hoy',
-    'congelados · margen neto 32 %',
-    'northstar · 18 consultas este mes'
+    'northstar · 18 consultas calificadas este mes'
   ], 2600);
   rotador(document.querySelector('[data-cta-chat]'), [
     'Te respondemos en minutos.',
     'Diagnóstico sin compromiso.',
-    'Contanos qué te come el día.',
+    'Con un audio alcanza.',
     'Respondemos por WhatsApp.'
   ], 2200);
 
