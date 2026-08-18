@@ -90,7 +90,21 @@
     },
   };
 
+  const remate    = raiz.querySelector('[data-demo-remate]');
+  const remateCta = raiz.querySelector('[data-demo-remate-cta]');
+
+  /* El lead llega por WhatsApp con el rubro que estuvo probando, así no hay que
+     preguntarle de nuevo qué le interesa. Sin backend: el canal es el mismo que
+     el dueño ya usa todos los días. */
+  const PEDIDO = {
+    salud:   'Hola Zeeben Labs, probé la demo del consultorio en su web y quiero uno así atendiendo mi WhatsApp.',
+    gastro:  'Hola Zeeben Labs, probé la demo del restaurante en su web y quiero uno así atendiendo mi WhatsApp.',
+    estudio: 'Hola Zeeben Labs, probé la demo del estudio en su web y quiero uno así atendiendo mi WhatsApp.',
+  };
+  const MENSAJES_PARA_OFRECER = 2;   // recién cuando ya probó de verdad
+
   let rubro = 'salud';
+  let escritos = 0;            // cuántas veces escribió el visitante
   let tomado = false;          // el visitante escribió: se calla el guion
   let tGuion = null;
   let citas = 0;
@@ -286,6 +300,13 @@
     entrada.value = '';
     if (!await pensando(500, gen)) return;
     await responder(txt, gen);
+
+    // Se ofrece recién cuando ya interactuó: antes sería pedirle algo a alguien
+    // que todavía no vio funcionar nada.
+    if (++escritos >= MENSAJES_PARA_OFRECER && remate && remate.hidden && vigente(gen)) {
+      remateCta.href = 'https://wa.me/595992879800?text=' + encodeURIComponent(PEDIDO[rubro]);
+      remate.hidden = false;
+    }
   });
 
   raiz.querySelectorAll('.rubros button').forEach(b => {
@@ -299,6 +320,8 @@
       generacion++;
       const gen = generacion;
       tomado = false; clearTimeout(tGuion);
+      escritos = 0;
+      if (remate) remate.hidden = true;
       pintarRubro();
       tGuion = setTimeout(() => correrGuion(gen), 420);
     });
