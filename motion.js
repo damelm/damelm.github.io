@@ -130,7 +130,10 @@
     // Si el armado explota a mitad (navegador viejo, DOM inesperado), se
     // desarma todo y la página vuelve a su estado natural en vez de quedar
     // a medio animar.
-    try { iniciar(); } catch (e) { destruir(); }
+    // El catch NO puede ser silencioso: si el armado explota, la pagina queda
+    // estatica (que es un estado valido) pero nadie se entera de que las
+    // animaciones no existen. Paso exactamente eso durante dias.
+    try { iniciar(); } catch (e) { console.error('[motion] fallo el armado:', e); destruir(); }
   }
 
   /* ======================================================================
