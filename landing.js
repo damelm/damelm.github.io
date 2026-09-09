@@ -25,6 +25,7 @@
   var contFormas = document.getElementById('formas');
   var vozEl = document.getElementById('voz');
   var paneles = document.getElementById('paneles');
+  var pista = document.getElementById('pista');
   if (!contFormas || !paneles) return;
 
   var actual = null;
@@ -32,6 +33,14 @@
   function panel(id) { return document.getElementById('pnl-' + id); }
 
   /* Muestra el panel de `id`. Sin argumento vuelve al de inicio. */
+  /* El resaltado del ciclo se limpia apenas la persona elige: a partir de ahi
+     el unico estado que importa es el que eligio ella. */
+  function limpiarCiclo() {
+    Array.prototype.forEach.call(contFormas.children, function (b) {
+      b.classList.remove('en-ciclo');
+    });
+  }
+
   function mostrar(id) {
     var destino = panel(id) || panel('inicio');
     Array.prototype.forEach.call(paneles.children, function (p) {
@@ -60,13 +69,16 @@
   }
 
   /* ---------- etiquetas ---------- */
-  FORMAS.forEach(function (f) {
+  FORMAS.forEach(function (f, i) {
     var b = document.createElement('button');
     b.type = 'button';
     b.textContent = f.chip;
     b.dataset.forma = f.id;
     b.setAttribute('aria-pressed', 'false');
+    b.style.animationDelay = (0.25 + i * 0.06) + 's';   /* entrada escalonada */
     b.addEventListener('click', function () {
+      if (pista) pista.classList.add('oculta');   /* ya cumplio su trabajo */
+      limpiarCiclo();
       if (actual === f.id) {          /* segundo toque: vuelve al inicio */
         mostrar('inicio');
         decir('La misma ingeniería. La forma que tu negocio necesite.');
@@ -91,6 +103,11 @@
     cicla: function (id) {
       var f = FORMAS.filter(function (x) { return x.id === id; })[0];
       decir(f ? f.voz : 'La misma ingeniería. La forma que tu negocio necesite.');
+      /* Enciende la etiqueta de la forma que se esta armando. Esto es lo que
+         hace evidente que las etiquetas y la nube son la misma cosa. */
+      Array.prototype.forEach.call(contFormas.children, function (b) {
+        b.classList.toggle('en-ciclo', b.dataset.forma === id);
+      });
     }
   };
 

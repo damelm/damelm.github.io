@@ -124,7 +124,18 @@ header.nav{border-bottom:1px solid var(--line);background:var(--bg)}
 .voz.saliendo{opacity:0}
 @media(max-width:520px){.voz{font-size:12px}}
 
-.formas{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:16px}
+/* La pista vive pegada a las etiquetas y no en el panel de enfrente: si la
+   instruccion esta lejos de lo que hay que tocar, nadie las cruza. */
+.formas__pista{margin:20px 0 0;text-align:center;font-family:var(--font-mono);font-size:11.5px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  display:flex;align-items:center;justify-content:center;gap:9px;transition:opacity .35s ease}
+.formas__pista::after{content:"";width:0;height:0;border-left:4px solid transparent;
+  border-right:4px solid transparent;border-top:5px solid var(--accent);
+  animation:baja 1.9s ease-in-out infinite}
+@keyframes baja{0%,100%{transform:translateY(0);opacity:.45}50%{transform:translateY(3px);opacity:1}}
+.formas__pista.oculta{opacity:0;pointer-events:none}
+
+.formas{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px}
 .formas button{border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);
   font-size:13px;font-weight:600;padding:8px 15px;border-radius:999px;cursor:pointer;
   transition:background .15s ease,color .15s ease,border-color .15s ease,transform .15s ease;
@@ -132,6 +143,14 @@ header.nav{border-bottom:1px solid var(--line);background:var(--bg)}
 .formas button::before{content:"";width:6px;height:6px;background:var(--accent);border-radius:2px;
   transform:rotate(45deg);flex:none}
 .formas button:hover{border-color:var(--accent-strong);color:var(--accent-strong);transform:translateY(-1px)}
+/* Mientras la nube cicla sola, la etiqueta que le corresponde se enciende:
+   es lo que hace ver que la animacion y las etiquetas son la misma cosa.
+   Es un resaltado, no una seleccion -- por eso no usa el estado .activa. */
+.formas button.en-ciclo{border-color:var(--accent);background:var(--accent-soft);
+  color:var(--accent-strong);transform:translateY(-1px)}
+.formas button.en-ciclo::before{background:var(--cyan);box-shadow:0 0 0 3px rgba(52,210,251,.28)}
+.formas button{animation:chipEntra .45s ease both}
+@keyframes chipEntra{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
 .formas button.activa{background:var(--navy);color:#fff;border-color:var(--navy)}
 .formas button.activa::before{background:var(--cyan)}
 
@@ -198,8 +217,9 @@ header.nav{border-bottom:1px solid var(--line);background:var(--bg)}
   .escenario h1{order:2;text-align:center;margin-top:12px}
   .lado--escena{order:3;display:contents}
   .escena{order:3;margin-top:14px}
-  .formas{order:4}
-  .paneles{order:5;margin-top:22px;min-height:0}
+  .formas__pista{order:4}
+  .formas{order:5}
+  .paneles{order:6;margin-top:22px;min-height:0}
   .panel > p,.panel h2{text-align:left}
   .escena{height:clamp(260px,64vw,360px)}
 }
