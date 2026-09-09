@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Zeeben Labs — tarjeta OG</title>
+<!-- ============================================================
+     Fuente de la imagen de preview (assets/og-image.jpg).
+     No es parte del sitio: es la plantilla desde la que se genera.
+     Para regenerarla, ver tools/og-card.md
+     ============================================================ -->
+<style>
+@font-face{font-family:'Poppins';font-weight:400;font-display:block;src:url('../assets/fonts/poppins-400.woff2') format('woff2')}
+@font-face{font-family:'Poppins';font-weight:600;font-display:block;src:url('../assets/fonts/poppins-600.woff2') format('woff2')}
+@font-face{font-family:'JetBrains Mono';font-weight:500;font-display:block;src:url('../assets/fonts/jetbrainsmono-500.woff2') format('woff2')}
+*{box-sizing:border-box;margin:0}
+body{width:1200px;height:630px;overflow:hidden;background:#070E1C;
+  font-family:'Poppins',sans-serif;color:#F6F8FC;position:relative}
+.glow{position:absolute;inset:0;
+  background:radial-gradient(ellipse 55% 75% at 74% 48%, #16294A 0%, #0C1526 52%, #070E1C 100%)}
+.card{position:relative;height:100%;display:grid;grid-template-columns:1.02fr .98fr;
+  align-items:center;padding:0 0 0 72px}
+.logo{height:38px;width:auto}
+h1{font-size:60px;font-weight:600;line-height:1.04;letter-spacing:-.02em;margin-top:34px}
+h1 .ac{color:#34D2FB}
+.sub{margin-top:26px;font-size:22px;line-height:1.45;color:#C3CFE2;max-width:20ch}
+.pie{position:absolute;left:72px;bottom:52px;display:flex;align-items:center;gap:11px;
+  font-family:'JetBrains Mono',monospace;font-size:15px;letter-spacing:.11em;
+  text-transform:uppercase;color:#8A94AD}
+.rombo{width:10px;height:10px;background:#34D2FB;border-radius:2.5px;transform:rotate(45deg)}
+#escena{position:relative;height:100%}
+#escena canvas{display:block;width:100%;height:100%}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="card">
+  <div>
+    <img class="logo" src="../assets/logo.webp" alt="">
+    <h1>Construimos<br>tu tecnología,<br><span class="ac">de punta a punta</span></h1>
+    <p class="sub">Apps, webs, WhatsApp, dominios e infraestructura.</p>
+  </div>
+  <div id="escena"></div>
+</div>
+<p class="pie"><span class="rombo"></span>Desde Paraguay al mundo · zeebenlabs.com</p>
+
+<script src="../three.min.js"></script>
+<script>
+/* El mismo enjambre del sitio, congelado en el sello Z. */
+(function(){
+  var div=document.getElementById('escena');
+  var r=new THREE.WebGLRenderer({antialias:true,alpha:true});
+  r.setPixelRatio(window.devicePixelRatio||1);
+  r.outputEncoding=THREE.sRGBEncoding;
+  div.appendChild(r.domElement);
+  var esc=new THREE.Scene();
+  var cam=new THREE.PerspectiveCamera(32,div.clientWidth/div.clientHeight,0.1,40);
+  cam.position.set(0,0,6.1);
+  var N=9000,DUST=Math.floor(N*0.06),L=512;
+
+  function muestrear(dib){
+    var c=document.createElement('canvas');c.width=c.height=L;
+    var x=c.getContext('2d');x.clearRect(0,0,L,L);
+    x.strokeStyle=x.fillStyle='#000';x.lineCap=x.lineJoin='round';dib(x);
+    var img=x.getImageData(0,0,L,L).data,cand=[];
+    for(var i=0;i<L*L;i++) if(img[i*4+3]>100) cand.push(i);
+    var pos=new Float32Array(N*3);
+    for(var p=0;p<N;p++){
+      if(p>=N-DUST||!cand.length){
+        var rr=1.7+Math.random()*0.5,th=Math.random()*Math.PI*2,ph=Math.acos(2*Math.random()-1);
+        pos[p*3]=rr*Math.sin(ph)*Math.cos(th);
+        pos[p*3+1]=rr*Math.sin(ph)*Math.sin(th)*0.7;
+        pos[p*3+2]=rr*Math.cos(ph)*0.5;continue;
+      }
+      var idx=cand[(Math.random()*cand.length)|0],px=idx%L,py=(idx/L)|0;
+      pos[p*3]=((px+Math.random())/L*2-1)*1.45;
+      pos[p*3+1]=-(((py+Math.random())/L)*2-1)*1.45;
+      pos[p*3+2]=(Math.random()*2-1)*0.14;
+    }
+    return pos;
+  }
+
+  var rands=new Float32Array(N);
+  for(var i=0;i<N;i++) rands[i]=Math.random();
+
+  var mat=new THREE.ShaderMaterial({
+    uniforms:{uSize:{value:26*(window.devicePixelRatio||1)}},
+    transparent:true,depthWrite:false,
+    vertexShader:['attribute float aRand;uniform float uSize;varying float vR;',
+      'void main(){vec4 mv=modelViewMatrix*vec4(position,1.0);',
+      'gl_PointSize=uSize*(1.9/-mv.z)*(0.6+aRand*0.8);',
+      'gl_Position=projectionMatrix*mv;vR=aRand;}'].join('\n'),
+    fragmentShader:['varying float vR;void main(){',
+      'float d=length(gl_PointCoord-0.5);if(d>0.5)discard;',
+      'float a=smoothstep(0.5,0.28,d)*(0.55+vR*0.4);',
+      'gl_FragColor=vec4(mix(vec3(0.129,0.494,0.667),vec3(0.435,0.886,1.0),vR*vR),a);}'].join('\n')
+  });
+
+  var img=new Image();
+  img.onload=function(){
+    var pos=muestrear(function(x){
+      var w=380,h=w*img.height/img.width;
+      x.drawImage(img,(L-w)/2,(L-h)/2,w,h);
+    });
+    var g=new THREE.BufferGeometry();
+    g.setAttribute('position',new THREE.BufferAttribute(pos,3));
+    g.setAttribute('aRand',new THREE.BufferAttribute(rands,1));
+    var pts=new THREE.Points(g,mat);
+    pts.rotation.y=0.12;
+    esc.add(pts);
+    r.setSize(div.clientWidth,div.clientHeight,false);
+    cam.aspect=div.clientWidth/div.clientHeight;cam.updateProjectionMatrix();
+    r.render(esc,cam);
+    document.body.dataset.listo='1';
+  };
+  img.src='../assets/isotype-z.webp';
+})();
+</script>
+</body>
+</html>
