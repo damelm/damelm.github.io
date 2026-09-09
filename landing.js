@@ -111,6 +111,39 @@
     }
   };
 
+  /* ---------- tema ----------
+     El oscuro es el default (vive en :root del CSS). Este boton solo agrega
+     o saca el atributo, lo guarda, y avisa al enjambre para que repinte las
+     particulas: sobre fondo oscuro el azul profundo se pierde. */
+  var btnTema = document.getElementById('tema');
+  if (btnTema) {
+    var raiz = document.documentElement;
+    var metaColor = document.querySelector('meta[name="theme-color"]');
+
+    function aplicar(tema, guardar) {
+      if (tema === 'claro') raiz.setAttribute('data-tema', 'claro');
+      else raiz.removeAttribute('data-tema');
+      btnTema.setAttribute('aria-label',
+        tema === 'claro' ? 'Cambiar a tema oscuro' : 'Cambiar a tema claro');
+      if (metaColor) metaColor.setAttribute('content', tema === 'claro' ? '#F6F8FC' : '#070E1C');
+      if (guardar) { try { localStorage.setItem('zb-tema', tema); } catch (e) {} }
+      if (window.Enjambre && window.Enjambre.repintar) window.Enjambre.repintar(tema);
+    }
+
+    var inicial = raiz.getAttribute('data-tema') === 'claro' ? 'claro' : 'oscuro';
+    aplicar(inicial, false);
+
+    btnTema.addEventListener('click', function () {
+      aplicar(raiz.getAttribute('data-tema') === 'claro' ? 'oscuro' : 'claro', true);
+    });
+
+    /* El enjambre carga despues que este script: cuando aparezca, que se pinte
+       con el tema que ya esta puesto. */
+    window.ZB_TEMA = function () {
+      return raiz.getAttribute('data-tema') === 'claro' ? 'claro' : 'oscuro';
+    };
+  }
+
   /* ---------- año del pie ---------- */
   var anio = document.querySelector('[data-anio]');
   if (anio) anio.textContent = new Date().getFullYear();

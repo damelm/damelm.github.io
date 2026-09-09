@@ -157,10 +157,22 @@
   geo.setAttribute('aTarget', new THREE.BufferAttribute(posInicial.slice(), 3));
   geo.setAttribute('aRand', new THREE.BufferAttribute(rands, 1));
 
+  /* Los dos extremos del degradado de las particulas. Sobre fondo oscuro el
+     azul profundo del tema claro se perderia, asi que cada tema tiene el suyo
+     y se cambian en caliente desde landing.js. */
+  var PALETA = {
+    claro:  { a: [0.039, 0.365, 0.510], b: [0.204, 0.824, 0.984] },
+    oscuro: { a: [0.129, 0.494, 0.667], b: [0.435, 0.886, 1.000] }
+  };
+  var temaInicial = (window.ZB_TEMA ? window.ZB_TEMA() : 'oscuro');
+  var pal = PALETA[temaInicial] || PALETA.oscuro;
+
   var uniforms = {
     uMix:  { value: 1 },
     uTime: { value: 0 },
-    uSize: { value: 30 * Math.min(window.devicePixelRatio || 1, 2) }
+    uSize: { value: 30 * Math.min(window.devicePixelRatio || 1, 2) },
+    uColA: { value: new THREE.Vector3(pal.a[0], pal.a[1], pal.a[2]) },
+    uColB: { value: new THREE.Vector3(pal.b[0], pal.b[1], pal.b[2]) }
   };
   var material = new THREE.ShaderMaterial({
     uniforms: uniforms,
@@ -183,14 +195,13 @@
       '}'
     ].join('\n'),
     fragmentShader: [
+      'uniform vec3 uColA; uniform vec3 uColB;',
       'varying float vRand;',
       'void main(){',
       '  float d = length(gl_PointCoord - 0.5);',
       '  if (d > 0.5) discard;',
       '  float a = smoothstep(0.5, 0.28, d)*(0.55+vRand*0.4);',
-      '  vec3 oscuro = vec3(0.039, 0.365, 0.510);',
-      '  vec3 claro  = vec3(0.204, 0.824, 0.984);',
-      '  gl_FragColor = vec4(mix(oscuro, claro, vRand*vRand), a);',
+      '  gl_FragColor = vec4(mix(uColA, uColB, vRand*vRand), a);',
       '}'
     ].join('\n')
   });
@@ -247,7 +258,13 @@
 
   window.Enjambre = {
     irA: irA,
-    pausar: function () { ciclando = false; }
+    pausar: function () { ciclando = false; },
+    repintar: function (tema) {
+      var q = PALETA[tema] || PALETA.oscuro;
+      uniforms.uColA.value.set(q.a[0], q.a[1], q.a[2]);
+      uniforms.uColB.value.set(q.b[0], q.b[1], q.b[2]);
+      pedirFrame();
+    }
   };
 
   /* ---------- arrastre ---------- */
