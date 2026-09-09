@@ -1,82 +1,98 @@
 /* ============================================================
-   Zeeben Labs — landing v2
-   Menú móvil, revelado al scroll, contadores y barra de CTA.
-   Sin dependencias. Reemplaza a app.js para la landing corta.
+   Zeeben Labs — landing v3
+   Dueño de la interfaz: arma las etiquetas, cambia el panel y le
+   pide al enjambre que se arme en la forma correspondiente.
+
+   Vive aparte de enjambre.js a propósito: si three.js no carga o
+   el equipo no tiene WebGL, las etiquetas y los paneles siguen
+   funcionando igual. La animación es el envoltorio, no el sitio.
    ============================================================ */
 (function () {
   "use strict";
 
-  var calmo = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* Fuente de verdad de la navegación. `voz` es la línea que aparece
+     sobre el enjambre mientras cicla solo. */
+  var FORMAS = [
+    { id: 'apps',      chip: 'Apps y paneles',     voz: '¿El panel de toda tu operación? Lo construimos.' },
+    { id: 'webs',      chip: 'Webs completas',     voz: '¿Tu sitio completo, que traiga consultas? Lo construimos.' },
+    { id: 'whatsapp',  chip: 'WhatsApp y bots',    voz: '¿Un bot que atiende y agenda solo? Lo construimos.' },
+    { id: 'dominios',  chip: 'Dominios y hosting', voz: '¿Dominio, correo y hosting andando? Lo administramos.' },
+    { id: 'infra',     chip: 'Infraestructura',    voz: '¿Los servidores de abajo, seguros y tuyos? Los configuramos.' },
+    { id: 'proyectos', chip: 'Proyectos',          voz: 'Seis clientes con sistemas corriendo hoy.' },
+    { id: 'contacto',  chip: 'Contacto',           voz: 'Contanos qué te consume tiempo. Respondemos en minutos.' }
+  ];
 
-  /* ---------- menú móvil ---------- */
-  var burger = document.querySelector('[data-burger]');
-  var links = document.getElementById('nav-links');
-  if (burger && links) {
-    burger.addEventListener('click', function () {
-      var abierto = links.classList.toggle('abierto');
-      burger.setAttribute('aria-expanded', abierto ? 'true' : 'false');
+  var contFormas = document.getElementById('formas');
+  var vozEl = document.getElementById('voz');
+  var paneles = document.getElementById('paneles');
+  if (!contFormas || !paneles) return;
+
+  var actual = null;
+
+  function panel(id) { return document.getElementById('pnl-' + id); }
+
+  /* Muestra el panel de `id`. Sin argumento vuelve al de inicio. */
+  function mostrar(id) {
+    var destino = panel(id) || panel('inicio');
+    Array.prototype.forEach.call(paneles.children, function (p) {
+      p.hidden = (p !== destino);
     });
-    links.addEventListener('click', function (e) {
-      if (e.target.tagName === 'A') {
-        links.classList.remove('abierto');
-        burger.setAttribute('aria-expanded', 'false');
+    /* reinicia la animación de entrada */
+    destino.style.animation = 'none';
+    void destino.offsetWidth;
+    destino.style.animation = '';
+
+    Array.prototype.forEach.call(contFormas.children, function (b) {
+      var esta = b.dataset.forma === id;
+      b.classList.toggle('activa', esta);
+      b.setAttribute('aria-pressed', esta ? 'true' : 'false');
+    });
+    actual = id;
+  }
+
+  function decir(texto) {
+    if (!vozEl) return;
+    vozEl.classList.add('saliendo');
+    setTimeout(function () {
+      vozEl.textContent = texto;
+      vozEl.classList.remove('saliendo');
+    }, 220);
+  }
+
+  /* ---------- etiquetas ---------- */
+  FORMAS.forEach(function (f) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = f.chip;
+    b.dataset.forma = f.id;
+    b.setAttribute('aria-pressed', 'false');
+    b.addEventListener('click', function () {
+      if (actual === f.id) {          /* segundo toque: vuelve al inicio */
+        mostrar('inicio');
+        decir('La misma ingeniería. La forma que tu negocio necesite.');
+        if (window.Enjambre) window.Enjambre.irA('z');
+        return;
+      }
+      mostrar(f.id);
+      decir(f.voz);
+      if (window.Enjambre) {
+        window.Enjambre.pausar();     /* el ciclo automático se detiene: mandás vos */
+        window.Enjambre.irA(f.id);
       }
     });
-  }
+    contFormas.appendChild(b);
+  });
 
-  /* ---------- revelado al entrar en pantalla ---------- */
-  var aRevelar = document.querySelectorAll('.reveal');
-  if (calmo || !('IntersectionObserver' in window)) {
-    Array.prototype.forEach.call(aRevelar, function (el) { el.classList.add('visible'); });
-  } else {
-    var obsRev = new IntersectionObserver(function (entradas) {
-      entradas.forEach(function (en) {
-        if (!en.isIntersecting) return;
-        en.target.classList.add('visible');
-        obsRev.unobserve(en.target);
-      });
-    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
-    Array.prototype.forEach.call(aRevelar, function (el) { obsRev.observe(el); });
-  }
-
-  /* ---------- contadores ----------
-     El valor final vive en el HTML: si el JS falla, la cifra correcta ya está.
-     Acá se reinicia y se anima hasta ese mismo número. */
-  var contadores = document.querySelectorAll('[data-contador]');
-  if (!calmo && 'IntersectionObserver' in window) {
-    var obsNum = new IntersectionObserver(function (entradas) {
-      entradas.forEach(function (en) {
-        if (!en.isIntersecting) return;
-        var el = en.target;
-        obsNum.unobserve(el);
-        var fin = parseFloat(el.dataset.contador);
-        var desde = parseFloat(el.dataset.desde || '0');
-        var sufijo = el.dataset.sufijo || '';
-        var t0 = null, dur = 900;
-        function paso(ts) {
-          if (t0 === null) t0 = ts;
-          var k = Math.min(1, (ts - t0) / dur);
-          k = 1 - Math.pow(1 - k, 3);
-          el.textContent = Math.round(desde + (fin - desde) * k) + sufijo;
-          if (k < 1) requestAnimationFrame(paso);
-        }
-        requestAnimationFrame(paso);
-      });
-    }, { threshold: 0.5 });
-    Array.prototype.forEach.call(contadores, function (el) { obsNum.observe(el); });
-  }
-
-  /* ---------- barra de acción en móvil ----------
-     Aparece recién pasado el hero: antes de eso el visitante todavía no vio
-     nada que justifique pedirle algo. */
-  var barra = document.querySelector('[data-barra-cta]');
-  var hero = document.querySelector('.hero');
-  if (barra && hero && 'IntersectionObserver' in window) {
-    var obsBarra = new IntersectionObserver(function (entradas) {
-      barra.classList.toggle('visible', !entradas[0].isIntersecting);
-    }, { threshold: 0, rootMargin: '-60% 0px 0px 0px' });
-    obsBarra.observe(hero);
-  }
+  /* ---------- interfaz para enjambre.js ---------- */
+  window.ZB = {
+    ORDEN: FORMAS.map(function (f) { return f.id; }),
+    /* El ciclo automático cambia la forma y la línea de arriba, pero NO el
+       panel: la información aparece cuando la persona la pide, no sola. */
+    cicla: function (id) {
+      var f = FORMAS.filter(function (x) { return x.id === id; })[0];
+      decir(f ? f.voz : 'La misma ingeniería. La forma que tu negocio necesite.');
+    }
+  };
 
   /* ---------- año del pie ---------- */
   var anio = document.querySelector('[data-anio]');

@@ -1,15 +1,14 @@
 /* ============================================================
-   Zeeben Labs — el enjambre del hero
-   ~5.000 partículas que toman la forma de cada servicio y cierran
-   en el sello Z. Un solo draw call; el morphing lo hace la GPU
-   (cada partícula lleva dos posiciones y una mezcla escalonada).
+   Zeeben Labs — el enjambre
+   ~5.000 partículas que toman la forma de cada cosa que hacemos y
+   cierran en el sello Z. Un solo draw call; el morphing lo hace la
+   GPU (cada partícula lleva dos posiciones y una mezcla escalonada).
 
    Las formas se muestrean de dibujos en <canvas>: agregar una es
    dibujar líneas, no modelar en 3D.
 
-   Depende de three.js (three.min.js, r147) cargado antes.
-   Si no hay WebGL o no cargó three, la escena se oculta y el hero
-   queda como texto: la landing no depende de esto para venderse.
+   La interfaz (etiquetas y paneles) vive en landing.js. Acá solo
+   está la animación: si esto no carga, el sitio funciona igual.
    ============================================================ */
 (function () {
   "use strict";
@@ -33,7 +32,8 @@
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.outputEncoding = THREE.sRGBEncoding;
   escenaDiv.insertBefore(renderer.domElement, escenaDiv.firstChild);
-  renderer.domElement.setAttribute('aria-label',
+  var dom = renderer.domElement;
+  dom.setAttribute('aria-label',
     'Animación: una nube de partículas toma la forma de cada servicio de Zeeben Labs');
 
   var escena = new THREE.Scene();
@@ -78,79 +78,67 @@
 
   function rr(x, a, b, w, h, r) { x.beginPath(); x.roundRect(a, b, w, h, r); }
 
-  /* ancla: id de la tarjeta de servicio a la que salta el chip */
-  var formas = [
-    {
-      id: 'whatsapp', chip: 'WhatsApp y bots', ancla: 'srv-whatsapp',
-      voz: '¿Un bot que atiende y agenda solo? Lo construimos.',
-      dibujar: function (x) {
-        x.lineWidth = 26;
-        rr(x, 96, 130, 320, 226, 60); x.stroke();
-        x.beginPath(); x.moveTo(150, 340); x.lineTo(128, 410); x.lineTo(216, 352); x.closePath(); x.fill();
-        [176, 256, 336].forEach(function (cx) { x.beginPath(); x.arc(cx, 243, 17, 0, 7); x.fill(); });
-      }
+  /* Un dibujo por etiqueta. Los ids coinciden con los de landing.js. */
+  var DIBUJOS = {
+    apps: function (x) {                     /* panel con barras */
+      x.lineWidth = 24;
+      rr(x, 70, 112, 372, 296, 30); x.stroke();
+      rr(x, 122, 300, 52, 66, 8); x.fill();
+      rr(x, 204, 252, 52, 114, 8); x.fill();
+      rr(x, 286, 204, 52, 162, 8); x.fill();
+      x.lineWidth = 15;
+      x.beginPath(); x.moveTo(120, 214); x.lineTo(206, 176); x.lineTo(288, 192); x.lineTo(380, 146); x.stroke();
+      x.beginPath(); x.arc(380, 146, 13, 0, 7); x.fill();
     },
-    {
-      id: 'webs', chip: 'Webs completas', ancla: 'srv-webs',
-      voz: '¿Tu sitio completo, que traiga consultas? Lo construimos.',
-      dibujar: function (x) {
-        x.lineWidth = 24;
-        rr(x, 70, 112, 372, 296, 30); x.stroke();
-        x.lineWidth = 18; x.beginPath(); x.moveTo(76, 186); x.lineTo(436, 186); x.stroke();
-        [116, 158, 200].forEach(function (cx) { x.beginPath(); x.arc(cx, 150, 11, 0, 7); x.fill(); });
-        x.lineWidth = 17;
-        x.beginPath(); x.moveTo(128, 252); x.lineTo(384, 252); x.stroke();
-        x.beginPath(); x.moveTo(128, 306); x.lineTo(300, 306); x.stroke();
-        x.beginPath(); x.moveTo(128, 356); x.lineTo(348, 356); x.stroke();
-      }
+    webs: function (x) {                     /* ventana de navegador */
+      x.lineWidth = 24;
+      rr(x, 70, 112, 372, 296, 30); x.stroke();
+      x.lineWidth = 18; x.beginPath(); x.moveTo(76, 186); x.lineTo(436, 186); x.stroke();
+      [116, 158, 200].forEach(function (cx) { x.beginPath(); x.arc(cx, 150, 11, 0, 7); x.fill(); });
+      x.lineWidth = 17;
+      x.beginPath(); x.moveTo(128, 252); x.lineTo(384, 252); x.stroke();
+      x.beginPath(); x.moveTo(128, 306); x.lineTo(300, 306); x.stroke();
+      x.beginPath(); x.moveTo(128, 356); x.lineTo(348, 356); x.stroke();
     },
-    {
-      id: 'apps', chip: 'Apps y paneles a medida', ancla: 'srv-apps',
-      voz: '¿El panel de toda tu operación? Lo construimos.',
-      dibujar: function (x) {
-        x.lineWidth = 24;
-        rr(x, 70, 112, 372, 296, 30); x.stroke();
-        rr(x, 122, 300, 52, 66, 8); x.fill();
-        rr(x, 204, 252, 52, 114, 8); x.fill();
-        rr(x, 286, 204, 52, 162, 8); x.fill();
-        x.lineWidth = 15;
-        x.beginPath(); x.moveTo(120, 214); x.lineTo(206, 176); x.lineTo(288, 192); x.lineTo(380, 146); x.stroke();
-        x.beginPath(); x.arc(380, 146, 13, 0, 7); x.fill();
-      }
+    whatsapp: function (x) {                 /* globo de conversación */
+      x.lineWidth = 26;
+      rr(x, 96, 130, 320, 226, 60); x.stroke();
+      x.beginPath(); x.moveTo(150, 340); x.lineTo(128, 410); x.lineTo(216, 352); x.closePath(); x.fill();
+      [176, 256, 336].forEach(function (cx) { x.beginPath(); x.arc(cx, 243, 17, 0, 7); x.fill(); });
     },
-    {
-      id: 'dominios', chip: 'Dominios y hosting', ancla: 'srv-dominios',
-      voz: '¿Dominio, correo y hosting andando? Lo administramos.',
-      dibujar: function (x) {
-        x.lineWidth = 22;
-        x.beginPath(); x.arc(256, 260, 168, 0, 7); x.stroke();
-        x.lineWidth = 14;
-        x.beginPath(); x.ellipse(256, 260, 66, 168, 0, 0, 7); x.stroke();
-        x.beginPath(); x.ellipse(256, 260, 168, 60, 0, 0, 7); x.stroke();
-        x.beginPath(); x.moveTo(100, 196); x.lineTo(412, 196); x.stroke();
-        x.beginPath(); x.moveTo(100, 324); x.lineTo(412, 324); x.stroke();
-      }
+    dominios: function (x) {                 /* globo terráqueo */
+      x.lineWidth = 22;
+      x.beginPath(); x.arc(256, 260, 168, 0, 7); x.stroke();
+      x.lineWidth = 14;
+      x.beginPath(); x.ellipse(256, 260, 66, 168, 0, 0, 7); x.stroke();
+      x.beginPath(); x.ellipse(256, 260, 168, 60, 0, 0, 7); x.stroke();
+      x.beginPath(); x.moveTo(100, 196); x.lineTo(412, 196); x.stroke();
+      x.beginPath(); x.moveTo(100, 324); x.lineTo(412, 324); x.stroke();
     },
-    {
-      id: 'infra', chip: 'Infraestructura', ancla: 'srv-infra',
-      voz: '¿Los servidores de abajo, seguros y tuyos? Los configuramos.',
-      dibujar: function (x) {
-        x.lineWidth = 24;
-        rr(x, 158, 84, 196, 352, 26); x.stroke();
-        x.lineWidth = 15;
-        [152, 216, 280].forEach(function (y) {
-          x.beginPath(); x.moveTo(192, y); x.lineTo(320, y); x.stroke();
-        });
-        x.beginPath(); x.arc(206, 376, 12, 0, 7); x.fill();
-        x.beginPath(); x.arc(250, 376, 12, 0, 7); x.fill();
-      }
+    infra: function (x) {                    /* rack de servidor */
+      x.lineWidth = 24;
+      rr(x, 158, 84, 196, 352, 26); x.stroke();
+      x.lineWidth = 15;
+      [152, 216, 280].forEach(function (y) {
+        x.beginPath(); x.moveTo(192, y); x.lineTo(320, y); x.stroke();
+      });
+      x.beginPath(); x.arc(206, 376, 12, 0, 7); x.fill();
+      x.beginPath(); x.arc(250, 376, 12, 0, 7); x.fill();
     },
-    {
-      id: 'z', chip: null, ancla: null,
-      voz: 'La misma ingeniería. La forma que tu negocio necesite.',
-      dibujar: null   /* se completa cuando carga el isotipo */
+    proyectos: function (x) {                /* grilla de obras, una destacada */
+      x.lineWidth = 22;
+      rr(x, 108, 108, 134, 134, 20); x.stroke();
+      rr(x, 270, 108, 134, 134, 20); x.stroke();
+      rr(x, 108, 270, 134, 134, 20); x.stroke();
+      rr(x, 270, 270, 134, 134, 20); x.fill();
+    },
+    contacto: function (x) {                 /* sobre */
+      x.lineWidth = 24;
+      rr(x, 78, 148, 356, 244, 26); x.stroke();
+      x.lineWidth = 20;
+      x.beginPath(); x.moveTo(100, 172); x.lineTo(256, 292); x.lineTo(412, 172); x.stroke();
     }
-  ];
+  };
 
   /* ---------- geometría + shader ---------- */
   var geo = new THREE.BufferGeometry();
@@ -210,8 +198,9 @@
   escena.add(nube);
 
   var objetivos = {};
-  formas.forEach(function (f) { if (f.dibujar) objetivos[f.id] = muestrear(f.dibujar); });
+  Object.keys(DIBUJOS).forEach(function (id) { objetivos[id] = muestrear(DIBUJOS[id]); });
 
+  /* El sello Z sale del isotipo real, así que espera a que la imagen cargue. */
   var pendienteZ = false;
   var imgZ = new Image();
   imgZ.onload = function () {
@@ -224,16 +213,14 @@
   imgZ.src = 'assets/isotype-z.webp';
 
   /* ---------- transiciones ---------- */
-  var vozEl = document.getElementById('voz');
-  var destinoEl = document.getElementById('destino');
   var actual = null;
 
   function irA(id) {
     var destino3 = objetivos[id];
     if (!destino3) { if (id === 'z') pendienteZ = true; return; }
 
-    /* hornear la posición visible actual (misma fórmula que el shader)
-       para que la transición arranque desde donde se ve, no desde el origen */
+    /* hornear la posición visible actual (misma fórmula que el shader) para que
+       la transición arranque desde donde se ve, no desde la forma anterior */
     var pos = geo.attributes.position.array;
     var tgt = geo.attributes.aTarget.array;
     var mixU = uniforms.uMix.value;
@@ -249,53 +236,23 @@
     geo.attributes.aTarget.needsUpdate = true;
     uniforms.uMix.value = reducido ? 1 : 0;
     actual = id;
-
-    var f = formas.filter(function (x) { return x.id === id; })[0];
-    if (vozEl) {
-      vozEl.classList.add('saliendo');
-      setTimeout(function () { vozEl.textContent = f.voz; vozEl.classList.remove('saliendo'); }, 250);
-    }
-    Array.prototype.forEach.call(document.querySelectorAll('.formas button'), function (b) {
-      b.classList.toggle('activa', b.dataset.forma === id);
-    });
-    if (destinoEl) {
-      destinoEl.innerHTML = f.ancla
-        ? '<a href="#' + f.ancla + '">Ver ' + f.chip.toLowerCase() + ' &rarr;</a>'
-        : '&nbsp;';
-    }
     pedirFrame();
   }
 
-  /* chips: cambian la forma; si ya estaba en esa forma, bajan a la tarjeta */
-  var contFormas = document.getElementById('formas');
-  if (contFormas) {
-    formas.forEach(function (f) {
-      if (!f.chip) return;
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.textContent = f.chip;
-      b.dataset.forma = f.id;
-      b.addEventListener('click', function () {
-        manual = reloj.elapsedTime;
-        if (actual === f.id && f.ancla) {
-          var destino = document.getElementById(f.ancla);
-          if (destino) destino.scrollIntoView({ behavior: reducido ? 'auto' : 'smooth', block: 'center' });
-        } else {
-          irA(f.id);
-        }
-      });
-      contFormas.appendChild(b);
-    });
-  }
+  /* ---------- ciclo automático ----------
+     Solo hasta que la persona toque una etiqueta: a partir de ahí manda ella. */
+  var orden = (window.ZB && window.ZB.ORDEN ? window.ZB.ORDEN.slice() : Object.keys(DIBUJOS));
+  orden.push('z');
+  var cicloI = 0, ultimoCambio = 0, ciclando = true;
 
-  /* ---------- ciclo automático ---------- */
-  var orden = ['whatsapp', 'webs', 'apps', 'dominios', 'infra', 'z'];
-  var cicloI = 0, ultimoCambio = 0, manual = -99;
+  window.Enjambre = {
+    irA: irA,
+    pausar: function () { ciclando = false; }
+  };
 
   /* ---------- arrastre ---------- */
   var rotY = 0, rotX = 0, rotYObj = 0, rotXObj = 0;
   var arrastrando = false, px = 0, py = 0;
-  var dom = renderer.domElement;
   dom.addEventListener('pointerdown', function (e) {
     arrastrando = true; px = e.clientX; py = e.clientY;
     dom.setPointerCapture(e.pointerId);
@@ -313,12 +270,9 @@
 
   /* ---------- tamaño ---------- */
   function redimensionar() {
-    /* Se mide el canvas y no el contenedor: en móvil los chips salen del
-       absoluto y viven debajo, así que .escena crece y ya no representa el
-       alto del lienzo. setSize(...,false) no toca el CSS. */
     var w = dom.clientWidth, h = dom.clientHeight;
     if (!w || !h) return;
-    renderer.setSize(w, h, false);
+    renderer.setSize(w, h, false);   /* false: no toca el CSS del canvas */
     camara.aspect = w / h;
     camara.position.z = (camara.aspect < 0.95) ? 7.8 : 6.4;
     camara.updateProjectionMatrix();
@@ -341,12 +295,14 @@
 
     if (!reducido) {
       if (uniforms.uMix.value < 1) uniforms.uMix.value = Math.min(1, uniforms.uMix.value + dt * 0.9);
-      /* el sello Z se queda un poco más; un click manual pausa el ciclo 7s */
-      var espera = (actual === 'z') ? 4.6 : 3.4;
-      if (t - ultimoCambio > espera && t - manual > 7) {
-        cicloI = (cicloI + 1) % orden.length;
-        ultimoCambio = t;
-        irA(orden[cicloI]);
+      if (ciclando) {
+        var espera = (actual === 'z') ? 4.2 : 3.2;
+        if (t - ultimoCambio > espera) {
+          cicloI = (cicloI + 1) % orden.length;
+          ultimoCambio = t;
+          irA(orden[cicloI]);
+          if (window.ZB && window.ZB.cicla) window.ZB.cicla(orden[cicloI]);
+        }
       }
       rotY += ((rotYObj + Math.sin(t * 0.16) * 0.14) - rotY) * 0.05;
       rotX += (rotXObj - rotX) * 0.05;
@@ -382,11 +338,13 @@
 
   redimensionar();
   if (reducido) {
-    irA('z');              /* quieto en el sello; los chips igual cambian la forma */
+    ciclando = false;
+    irA('z');
     arrancar();
   } else {
-    ultimoCambio = 0.6;    /* el primer morphing arranca enseguida */
-    irA('whatsapp');
+    ultimoCambio = 0.5;
+    irA(orden[0]);
+    if (window.ZB && window.ZB.cicla) window.ZB.cicla(orden[0]);
     arrancar();
   }
 })();

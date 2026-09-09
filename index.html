@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#F6F8FC">
 <meta name="google-site-verification" content="5d4lBltLXjCbUz0Lg6LB9_y0TGAhb-YqyyRA0CdBrK8" />
 <title>Zeeben Labs — Software a medida, WhatsApp e IA para pymes en Paraguay</title>
-<meta name="description" content="Apps y paneles a medida, sitios web completos, bots de WhatsApp con IA, dominios y hosting, e infraestructura. Un solo proveedor, sobre tu propia infraestructura, sin licencias mensuales. Asunción, Paraguay.">
+<meta name="description" content="Apps y paneles a medida, sitios web completos, bots de WhatsApp con IA, dominios y hosting, e infraestructura. Un solo proveedor, sobre tu propia infraestructura. Asunción, Paraguay.">
 <link rel="canonical" href="https://zeebenlabs.com/">
 
 <meta property="og:title" content="Zeeben Labs — Construimos tu tecnología, de punta a punta">
@@ -35,8 +35,9 @@
   "image": "https://zeebenlabs.com/assets/og-image.png",
   "telephone": "+595992879800",
   "email": "info@zeebenlabs.com",
+  "sameAs": ["https://instagram.com/zeebenlabs"],
   "areaServed": { "@type": "Country", "name": "Paraguay" },
-  "knowsAbout": ["Desarrollo de software a medida", "Sistemas de gestión", "Desarrollo web", "Automatización de WhatsApp", "Chatbots", "Inteligencia artificial aplicada", "Administración de dominios y hosting", "Infraestructura de servidores", "Protección de datos personales"],
+  "knowsAbout": ["Desarrollo de software a medida", "Sistemas de gestión", "Desarrollo web", "Automatización de WhatsApp", "Chatbots", "Inteligencia artificial aplicada", "Administración de dominios y hosting", "Infraestructura de servidores"],
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
     "name": "Servicios",
@@ -61,353 +62,188 @@
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/jetbrainsmono-500.woff2" crossorigin>
 <link rel="preload" as="image" href="assets/logo.webp" type="image/webp" fetchpriority="high">
 
-<link rel="stylesheet" href="landing.css?v=1">
+<link rel="stylesheet" href="landing.css?v=2">
 </head>
 <body>
 
-<a class="sr-only" href="#contenido">Saltar al contenido</a>
-
 <header class="nav">
   <div class="nav__in">
-    <a class="nav__logo-chip" href="#inicio" aria-label="Zeeben Labs — inicio">
+    <a class="nav__logo-chip" href="/" aria-label="Zeeben Labs — inicio">
       <picture>
         <source srcset="assets/logo.webp" type="image/webp">
         <img src="assets/logo.png" alt="Zeeben Labs" width="460" height="63" fetchpriority="high">
       </picture>
     </a>
-    <nav class="nav__links" id="nav-links" aria-label="Principal">
-      <a href="#servicios">Servicios</a>
-      <a href="#demo">Demo</a>
-      <a href="#servidor">Tu servidor</a>
-      <a href="#proyectos">Proyectos</a>
-      <a href="#contacto">Contacto</a>
-    </nav>
-    <a class="btn btn--primary nav__cta" style="padding:10px 18px;font-size:14px" href="https://wa.me/595992879800?text=Hola%20Zeeben%20Labs%2C%20esto%20es%20lo%20que%20me%20consume%20m%C3%A1s%20tiempo%20en%20mi%20negocio%3A%20">Diagnóstico gratis</a>
-    <button class="nav__burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-links" data-burger>
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-    </button>
+    <a class="btn btn--primary nav__cta" href="https://wa.me/595992879800?text=Hola%20Zeeben%20Labs%2C%20esto%20es%20lo%20que%20me%20consume%20m%C3%A1s%20tiempo%20en%20mi%20negocio%3A%20">Diagnóstico gratis</a>
   </div>
 </header>
 
-<main id="contenido">
+<main class="escenario">
+  <div class="wrap escenario__grid">
 
-  <!-- ============================== HERO ==============================
-       El enjambre (enjambre.js) toma la forma de cada servicio y cierra en
-       el sello Z. Si three.js no carga o no hay WebGL, .escena se oculta y
-       el hero se lee entero igual: titular, bajada y botones son HTML plano. -->
-  <section class="hero" id="inicio">
-    <div class="wrap hero__grid">
+    <!-- ===================== COLUMNA IZQUIERDA: titular + panel =====================
+         Los siete paneles viven en el HTML (uno visible por vez). Así el contenido
+         es indexable y sigue estando si el JS no corre. -->
+    <div class="lado">
+      <p class="eyebrow"><span class="rombo" aria-hidden="true"></span>Software a medida · Paraguay</p>
+      <h1>Construimos<br>tu tecnología,<br><span class="acento">de punta a punta</span></h1>
 
-      <div class="hero__texto">
-        <p class="eyebrow"><span class="rombo" aria-hidden="true"></span>Automatización y software a medida · Paraguay</p>
-        <h1>Construimos<br>tu tecnología,<br><span class="acento">de punta a punta</span></h1>
-        <p class="lead">Apps a medida, sitios completos, WhatsApp con IA, dominios y la infraestructura que hace correr todo eso — la misma ingeniería, con la forma que tu negocio necesite. Y siempre sobre tu propia infraestructura.</p>
-        <div class="hero__acciones">
-          <a class="btn btn--primary" href="https://wa.me/595992879800?text=Hola%20Zeeben%20Labs%2C%20esto%20es%20lo%20que%20me%20consume%20m%C3%A1s%20tiempo%20en%20mi%20negocio%3A%20">Contanos qué te consume tiempo</a>
-          <a class="btn btn--ghost" href="#servicios">Ver todo lo que armamos</a>
+      <div class="paneles" id="paneles">
+
+        <div class="panel" id="pnl-inicio">
+          <p class="panel__lead">Apps a medida, sitios completos, WhatsApp con IA, dominios y la infraestructura que hace correr todo eso. La misma ingeniería, con la forma que tu negocio necesite.</p>
+          <p class="panel__pista">Elegí abajo qué necesitás y te cuento cómo lo resolvemos.</p>
         </div>
-        <p class="destino" id="destino">&nbsp;</p>
-      </div>
 
+        <div class="panel" id="pnl-apps" hidden>
+          <h2>Apps y paneles a medida</h2>
+          <p>Sistemas internos para tu operación real: pedidos, turnos, cobros, stock y márgenes en un solo lugar. Diseñados sobre cómo trabajás vos, no sobre un producto enlatado que casi encaja.</p>
+          <ul class="panel__lista">
+            <li>Se instala como app desde el navegador</li>
+            <li>Corre en tu infraestructura</li>
+          </ul>
+          <p class="panel__precio">A cotizar <span>— el alcance varía demasiado para poner un número honesto</span></p>
+          <p class="panel__prueba">Como el control de costos de <b>Congelados Naturales</b> o el panel de caja de <b>Point Park</b>.</p>
+        </div>
+
+        <div class="panel" id="pnl-webs" hidden>
+          <h2>Webs completas</h2>
+          <p>Sitios propios, no una landing suelta: la web que trae consultas ordenadas, integrada con tu WhatsApp desde el primer día.</p>
+          <ul class="panel__lista">
+            <li>Pensada para que la consulta entre calificada</li>
+            <li>Rápida en celular, que es donde te van a ver</li>
+          </ul>
+          <p class="panel__precio">A cotizar <span>— según cuántas páginas y qué tenga que hacer</span></p>
+          <p class="panel__prueba">Como la de <b>Northstar</b>: pasó de no tener dónde mandar un cliente a recibir consultas todos los meses.</p>
+        </div>
+
+        <div class="panel" id="pnl-whatsapp" hidden>
+          <h2>WhatsApp y bots</h2>
+          <p>Responde las consultas de siempre, deriva a una persona cuando hace falta, agenda solo y deja todo registrado. Con inteligencia artificial o sin ella, según lo que tu negocio necesite.</p>
+          <p class="panel__precio">Desde Gs. 5.990.000 <span>+ Gs. 450.000 por mes de soporte</span></p>
+
+          <!-- La demo se llena por JS y tiene alto reservado en CSS: si demo-hero.js
+               no carga, el panel no se rompe. -->
+          <div class="demo" data-demo>
+            <div class="rubros" role="group" aria-label="Tipo de negocio">
+              <button type="button" data-rubro="salud" aria-pressed="true">Consultorio</button>
+              <button type="button" data-rubro="gastro" aria-pressed="false">Restaurante</button>
+              <button type="button" data-rubro="estudio" aria-pressed="false">Estudio</button>
+            </div>
+            <div class="cadena">
+              <div class="tel">
+                <div class="tel__cab">
+                  <span class="tel__ava" data-demo-ini aria-hidden="true">C</span>
+                  <span>
+                    <span class="tel__quien" data-demo-quien>Consultorio</span>
+                    <span class="tel__est">en línea</span>
+                  </span>
+                </div>
+                <div class="tel__hilo" data-demo-hilo role="log" aria-live="polite" aria-label="Conversación de ejemplo"></div>
+                <form class="tel__pie" data-demo-form>
+                  <input data-demo-entrada placeholder="Pedí un turno…" autocomplete="off" maxlength="200" aria-label="Escribí como si fueras un cliente">
+                  <button type="submit" aria-label="Enviar">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+                  </button>
+                </form>
+              </div>
+              <div class="libreta">
+                <p class="libreta__cab"><span data-demo-titulo>Agenda de hoy</span><b data-demo-cuenta>0</b></p>
+                <div class="libreta__lista" data-demo-lista></div>
+              </div>
+            </div>
+            <p class="demo__pie">Escribile vos y mirá dónde cae el turno. Es el sistema que atiende hoy en Congelados Naturales.</p>
+            <div class="remate" data-demo-remate hidden>
+              <p class="remate__q">¿Querés uno así atendiendo tu WhatsApp?</p>
+              <a class="btn btn--primary remate__cta" data-demo-remate-cta
+                 href="https://wa.me/595992879800?text=Hola%20Zeeben%20Labs%2C%20prob%C3%A9%20la%20demo%20de%20la%20web%20y%20quiero%20uno%20as%C3%AD%20para%20mi%20negocio.">Armámelo</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" id="pnl-dominios" hidden>
+          <h2>Dominios y hosting</h2>
+          <p>Dominio, correo corporativo y hosting configurados y mantenidos, para que no tengas que entender de eso ni acordarte de renovarlo.</p>
+          <ul class="panel__lista">
+            <li>Tu correo con tu propio dominio</li>
+            <li>Certificado y renovaciones, a cargo nuestro</li>
+          </ul>
+          <p class="panel__precio">A cotizar <span>— depende del dominio y de cuántas casillas necesites</span></p>
+        </div>
+
+        <div class="panel" id="pnl-infra" hidden>
+          <h2>Infraestructura</h2>
+          <p>Servidores, redes y despliegue: la parte de abajo que hace que todo lo demás corra. Quince años administrando infraestructura crítica en empresas grandes.</p>
+          <ul class="panel__lista">
+            <li>Tus datos no salen de tu empresa</li>
+            <li>Sin licencias por usuario que crecen con tu equipo</li>
+          </ul>
+          <p class="panel__precio">A cotizar <span>— según el tamaño y qué haya que dejar andando</span></p>
+        </div>
+
+        <div class="panel" id="pnl-proyectos" hidden>
+          <h2>Sistemas nuestros, corriendo hoy</h2>
+          <div class="casos">
+            <div class="caso">
+              <b>Point Park</b>
+              <span>Estacionamiento, lavadero y cafetería. Hicimos la barrera robotizada y el software del mismo lado.</span>
+              <i>Cuaderno → arqueo automático</i>
+            </div>
+            <div class="caso">
+              <b>Congelados Naturales</b>
+              <span>Un bot toma el pedido, arma la orden de reparto y controla costos y márgenes.</span>
+              <i>40 → 0 mensajes a mano por día</i>
+            </div>
+            <div class="caso">
+              <b>Northstar</b>
+              <span>Sitio de consultoría con captación por WhatsApp.</span>
+              <i>0 → 18 consultas por mes</i>
+            </div>
+          </div>
+          <p class="panel__prueba">Seis clientes con sistemas en producción, más tres sistemas propios.</p>
+        </div>
+
+        <div class="panel" id="pnl-contacto" hidden>
+          <h2>Empecemos con un audio</h2>
+          <p>Contanos qué proceso te consume más tiempo. En menos de 24 horas te decimos qué se puede automatizar y cuánto saldría. Sin compromiso.</p>
+          <div class="contacto__acciones">
+            <a class="btn btn--primary" href="https://wa.me/595992879800?text=Hola%20Zeeben%20Labs%2C%20esto%20es%20lo%20que%20me%20consume%20m%C3%A1s%20tiempo%20en%20mi%20negocio%3A%20">Mandar un audio por WhatsApp</a>
+          </div>
+          <ul class="contacto__lista">
+            <li><span>WhatsApp</span><a href="https://wa.me/595992879800?text=Hola%20Zeeben%20Labs%2C%20quiero%20hacer%20una%20consulta">+595 992 879 800</a></li>
+            <li><span>Instagram</span><a href="https://instagram.com/zeebenlabs" target="_blank" rel="noopener">@zeebenlabs</a></li>
+            <li><span>Email</span><a href="mailto:info@zeebenlabs.com">info@zeebenlabs.com</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ===================== COLUMNA DERECHA: el enjambre ===================== -->
+    <div class="lado lado--escena">
       <div class="escena" id="escena">
         <p class="voz" id="voz">&nbsp;</p>
-        <div class="formas" id="formas" role="group" aria-label="Elegí qué forma toma la animación"></div>
       </div>
-
+      <div class="formas" id="formas" role="group" aria-label="Elegí qué querés ver"></div>
     </div>
-  </section>
 
-  <!-- ============================== MÉTRICAS + CLIENTES ============================== -->
-  <section class="franja" aria-labelledby="metricas-t">
-    <h2 class="sr-only" id="metricas-t">Zeeben Labs en números</h2>
-    <div class="wrap">
-      <!-- El valor final vive en el HTML: si el JS falla, la cifra correcta ya está.
-           landing.js lo reinicia y lo anima hasta acá. -->
-      <div class="metricas">
-        <p class="metrica"><b data-contador="15" data-sufijo="+">15+</b><span>Años en tecnología</span></p>
-        <p class="metrica"><b data-contador="6">6</b><span>Clientes con sistemas andando</span></p>
-        <p class="metrica"><b data-contador="3">3</b><span>Sistemas propios en producción</span></p>
-        <p class="metrica"><b data-contador="100" data-sufijo=" %">100 %</b><span>En tu infraestructura</span></p>
-      </div>
-      <div class="clientes">
-        <p class="eyebrow"><span class="rombo" aria-hidden="true"></span>Confían en nosotros</p>
-        <!-- El alt lleva el nombre porque el logo ES la información, no decoración. -->
-        <ul class="clientes__lista">
-          <li><img src="assets/clientes/point-park.webp" alt="Point Park" width="35" height="36" loading="lazy" decoding="async"></li>
-          <li><img src="assets/clientes/congelados.webp" alt="Congelados Naturales" width="36" height="36" loading="lazy" decoding="async"></li>
-          <li><img src="assets/clientes/northstar.webp" alt="Northstar" width="44" height="36" loading="lazy" decoding="async"></li>
-          <li><img src="assets/clientes/sublimarte.webp" alt="SUBLIM.ARTE" width="35" height="36" loading="lazy" decoding="async"></li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================== SERVICIOS ==============================
-       Los id="srv-*" son el destino de los chips del enjambre (enjambre.js). -->
-  <section class="seccion" id="servicios" aria-labelledby="servicios-t">
-    <div class="wrap">
-      <div class="seccion__cab reveal">
-        <div>
-          <p class="eyebrow"><span class="rombo" aria-hidden="true"></span>Lo que hacemos</p>
-          <h2 id="servicios-t">De la web al servidor, todo con un mismo proveedor</h2>
-        </div>
-        <p class="seccion__nota">Precios orientativos donde ya están cerrados; el resto, a cotizar según tu caso.</p>
-      </div>
-
-      <div class="servicios__grid">
-        <article class="serv-card reveal" id="srv-apps">
-          <img src="assets/servicios/apps.webp" alt="" width="56" height="56" loading="lazy" decoding="async">
-          <h3>Apps y paneles a medida</h3>
-          <p>Sistemas internos para tu operación real: pedidos, turnos, cobros, stock y márgenes en un solo lugar, diseñados sobre cómo trabajás vos, no sobre un producto enlatado.</p>
-          <p class="serv-card__precio">A cotizar</p>
-          <p class="serv-card__nota">El alcance varía demasiado para poner un número honesto.</p>
-          <p class="serv-card__prueba">Como el control de costos de <b>Congelados Naturales</b> o el panel de <b>Point Park</b>.</p>
-        </article>
-
-        <article class="serv-card reveal" id="srv-webs">
-          <img src="assets/servicios/webs.webp" alt="" width="56" height="56" loading="lazy" decoding="async">
-          <h3>Webs completas</h3>
-          <p>Sitios propios, no una landing suelta: la web que trae consultas ordenadas, integrada con tu WhatsApp desde el primer día.</p>
-          <p class="serv-card__precio">A cotizar</p>
-          <p class="serv-card__nota">Según cuántas páginas y qué tenga que hacer.</p>
-          <p class="serv-card__prueba">Como la de <b>Northstar</b>, que hoy recibe consultas ya calificadas.</p>
-        </article>
-
-        <article class="serv-card reveal" id="srv-whatsapp">
-          <img src="assets/servicios/whatsapp.webp" alt="" width="56" height="56" loading="lazy" decoding="async">
-          <h3>WhatsApp y bots</h3>
-          <p>Responde las consultas de siempre, deriva a una persona cuando hace falta, agenda solo y deja todo registrado. Con inteligencia artificial o sin ella, según lo que tu negocio realmente necesite.</p>
-          <p class="serv-card__precio">Desde Gs. 5.990.000</p>
-          <p class="serv-card__nota">+ Gs. 450.000 por mes de soporte · servidor aparte, a costo</p>
-          <p class="serv-card__prueba">Es el sistema que hoy corre en <b>Congelados Naturales</b>. Probalo acá abajo.</p>
-        </article>
-
-        <article class="serv-card reveal" id="srv-dominios">
-          <img src="assets/servicios/dominios.webp" alt="" width="56" height="56" loading="lazy" decoding="async">
-          <h3>Dominios y hosting</h3>
-          <p>Dominio, correo corporativo y hosting configurados y mantenidos, para que no tengas que entender de eso ni acordarte de renovarlo.</p>
-          <p class="serv-card__precio">A cotizar</p>
-          <p class="serv-card__nota">Depende del dominio y de cuántas casillas necesites.</p>
-        </article>
-
-        <article class="serv-card reveal" id="srv-infra">
-          <img src="assets/servicios/infra.webp" alt="" width="56" height="56" loading="lazy" decoding="async">
-          <h3>Infraestructura</h3>
-          <p>Servidores, redes y despliegue: la parte de abajo que hace que todo lo demás corra. Quince años administrando infraestructura crítica en empresas grandes.</p>
-          <p class="serv-card__precio">A cotizar</p>
-          <p class="serv-card__nota">Según el tamaño y qué haya que dejar andando.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================== DEMO EN VIVO ==============================
-       Las dos cajas llevan alto reservado en CSS y se llenan por JS: si
-       demo-hero.js no carga, la sección no se rompe. -->
-  <section class="seccion seccion--demo" id="demo" aria-labelledby="demo-t">
-    <div class="wrap">
-      <div class="seccion__cab reveal">
-        <div>
-          <p class="eyebrow"><span class="rombo" aria-hidden="true"></span>En vivo</p>
-          <h2 id="demo-t">Una de nuestras obras, andando ahora</h2>
-        </div>
-        <p class="seccion__nota">WhatsApp con agenda automática. Escribile como si fueras un cliente y mirá dónde cae el turno.</p>
-      </div>
-
-      <div class="demo-caja reveal" data-demo>
-        <div class="rubros" role="group" aria-label="Tipo de negocio">
-          <button type="button" data-rubro="salud" aria-pressed="true">Consultorio</button>
-          <button type="button" data-rubro="gastro" aria-pressed="false">Restaurante</button>
-          <button type="button" data-rubro="estudio" aria-pressed="false">Estudio</button>
-        </div>
-
-        <div class="cadena">
-          <div class="tel">
-            <div class="tel__cab">
-              <span class="tel__ava" data-demo-ini aria-hidden="true">C</span>
-              <span>
-                <span class="tel__quien" data-demo-quien>Consultorio</span>
-                <span class="tel__est">en línea</span>
-              </span>
-            </div>
-            <div class="tel__hilo" data-demo-hilo role="log" aria-live="polite" aria-label="Conversación de ejemplo"></div>
-            <form class="tel__pie" data-demo-form>
-              <input data-demo-entrada placeholder="Pedí un turno…" autocomplete="off" maxlength="200" aria-label="Escribí como si fueras un cliente">
-              <button type="submit" aria-label="Enviar">
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
-              </button>
-            </form>
-          </div>
-
-          <div class="libreta">
-            <p class="libreta__cab"><span data-demo-titulo>Agenda de hoy</span><b data-demo-cuenta>0</b></p>
-            <div class="libreta__lista" data-demo-lista></div>
-          </div>
-        </div>
-
-        <p class="demo__pie">Es el mismo sistema que atiende hoy en Congelados Naturales.</p>
-
-        <!-- Aparece recién después de que el visitante escribió un par de veces,
-             o sea cuando ya entendió qué hace el sistema. -->
-        <div class="remate" data-demo-remate hidden>
-          <p class="remate__q">¿Querés uno así atendiendo tu WhatsApp?</p>
-          <a class="btn btn--primary remate__cta" data-demo-remate-cta
-             href="https://wa.me/595992879800?text=Hola%20Zeeben%20Labs%2C%20prob%C3%A9%20la%20demo%20de%20la%20web%20y%20quiero%20uno%20as%C3%AD%20para%20mi%20negocio.">Armámelo</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================== POR QUÉ EN TU SERVIDOR ==============================
-       Las cifras legales están verificadas contra la Ley N° 7.593/2025.
-       No tocar sin volver a verificar: son afirmaciones legales públicas. -->
-  <section class="seccion" id="servidor" aria-labelledby="servidor-t">
-    <div class="wrap">
-      <div class="seccion__cab reveal">
-        <div>
-          <p class="eyebrow"><span class="rombo" aria-hidden="true"></span>Tu infraestructura</p>
-          <h2 id="servidor-t">¿Por qué en tu servidor?</h2>
-        </div>
-        <p class="seccion__nota">La diferencia entre alquilar y ser dueño.</p>
-      </div>
-
-      <div class="servidor__grid">
-        <article class="servidor-chip reveal">
-          <h3><i>01</i>Costo</h3>
-          <p>El software por suscripción cobra por usuario y por mes: cuanto más crece tu equipo, más pagás. Un sistema propio se implementa una vez y después el gasto es de mantenimiento.</p>
-        </article>
-        <article class="servidor-chip reveal">
-          <h3><i>02</i>Control</h3>
-          <p>Los datos quedan en un servidor que administrás vos: definís quién entra, con qué permisos y qué queda registrado. Si algún día cambiás de plataforma, ya están de tu lado.</p>
-        </article>
-        <article class="servidor-chip reveal">
-          <!-- La última oración evita prometer cumplimiento legal, que es una promesa
-               que no podemos sostener: el Art. 2 aplica la ley "independientemente del
-               país donde se encuentren los datos". No recortarla. -->
-          <h3><i>03</i>La ley 7.593</h3>
-          <p>Paraguay promulgó su ley de protección de datos personales en noviembre de 2025 y entra en vigencia plena en noviembre de 2027. Los datos de salud son datos sensibles según la ley. Tener la información bajo control propio no es todo el cumplimiento, pero es la base técnica sobre la que se apoya el resto.</p>
-        </article>
-      </div>
-      <p class="servidor__fuente reveal"><a href="https://www.bacn.gov.py/leyes-paraguayas/12924/ley-n-7593-2025-de-protecci-n-de-datos-personales-en-la-rep-blica-del-paraguay" target="_blank" rel="noopener">Ley N° 7.593/2025</a>, promulgada el 27/11/2025. Esto es informativo y no constituye asesoramiento legal; para tu caso, consultá con un profesional del derecho.</p>
-    </div>
-  </section>
-
-  <!-- ============================== PROYECTOS ============================== -->
-  <section class="seccion" id="proyectos" aria-labelledby="proyectos-t" style="padding-top:0">
-    <div class="wrap">
-      <div class="seccion__cab reveal">
-        <div>
-          <p class="eyebrow"><span class="rombo" aria-hidden="true"></span>Casos reales</p>
-          <h2 id="proyectos-t">Problemas concretos, sistemas que quedaron andando</h2>
-        </div>
-        <p class="seccion__nota">Seis clientes con sistemas en producción. Acá, tres.</p>
-      </div>
-
-      <div class="casos__grid">
-        <article class="caso-card reveal">
-          <div class="caso-card__img">
-            <img src="assets/proyectos/point-park-960.webp"
-                 srcset="assets/proyectos/point-park-960.webp 960w, assets/proyectos/point-park-1440.webp 1440w"
-                 sizes="(max-width: 900px) 92vw, 360px"
-                 alt="Panel de control de Point Park: ingresos, cobros y cierre de caja del día."
-                 width="960" height="517" loading="lazy" decoding="async">
-          </div>
-          <div class="caso-card__body">
-            <h3>Point Park</h3>
-            <p>Estacionamiento, lavadero y cafetería en un solo panel. Hicimos la parte física y el software: sensores, barrera robotizada y el sistema encima.</p>
-            <p class="caso-card__dato">Cuaderno → arqueo automático</p>
-          </div>
-        </article>
-
-        <article class="caso-card reveal">
-          <div class="caso-card__img">
-            <img src="assets/proyectos/congelados-960.webp"
-                 srcset="assets/proyectos/congelados-960.webp 960w, assets/proyectos/congelados-1440.webp 1440w"
-                 sizes="(max-width: 900px) 92vw, 360px"
-                 alt="Sistema de gestión de Congelados Naturales: control de pedidos, costos y margen."
-                 width="960" height="513" loading="lazy" decoding="async">
-          </div>
-          <div class="caso-card__body">
-            <h3>Congelados Naturales</h3>
-            <p>Un bot toma el pedido, arma la orden de reparto y pasa a una persona cuando el cliente lo pide. Suma control de costos y márgenes.</p>
-            <p class="caso-card__dato">40 → 0 mensajes a mano por día</p>
-          </div>
-        </article>
-
-        <article class="caso-card reveal">
-          <div class="caso-card__img">
-            <img src="assets/proyectos/northstar-960.webp"
-                 srcset="assets/proyectos/northstar-960.webp 960w, assets/proyectos/northstar-1440.webp 1440w"
-                 sizes="(max-width: 900px) 92vw, 360px"
-                 alt="Sitio web de Northstar, consultoría con captación de consultas por WhatsApp."
-                 width="960" height="458" loading="lazy" decoding="async">
-          </div>
-          <div class="caso-card__body">
-            <h3>Northstar</h3>
-            <p>No tenían página. Hoy tienen dónde mandar a un cliente, y la consulta entra ordenada y calificada.</p>
-            <p class="caso-card__dato">0 → 18 consultas por mes</p>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================== CTA FINAL ============================== -->
-  <section class="seccion" id="contacto" style="padding-top:0" aria-labelledby="cta-t">
-    <div class="wrap">
-      <div class="cta-final reveal">
-        <div class="rombo-grande" aria-hidden="true"></div>
-        <h2 id="cta-t">Empecemos con un audio</h2>
-        <p>Contanos qué proceso te consume más tiempo. En menos de 24 horas te decimos qué se puede automatizar y cuánto saldría. Sin compromiso y sin reuniones eternas.</p>
-        <div class="cta-final__acciones">
-          <a class="btn btn--primary" href="https://wa.me/595992879800?text=Hola%20Zeeben%20Labs%2C%20esto%20es%20lo%20que%20me%20consume%20m%C3%A1s%20tiempo%20en%20mi%20negocio%3A%20">Mandar un audio por WhatsApp</a>
-          <a class="btn btn--on-dark" href="mailto:info@zeebenlabs.com">Escribir un email</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
+  </div>
 </main>
 
-<!-- ============================== FOOTER ============================== -->
 <footer class="pie">
-  <div class="wrap">
-    <div class="pie__in">
-      <div class="pie__marca">
-        <span class="chip-z">
-          <picture>
-            <source srcset="assets/isotype-z.webp" type="image/webp">
-            <img src="assets/isotype-z.png" alt="" width="220" height="162" loading="lazy" decoding="async">
-          </picture>
-        </span>
-        <span>
-          <strong>Zeeben Labs</strong>
-          <span>Tecnología que trabaja para tu empresa.</span>
-        </span>
-      </div>
-      <div class="pie__contacto">
-        <a href="https://wa.me/595992879800?text=Hola%20Zeeben%20Labs%2C%20quiero%20hacer%20una%20consulta">+595 992 879 800</a>
-        <a href="mailto:info@zeebenlabs.com">info@zeebenlabs.com</a>
-      </div>
-    </div>
-    <p class="pie__copy">© <span data-anio>2026</span> Zeeben Labs · Asunción, Paraguay.</p>
+  <div class="wrap pie__in">
+    <span>© <span data-anio>2026</span> Zeeben Labs · Asunción, Paraguay</span>
+    <span class="pie__links">
+      <a href="https://instagram.com/zeebenlabs" target="_blank" rel="noopener">@zeebenlabs</a>
+      <a href="mailto:info@zeebenlabs.com">info@zeebenlabs.com</a>
+    </span>
   </div>
 </footer>
 
-<!-- Barra de acción en móvil: aparece pasado el hero -->
-<div class="barra-cta" data-barra-cta>
-  <a class="btn btn--primary barra-cta__wa" href="https://wa.me/595992879800?text=Hola%20Zeeben%20Labs%2C%20esto%20es%20lo%20que%20me%20consume%20m%C3%A1s%20tiempo%20en%20mi%20negocio%3A%20">Hablemos por WhatsApp</a>
-  <button class="btn btn--ghost barra-cta__chat" type="button" data-open-chat aria-label="Abrir el asistente">
-    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M9 2 7.5 6.5 3 8l4.5 1.5L9 14l1.5-4.5L15 8l-4.5-1.5z"/><path d="M18 12l-.9 2.6-2.6.9 2.6.9.9 2.6.9-2.6 2.6-.9-2.6-.9z"/></svg>
-  </button>
-</div>
-
-<script src="landing.js?v=1" defer></script>
+<script src="landing.js?v=2" defer></script>
 <script src="demo-hero.min.js?v=9f081ad1" defer></script>
 <script src="chat.js?v=c834c38c" defer></script>
-<!-- three.js + el enjambre van con fetchpriority bajo: son lo último que
-     importa para leer el hero, y el hero se lee entero sin ellos. -->
 <script src="three.min.js" defer fetchpriority="low"></script>
-<script src="enjambre.js?v=1" defer fetchpriority="low"></script>
+<script src="enjambre.js?v=2" defer fetchpriority="low"></script>
 </body>
 </html>
