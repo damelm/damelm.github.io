@@ -41,6 +41,7 @@
   --glow-1:#152540; --glow-2:#0B1424;
   --line:rgba(255,255,255,.10); --line-strong:rgba(255,255,255,.22);
   --logo-chip:transparent; --logo-sombra:none;
+  --filtro-logo:brightness(0) invert(1);
   --cyan:#34D2FB;
   --radius:14px; --radius-lg:22px;
   --font-display:'Poppins','Poppins Fallback',system-ui,-apple-system,sans-serif;
@@ -58,6 +59,7 @@
   --glow-1:#FFFFFF; --glow-2:#F1F5FB;
   --line:rgba(15,22,38,.11); --line-strong:rgba(15,22,38,.20);
   --logo-chip:#0F1626; --logo-sombra:0 6px 16px -8px rgba(15,22,38,.4);
+  --filtro-logo:brightness(0);
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink-soft);font-family:var(--font-display);
@@ -143,6 +145,18 @@ header.nav{border-bottom:1px solid var(--line);background:var(--bg)}
 .panel__precio span{font-family:var(--font-display);font-weight:400;font-size:12.5px;color:var(--muted);display:block;margin-top:3px}
 .panel__prueba{margin-top:14px !important;font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
 .panel__prueba b{color:var(--ink-soft)}
+
+/* Los cuatro logos vienen de los repos de cada cliente y estan hechos para
+   fondo claro. Se normalizan a silueta con el filtro y se pintan segun el
+   tema: asi conviven sin pelearse entre ellos ni con el fondo. */
+.confian{margin-top:32px;padding-top:20px;border-top:1px solid var(--line)}
+.confian__label{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted)}
+.confian__lista{display:flex;align-items:center;gap:34px;flex-wrap:wrap;
+  margin:18px 0 0;padding:0;list-style:none}
+.confian__lista img{height:36px;width:auto;opacity:.68;filter:var(--filtro-logo);
+  transition:opacity .2s ease}
+.confian__lista li:hover img{opacity:1}
 
 /* casos, dentro del panel de proyectos */
 .casos{display:flex;flex-direction:column;gap:12px;margin-top:14px}
@@ -271,6 +285,8 @@ header.nav{border-bottom:1px solid var(--line);background:var(--bg)}
   .formas{order:5}
   .paneles{order:6;margin-top:22px;min-height:0}
   .panel > p,.panel h2{text-align:left}
+  .confian__lista{justify-content:center;gap:26px}
+  .confian__label{text-align:center}
   .escena{height:clamp(260px,64vw,360px)}
 }
 

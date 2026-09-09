@@ -66,7 +66,7 @@
      ya. Sin esto se ve un parpadeo oscuro. El oscuro es el default y es el
      que vive en :root, asi que no necesita nada. -->
 <script>try{if(localStorage.getItem('zb-tema')==='claro')document.documentElement.setAttribute('data-tema','claro')}catch(e){}</script>
-<link rel="stylesheet" href="landing.css?v=3">
+<link rel="stylesheet" href="landing.css?v=4">
 </head>
 <body>
 
@@ -100,6 +100,18 @@
 
         <div class="panel" id="pnl-inicio">
           <p class="panel__lead">Apps a medida, sitios completos, WhatsApp con IA, dominios y la infraestructura que hace correr todo eso. La misma ingeniería, con la forma que tu negocio necesite.</p>
+          <!-- La prueba social va solo en el panel de inicio: sirve al llegar,
+               antes de que la persona elija nada. Una vez que esta leyendo un
+               servicio puntual, la franja de logos seria ruido. -->
+          <div class="confian">
+            <p class="confian__label">Confían en nosotros</p>
+            <ul class="confian__lista">
+              <li><img src="assets/clientes/point-park.webp" alt="Point Park" width="35" height="36" loading="lazy" decoding="async"></li>
+              <li><img src="assets/clientes/congelados.webp" alt="Congelados Naturales" width="36" height="36" loading="lazy" decoding="async"></li>
+              <li><img src="assets/clientes/northstar.webp" alt="Northstar" width="44" height="36" loading="lazy" decoding="async"></li>
+              <li><img src="assets/clientes/sublimarte.webp" alt="SUBLIM.ARTE" width="35" height="36" loading="lazy" decoding="async"></li>
+            </ul>
+          </div>
         </div>
 
         <div class="panel" id="pnl-apps" hidden>
