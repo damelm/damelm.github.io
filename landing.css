@@ -77,7 +77,6 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(-
   *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
 }
 
-.rombo{width:9px;height:9px;background:var(--accent);border-radius:2.5px;transform:rotate(45deg);flex:none;display:inline-block}
 .eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.13em;text-transform:uppercase;
   color:var(--muted);display:flex;align-items:center;gap:9px;margin:0}
 
@@ -139,8 +138,8 @@ header.nav{border-bottom:1px solid var(--line);background:var(--bg)}
 .panel__pista{margin-top:16px !important;font-family:var(--font-mono);font-size:12.5px;color:var(--muted)}
 .panel__lista{margin:12px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
 .panel__lista li{position:relative;padding-left:18px;font-size:14px;color:var(--muted)}
-.panel__lista li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;
-  background:var(--accent);border-radius:2px;transform:rotate(45deg)}
+.panel__lista li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;
+  background:var(--accent);border-radius:50%}
 .panel__precio{margin-top:16px !important;font-family:var(--font-mono);font-size:15px;color:var(--ink);font-weight:600}
 .panel__precio span{font-family:var(--font-display);font-weight:400;font-size:12.5px;color:var(--muted);display:block;margin-top:3px}
 .panel__prueba{margin-top:14px !important;font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
@@ -204,8 +203,10 @@ header.nav{border-bottom:1px solid var(--line);background:var(--bg)}
   font-size:13px;font-weight:600;padding:8px 15px;border-radius:999px;cursor:pointer;
   transition:background .15s ease,color .15s ease,border-color .15s ease,transform .15s ease;
   display:inline-flex;align-items:center;gap:7px}
-.formas button::before{content:"";width:6px;height:6px;background:var(--accent);border-radius:2px;
-  transform:rotate(45deg);flex:none}
+/* Punto redondo, no rombo: acompana la forma de la pildora en vez de pelearse
+   con ella. Cambia de color para indicar estado (elegida / en ciclo). */
+.formas button::before{content:"";width:6px;height:6px;background:var(--accent);
+  border-radius:50%;flex:none}
 .formas button:hover{border-color:var(--accent-strong);color:var(--accent-strong);transform:translateY(-1px)}
 /* Mientras la nube cicla sola, la etiqueta que le corresponde se enciende:
    es lo que hace ver que la animacion y las etiquetas son la misma cosa.
