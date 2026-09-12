@@ -40,7 +40,7 @@
   --vidrio:rgba(17,27,46,.86);
   --glow-1:#152540; --glow-2:#0B1424;
   --line:rgba(255,255,255,.10); --line-strong:rgba(255,255,255,.22);
-  --logo-chip:transparent; --logo-sombra:none;
+  --logo-chip:transparent; --logo-sombra:none; --logo-desfase:-14px;
   --filtro-logo:brightness(0) invert(1);
   --cyan:#34D2FB;
   --radius:14px; --radius-lg:22px;
@@ -58,7 +58,7 @@
   --vidrio:rgba(255,255,255,.85);
   --glow-1:#FFFFFF; --glow-2:#F1F5FB;
   --line:rgba(15,22,38,.11); --line-strong:rgba(15,22,38,.20);
-  --logo-chip:#0F1626; --logo-sombra:0 6px 16px -8px rgba(15,22,38,.4);
+  --logo-chip:#0F1626; --logo-sombra:0 6px 16px -8px rgba(15,22,38,.4); --logo-desfase:0;
   --filtro-logo:brightness(0);
 }
 *{box-sizing:border-box}
@@ -92,9 +92,12 @@ header.nav{border-bottom:1px solid var(--line);background:var(--bg)}
 /* En oscuro el logo (que esta hecho para fondo oscuro) se apoya directo:
    el chip navy solo hace falta cuando el fondo es claro. */
 .nav__logo-chip{background:var(--logo-chip);border-radius:10px;padding:9px 14px;display:inline-flex;
-  align-items:center;flex:none;box-shadow:var(--logo-sombra)}
+  align-items:center;flex:none;box-shadow:var(--logo-sombra);
+  /* En oscuro el chip es invisible: lo que se ve es la imagen, y quedaba 14px
+     corrida del riel. El desfase la devuelve a la columna. */
+  margin-left:var(--logo-desfase)}
 .nav__logo-chip img{height:18px;width:auto}
-.nav__tema{margin-left:auto;width:38px;height:38px;flex:none;border-radius:50%;
+.nav__tema{margin-left:auto;width:40px;height:40px;flex:none;border-radius:50%;
   border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);
   display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
   transition:border-color .15s ease,color .15s ease,transform .15s ease}
@@ -108,12 +111,20 @@ header.nav{border-bottom:1px solid var(--line);background:var(--bg)}
 .nav__cta{padding:10px 18px;font-size:14px}
 /* En 390px el nav pedia 386px y tenia 342: el CTA quedaba cortado. */
 @media(max-width:560px){
-  .nav__in{padding:10px 16px;gap:10px}
+  .nav__in{padding:10px 20px;gap:10px}
   .nav__logo-chip{padding:7px 10px}
   .nav__logo-chip img{height:15px}
-  .nav__tema{width:34px;height:34px}
+  .nav__cta{padding:10px 13px;font-size:12.5px}
+}
+/* A 320 la fila pedia 354px y solo tenia 320: el CTA quedaba cortado, y ese
+   desborde arrastraba el boton de chat y el pie fuera de pantalla. */
+@media(max-width:400px){
+  .nav__in{padding:10px 14px;gap:7px}
+  .nav__logo-chip{padding:5px 7px}
+  .nav__logo-chip img{height:13px}
+  .nav__tema{width:36px;height:36px}
   .nav__tema svg{width:15px;height:15px}
-  .nav__cta{padding:9px 13px;font-size:12.5px}
+  .nav__cta{padding:10px 11px;font-size:12px}
 }
 
 /* ============ ESCENARIO (la pantalla única) ============ */
@@ -121,7 +132,7 @@ header.nav{border-bottom:1px solid var(--line);background:var(--bg)}
   background:radial-gradient(ellipse 60% 70% at 72% 42%, var(--glow-1) 0%, var(--glow-2) 55%, var(--bg) 100%)}
 /* align-items:start y no center: si el panel de WhatsApp (que trae la demo)
    es mas alto que el resto, el enjambre no se desplaza al cambiar de etiqueta. */
-.escenario__grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start}
+.escenario__grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:44px;align-items:start}
 .lado{min-width:0}
 .lado--escena{display:flex;flex-direction:column;justify-content:flex-start;padding-top:26px}
 
@@ -129,7 +140,7 @@ header.nav{border-bottom:1px solid var(--line);background:var(--bg)}
 .escenario h1 .acento{color:var(--accent-strong)}
 
 /* ============ PANELES ============ */
-.paneles{margin-top:24px;min-height:250px}
+.paneles{margin-top:24px;min-height:215px}
 .panel{animation:entra .35s ease both}
 @keyframes entra{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .panel h2{font-size:clamp(20px,2.4vw,26px);margin-bottom:10px}
@@ -169,7 +180,7 @@ header.nav{border-bottom:1px solid var(--line);background:var(--bg)}
 .contacto__acciones{margin-top:18px}
 .contacto__lista{margin:20px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:0}
 .contacto__lista li{display:flex;justify-content:space-between;align-items:center;gap:16px;
-  padding:11px 0;border-bottom:1px solid var(--line)}
+  padding:14px 0;border-bottom:1px solid var(--line)}
 .contacto__lista li:last-child{border-bottom:0}
 .contacto__lista span{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.08em;
   text-transform:uppercase;color:var(--muted)}
@@ -182,8 +193,14 @@ header.nav{border-bottom:1px solid var(--line);background:var(--bg)}
 .escena canvas:active{cursor:grabbing}
 .voz{position:absolute;left:50%;top:6px;transform:translateX(-50%);
   font-size:13.5px;color:var(--ink-soft);background:var(--vidrio);border:1px solid var(--line);
-  border-radius:999px;padding:6px 15px;white-space:nowrap;backdrop-filter:blur(6px);
-  transition:opacity .3s ease;pointer-events:none;z-index:2;max-width:94%;text-overflow:ellipsis;overflow:hidden;margin:0}
+  border-radius:999px;padding:6px 15px;backdrop-filter:blur(6px);
+  transition:opacity .3s ease;pointer-events:none;z-index:2;margin:0;
+  /* width:max-content porque es absoluta con left:50%: sin eso solo dispone
+     de la mitad del ancho y parte en dos lineas aunque entre en una. */
+  width:max-content;max-width:94%;
+  /* Antes era nowrap con ellipsis y se comia el remate de 5 de las 7 frases
+     ("...Lo constru..."). Ahora envuelve: se gana una linea, no se pierde el mensaje. */
+  text-align:center;line-height:1.35;text-wrap:balance}
 .voz.saliendo{opacity:0}
 @media(max-width:520px){.voz{font-size:12px}}
 
@@ -200,7 +217,7 @@ header.nav{border-bottom:1px solid var(--line);background:var(--bg)}
 
 .formas{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px}
 .formas button{border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);
-  font-size:13px;font-weight:600;padding:8px 15px;border-radius:999px;cursor:pointer;
+  font-size:13px;font-weight:600;padding:11px 16px;border-radius:999px;cursor:pointer;
   transition:background .15s ease,color .15s ease,border-color .15s ease,transform .15s ease;
   display:inline-flex;align-items:center;gap:7px}
 /* Punto redondo, no rombo: acompana la forma de la pildora en vez de pelearse
@@ -226,10 +243,12 @@ header.nav{border-bottom:1px solid var(--line);background:var(--bg)}
 .rubros button{font-family:var(--font-mono);font-size:11.5px;padding:5px 11px;border-radius:999px;
   border:1px solid var(--line);color:var(--muted);background:transparent;cursor:pointer}
 .rubros button[aria-pressed="true"]{background:var(--bloque);color:var(--sobre-bloque);border-color:var(--bloque)}
-.cadena{display:grid;grid-template-columns:1.15fr .85fr;gap:12px}
+/* minmax(0,...) y no 1.15fr a secas: sin eso las pistas se congelan en el
+   min-content del input de la demo (308px) y el bloque se sale de la tarjeta. */
+.cadena{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:12px}
 @media(max-width:640px){.cadena{grid-template-columns:1fr}}
-.tel{background:var(--surface-2);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:9px;min-height:240px}
-.tel__cab{display:flex;align-items:center;gap:8px}
+.tel{background:var(--surface-2);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:9px;min-height:240px;min-width:0}
+.tel__cab{display:flex;align-items:center;gap:8px;min-width:0}
 .tel__ava{width:28px;height:28px;border-radius:50%;background:var(--bloque);color:var(--sobre-bloque);display:flex;align-items:center;
   justify-content:center;font-weight:600;font-size:12px;flex:none}
 .tel__quien{display:block;font-weight:600;font-size:13px;color:var(--ink)}
@@ -250,10 +269,10 @@ header.nav{border-bottom:1px solid var(--line);background:var(--bg)}
   padding:5px 5px 5px 13px}
 .tel__pie input{flex:1;border:0;background:transparent;font-family:inherit;font-size:12.5px;color:var(--ink);outline:none;min-width:0}
 .tel__pie input::placeholder{color:var(--muted)}
-.tel__pie button{width:28px;height:28px;border-radius:50%;background:var(--accent-strong);color:var(--sobre-acento);border:0;
+.tel__pie button{width:34px;height:34px;border-radius:50%;background:var(--accent-strong);color:var(--sobre-acento);border:0;
   display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none}
 .tel__pie button svg{width:13px;height:13px}
-.libreta{background:var(--surface-2);border-radius:12px;padding:12px;min-height:240px;display:flex;flex-direction:column}
+.libreta{background:var(--surface-2);border-radius:12px;padding:12px;min-height:240px;display:flex;flex-direction:column;min-width:0}
 .libreta__cab{display:flex;justify-content:space-between;align-items:baseline;font-size:11.5px;color:var(--muted);
   font-family:var(--font-mono);margin-bottom:9px}
 .libreta__cab b{font-size:17px;color:var(--ink);font-family:var(--font-display)}
@@ -274,9 +293,14 @@ header.nav{border-bottom:1px solid var(--line);background:var(--bg)}
 /* ============ MÓVIL ============
    El enjambre es el corazón: va apenas debajo del titular, antes de
    cualquier texto largo. Orden: mostrar, elegir, leer. */
-@media(max-width:900px){
+/* El corte estaba en 900 y dejaba un rango muerto de 901 a 1017: dos columnas
+   demasiado angostas para el contenido. Sube a 1060, y en una sola columna el
+   contenido se topa y se centra para no dejar medio ancho vacio al costado. */
+@media(max-width:1060px){
   .escenario{padding-block:24px 34px}
-  .escenario__grid{grid-template-columns:1fr;gap:0}
+    /* minmax(0,1fr) y no 1fr: la pildora de la frase usa width:max-content y
+     con 1fr a secas estiraba la pista del grid y desbordaba en 320. */
+  .escenario__grid{grid-template-columns:minmax(0,1fr);gap:0;max-width:640px;margin-inline:auto}
   .lado{display:contents}
   .escenario .eyebrow{order:1;justify-content:center}
   .escenario h1{order:2;text-align:center;margin-top:12px}
@@ -288,11 +312,17 @@ header.nav{border-bottom:1px solid var(--line);background:var(--bg)}
   .panel > p,.panel h2{text-align:left}
   .confian__lista{justify-content:center;gap:26px}
   .confian__label{text-align:center}
-  .escena{height:clamp(260px,64vw,360px)}
+  /* En una columna la frase sale de encima del enjambre y pasa a vivir arriba:
+     al envolver en varias lineas le tapaba la figura, sobre todo en 320. Por eso
+     la caja pasa a alto automatico y el alto fijo se lo queda el canvas. */
+  .escena{height:auto}
+  .escena canvas{height:clamp(250px,62vw,340px)}
+  .voz{position:static;transform:none;margin:0 auto 10px;max-width:100%}
 }
 
 /* ============ FOOTER ============ */
-footer.pie{border-top:1px solid var(--line);padding-block:20px}
+/* Aire abajo para que el boton flotante nunca quede sobre el pie. */
+footer.pie{border-top:1px solid var(--line);padding-block:20px 84px}
 .pie__in{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;
   font-size:12.5px;color:var(--muted)}
 .pie__links{display:flex;gap:18px}
@@ -305,7 +335,14 @@ footer.pie{border-top:1px solid var(--line);padding-block:20px}
   transition:transform .15s ease}
 .chat-fab:hover{transform:translateY(-2px)}
 .chat-fab svg{width:17px;height:17px;color:var(--accent)}
-@media(max-width:640px){.chat-fab__label{display:none}.chat-fab{padding:14px;border-radius:50%}}
+/* Con etiqueta mide 178px y pisaba la fila de etiquetas en escritorio y el
+   mail del pie desde 700px. Redondo salvo en pantallas anchas, donde sobra sitio. */
+.chat-fab__label{display:none}
+.chat-fab{padding:14px;border-radius:50%}
+@media(min-width:1600px){
+  .chat-fab__label{display:inline}
+  .chat-fab{padding:12px 17px;border-radius:999px}
+}
 .chat-panel{position:fixed;right:18px;bottom:18px;z-index:45;width:min(380px,calc(100vw - 24px));
   height:min(560px,calc(100vh - 90px));background:var(--surface);border:1px solid var(--line);
   border-radius:18px;box-shadow:0 30px 60px -20px rgba(15,22,38,.4);display:flex;flex-direction:column;overflow:hidden}

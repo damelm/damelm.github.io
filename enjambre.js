@@ -297,6 +297,13 @@
   }
   window.addEventListener('resize', redimensionar);
 
+  /* La caja del canvas tambien cambia sin que cambie la ventana: al abrir el
+     panel de WhatsApp la columna se ensancha y el buffer quedaba estirado hasta
+     33% en pantallas chicas. Observar el elemento y no solo el resize lo cubre. */
+  if (window.ResizeObserver) {
+    new ResizeObserver(function () { redimensionar(); }).observe(dom);
+  }
+
   /* ---------- bucle: solo corre cuando se ve ---------- */
   var reloj = new THREE.Clock();
   var visible = true, pestanaActiva = !document.hidden, rafId = null, framePedido = false;
