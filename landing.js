@@ -19,6 +19,7 @@
     { id: 'dominios',  chip: 'Dominios y hosting', voz: '¿Dominio, correo y hosting andando? Lo administramos.' },
     { id: 'infra',     chip: 'Infraestructura',    voz: '¿Los servidores de abajo, seguros y tuyos? Los configuramos.' },
     { id: 'proyectos', chip: 'Proyectos',          voz: 'Seis clientes con sistemas corriendo hoy.' },
+    { id: 'zeezee',    chip: 'ZeeZee',            voz: 'ZeeZee: todos tus chats en una ventana. Gratis.' },
     { id: 'contacto',  chip: 'Contacto',           voz: 'Contanos qué te consume tiempo. Respondemos en minutos.' }
   ];
 
@@ -142,6 +143,24 @@
     window.ZB_TEMA = function () {
       return raiz.getAttribute('data-tema') === 'claro' ? 'claro' : 'oscuro';
     };
+  }
+
+  /* ---------- apertura por enlace ----------
+     Permite mandar zeebenlabs.com/#descargar y que caiga en ZeeZee. Las
+     etiquetas son el menu de este sitio, asi que el hash es el unico modo
+     de enlazar un panel puntual desde afuera. */
+  var ALIAS = { descargar: 'zeezee', descarga: 'zeezee' };
+  var hash = (location.hash || '').replace('#', '');
+  var pedido = ALIAS[hash] || hash;
+  if (pedido && panel(pedido)) {
+    mostrar(pedido);
+    var fIni = FORMAS.filter(function (x) { return x.id === pedido; })[0];
+    if (fIni) decir(fIni.voz);
+    if (pista) pista.classList.add('oculta');
+    /* El enjambre carga despues que este script: si todavia no esta, le deja
+       la orden anotada y la toma al arrancar. */
+    if (window.Enjambre) { window.Enjambre.pausar(); window.Enjambre.irA(pedido); }
+    else { window.ZB_INICIAL = pedido; }
   }
 
   /* ---------- año del pie ---------- */

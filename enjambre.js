@@ -132,6 +132,18 @@
       rr(x, 108, 270, 134, 134, 20); x.stroke();
       rr(x, 270, 270, 134, 134, 20); x.fill();
     },
+    zeezee: function (x) {                   /* ventana con barra de apps */
+      x.lineWidth = 24;
+      rr(x, 70, 120, 372, 280, 28); x.stroke();
+      x.lineWidth = 16;
+      x.beginPath(); x.moveTo(168, 132); x.lineTo(168, 388); x.stroke();
+      [176, 232, 288, 344].forEach(function (cy) {
+        x.beginPath(); x.arc(119, cy, 15, 0, 7); x.fill();
+      });
+      rr(x, 200, 178, 148, 44, 22); x.fill();
+      rr(x, 248, 244, 158, 44, 22); x.fill();
+      rr(x, 200, 310, 118, 44, 22); x.fill();
+    },
     contacto: function (x) {                 /* sobre */
       x.lineWidth = 24;
       rr(x, 78, 148, 356, 244, 26); x.stroke();
@@ -361,14 +373,20 @@
   });
 
   redimensionar();
-  if (reducido) {
+
+  /* Si se entro por un enlace a un panel puntual (zeebenlabs.com/#descargar),
+     landing.js dejo anotada la forma: esa es la inicial y no hay ciclo, porque
+     la persona ya pidio algo concreto. La decision vive aca y no antes: este
+     bloque es el unico que fija la forma de arranque, y pisaba cualquier otra. */
+  var inicial = (window.ZB_INICIAL && objetivos[window.ZB_INICIAL]) ? window.ZB_INICIAL : null;
+
+  if (reducido || inicial) {
     ciclando = false;
-    irA('z');
-    arrancar();
+    irA(inicial || 'z');
   } else {
     ultimoCambio = 0.5;
     irA(orden[0]);
     if (window.ZB && window.ZB.cicla) window.ZB.cicla(orden[0]);
-    arrancar();
   }
+  arrancar();
 })();

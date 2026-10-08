@@ -69,7 +69,7 @@
      ya. Sin esto se ve un parpadeo oscuro. El oscuro es el default y es el
      que vive en :root, asi que no necesita nada. -->
 <script>try{if(localStorage.getItem('zb-tema')==='claro')document.documentElement.setAttribute('data-tema','claro')}catch(e){}</script>
-<link rel="stylesheet" href="landing.css?v=7">
+<link rel="stylesheet" href="landing.css?v=8">
 </head>
 <body>
 
@@ -225,6 +225,28 @@
           <p class="panel__prueba">Seis clientes con sistemas en producción, más tres sistemas propios.</p>
         </div>
 
+        <!-- Producto propio, no un servicio a cotizar: por eso es la unica
+             etiqueta que termina en una descarga y no en una conversacion.
+             El enlace apunta a /releases/latest/ y nunca hay que actualizarlo. -->
+        <div class="panel" id="pnl-zeezee" hidden>
+          <h2>ZeeZee para Windows</h2>
+          <p>WhatsApp, Telegram, Slack, Instagram, Discord y más, todo en una sola ventana. Gratis, sin cuenta.</p>
+          <ul class="panel__lista">
+            <li>Instalación por usuario, sin permisos de administrador</li>
+            <li>Windows 64-bit</li>
+          </ul>
+          <div class="descarga__acciones">
+            <a class="btn btn--primary" href="https://github.com/damelm/zeezee-installers/releases/latest/download/ZeeZee-Setup-Windows.exe" download>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 3v12m0 0l-4-4m4 4l4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>
+              </svg>
+              Descargar para Windows
+            </a>
+            <a class="btn btn--ghost" href="https://github.com/damelm/zeezee-installers/releases" target="_blank" rel="noopener">Ver todas las versiones</a>
+          </div>
+          <p class="panel__pista">Al abrir, Windows puede avisar «Editor desconocido»: Más información → Ejecutar de todas formas.</p>
+        </div>
+
         <div class="panel" id="pnl-contacto" hidden>
           <h2>Empecemos con un audio</h2>
           <p>Contanos qué proceso te consume más tiempo. En menos de 24 horas te decimos cómo se resuelve y cuánto saldría. Sin compromiso.</p>
@@ -263,10 +285,10 @@
   </div>
 </footer>
 
-<script src="landing.js?v=3" defer></script>
+<script src="landing.js?v=4" defer></script>
 <script src="demo-hero.min.js?v=9f081ad1" defer></script>
 <script src="chat.js?v=c834c38c" defer></script>
 <script src="three.min.js" defer fetchpriority="low"></script>
-<script src="enjambre.js?v=4" defer fetchpriority="low"></script>
+<script src="enjambre.js?v=5" defer fetchpriority="low"></script>
 </body>
 </html>

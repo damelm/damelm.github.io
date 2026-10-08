@@ -85,6 +85,14 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(-
   transition:transform .15s ease,box-shadow .15s ease,background .15s ease,border-color .15s ease,color .15s ease}
 .btn--primary{background:var(--accent-strong);color:var(--sobre-acento);box-shadow:0 10px 24px -10px rgba(10,93,130,.45)}
 .btn--primary:hover{background:var(--accent-hover);transform:translateY(-1px)}
+/* Secundario: hace falta cuando hay dos acciones juntas y una no tiene que
+   competir con la otra. Sin relleno, solo contorno. */
+.btn--ghost{background:transparent;color:var(--ink-soft);border:1px solid var(--line-strong)}
+.btn--ghost:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}
+.btn svg{width:17px;height:17px;flex:none}
+/* flex-wrap y no nowrap: en una columna los dos botones se apilan en vez de
+   desbordar la tarjeta. */
+.descarga__acciones{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
 
 /* ============ NAV ============ */
 header.nav{border-bottom:1px solid var(--line);background:var(--bg)}
